@@ -41,10 +41,10 @@ YMM4で一番最初に行う「動画の設定」です
 
 |            | 32×32 | 48×32 |
 |------------|--------|--------|
-|ケレスちゃん|![32x32](../SampleAnimations//YMM4向け素材/yukkuri_32x32_ceres-chan.png)|![48x32](../SampleAnimations//YMM4向け素材/yukkuri_48x32_ceres-chan.png)|
-|ソフトくん  |![32x32](../SampleAnimations//YMM4向け素材/yukkuri_32x32_soft-kun.png)|![48x32](../SampleAnimations//YMM4向け素材/yukkuri_48x32_soft-kun.png)|
+|ケレスちゃん|![32x32](../SampleAnimations//YMM4向け素材/ymm4_32x32_ceres-chan.png)|![48x32](../SampleAnimations//YMM4向け素材/ymm4_48x32_ceres-chan.png)|
+|ソフトくん  |![32x32](../SampleAnimations//YMM4向け素材/ymm4_32x32_soft-kun.png)|![48x32](../SampleAnimations//YMM4向け素材/ymm4_48x32_soft-kun.png)|
 
-__◆すべてのYMM4向け素材は **[こちら](../SampleAnimations/YMM4向け素材/)** で公開しています__
+**◆すべてのYMM4向け素材は [こちら](../SampleAnimations/YMM4向け素材/readme.md) で公開しています**
 
 メニューから「ファイル」→「アイテムを追加」→「画像アイテム」を開きます
 
