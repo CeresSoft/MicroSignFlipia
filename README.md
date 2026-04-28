@@ -60,7 +60,7 @@ Clip Studio PAINTのアニメーション機能を使ってアニメーション
 
 以下のページよりMicroSign用の素材をダウンロードいただけます。
 
-- **[YMM4向け素材](../SampleAnimations/YMM4向け素材/)**
+- **[YMM4向け素材](./SampleAnimations/YMM4向け素材/)**
 
 
 ## 更新履歴
