@@ -32,6 +32,40 @@ YMM4で一番最初に行う「動画の設定」です
 
 これで動画の作成を行ってください
 
+
+### キャラクターの配置
+
+当リポジトリにて配布しているYMM4向け素材をダウンロードします
+
+#### 素材の一例
+
+|            | 32×32 | 48×32 |
+|------------|--------|--------|
+|ケレスちゃん|![32x32](../SampleAnimations//YMM4向け素材/ymm4_32x32_ceres-chan.png)|![48x32](../SampleAnimations//YMM4向け素材/ymm4_48x32_ceres-chan.png)|
+|ソフトくん  |![32x32](../SampleAnimations//YMM4向け素材/ymm4_32x32_soft-kun.png)|![48x32](../SampleAnimations//YMM4向け素材/ymm4_48x32_soft-kun.png)|
+
+**◆すべてのYMM4向け素材は [こちら](../SampleAnimations/YMM4向け素材/readme.md) で公開しています**
+
+メニューから「ファイル」→「アイテムを追加」→「画像アイテム」を開きます
+
+![アイテムを追加](./images//microsign_ymm4_011.png)
+
+ファイル選択画面が開くので、ダウンロードした素材から画像ファイルを選択します
+
+![ファイル選択](./images//microsign_ymm4_012.png)
+
+以下のように画像が追加されます
+
+![画像追加](./images//microsign_ymm4_013.png)
+
+画像をドラッグし、配置を調整します
+
+![画像移動](./images//microsign_ymm4_014.png)
+
+必要に応じてエフェクトや図形を追加します
+
+![エフェクト再生](./images//microsign_ymm4_015.png)
+
 ### 動画出力
 
 YMM4で動画の出力を行う画面を開きます
