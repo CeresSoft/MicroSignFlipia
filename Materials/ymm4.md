@@ -2,7 +2,7 @@
 
 YMM4でキャラクターとしてお使いいただける素材です。
 
-キャラクター素材一式は、YMM4で「動く立ち絵」として使用できるファイル構成になっています。
+キャラクター素材は、YMM4で「動く立ち絵」として使用できるファイル構成になっています。
 ZIPファイルを解凍後、動く立ち絵の素材の場所として選択してください。
 
 ## 利用規約
@@ -32,20 +32,14 @@ ZIPファイルを解凍後、動く立ち絵の素材の場所として選択�
 
 ## ケレスちゃん
 
-### キャラクター素材一式
--  48×32 [ymm4_48x32_ceres-chan.zip](./YMM4/ymm4_48x32_ceres-chan.zip)
--  32×32 [ymm4_32x32_ceres-chan.zip](./YMM4/ymm4_32x32_ceres-chan.zip)
-
-### PNG形式
-- ![ケレスちゃん 48x32](./YMM4/ymm4_48x32_ceres-chan.png) 48×32 [ymm4_48x32_ceres-chan.png](./YMM4/ymm4_48x32_ceres-chan.png)
-- ![ケレスちゃん 32x32](./YMM4/ymm4_32x32_ceres-chan.png) 32×32 [ymm4_32x32_ceres-chan.png](./YMM4/ymm4_32x32_ceres-chan.png)
+|プレビュー|サイズ|キャラクター素材|PNG|
+|------------|------|----------------|---|
+|![ケレスちゃん 48x32](./YMM4/ymm4_48x32_ceres-chan.png)|48×32|[![ケレスちゃん 48x32 ZIP](https://img.shields.io/badge/ZIP-Download-f27135)](./YMM4/ymm4_48x32_ceres-chan.zip)|[![ケレスちゃん 48x32 PNG](https://img.shields.io/badge/PNG-Download-0077cc)](./YMM4/ymm4_48x32_ceres-chan.png)|
+|![ケレスちゃん 32x32](./YMM4/ymm4_32x32_ceres-chan.png)|32×32|[![ケレスちゃん 32x32 ZIP](https://img.shields.io/badge/ZIP-Download-f27135)](./YMM4/ymm4_32x32_ceres-chan.zip)|[![ケレスちゃん 32x32 PNG](https://img.shields.io/badge/PNG-Download-0077cc)](./YMM4/ymm4_32x32_ceres-chan.png)|
 
 ## ソフトくん
 
-### キャラクター素材一式
--  48×32 [ymm4_48x32_soft-kun.zip](./YMM4/ymm4_48x32_soft-kun.zip)
--  32×32 [ymm4_32x32_soft-kun.zip](./YMM4/ymm4_32x32_soft-kun.zip)
-
-### PNG形式
-- ![ソフトくん 48x32](./YMM4/ymm4_48x32_soft-kun.png) 48×32 [ymm4_48x32_soft-kun.png](./YMM4/ymm4_48x32_soft-kun.png)
-- ![ソフトくん 32x32](./YMM4/ymm4_32x32_soft-kun.png) 32×32 [ymm4_32x32_soft-kun.png](./YMM4/ymm4_32x32_soft-kun.png)
+|プレビュー|サイズ|キャラクター素材|PNG|
+|------------|------|----------------|---|
+|![ソフトくん 48x32](./YMM4/ymm4_48x32_soft-kun.png)|48×32|[![ソフトくん 48x32 ZIP](https://img.shields.io/badge/ZIP-Download-f27135)](./YMM4/ymm4_48x32_soft-kun.zip)|[![ソフトくん 48x32 PNG](https://img.shields.io/badge/PNG-Download-0077cc)](./YMM4/ymm4_48x32_soft-kun.png)|
+|![ソフトくん 32x32](./YMM4/ymm4_32x32_soft-kun.png)|32×32|[![ソフトくん 32x32 ZIP](https://img.shields.io/badge/ZIP-Download-f27135)](./YMM4/ymm4_32x32_soft-kun.zip)|[![ソフトくん 32x32 PNG](https://img.shields.io/badge/PNG-Download-0077cc)](./YMM4/ymm4_32x32_soft-kun.png)|
