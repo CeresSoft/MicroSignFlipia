@@ -33,19 +33,19 @@ ZIPファイルを解凍後、動く立ち絵の素材の場所として選択�
 ## ケレスちゃん
 
 ### キャラクター素材一式
--  48×32 [ymm4_48x32_ceres-chan.zip](./ymm4_48x32_ceres-chan.zip)
--  32×32 [ymm4_32x32_ceres-chan.zip](./ymm4_32x32_ceres-chan.zip)
+-  48×32 [ymm4_48x32_ceres-chan.zip](./YMM4/ymm4_48x32_ceres-chan.zip)
+-  32×32 [ymm4_32x32_ceres-chan.zip](./YMM4/ymm4_32x32_ceres-chan.zip)
 
 ### PNG形式
-- ![ケレスちゃん 48x32](./ymm4_48x32_ceres-chan.png) 48×32 [ymm4_48x32_ceres-chan.png](./ymm4_48x32_ceres-chan.png)
-- ![ケレスちゃん 32x32](./ymm4_32x32_ceres-chan.png) 32×32 [ymm4_32x32_ceres-chan.png](./ymm4_32x32_ceres-chan.png)
+- ![ケレスちゃん 48x32](./YMM4/ymm4_48x32_ceres-chan.png) 48×32 [ymm4_48x32_ceres-chan.png](./YMM4/ymm4_48x32_ceres-chan.png)
+- ![ケレスちゃん 32x32](./YMM4/ymm4_32x32_ceres-chan.png) 32×32 [ymm4_32x32_ceres-chan.png](./YMM4/ymm4_32x32_ceres-chan.png)
 
 ## ソフトくん
 
 ### キャラクター素材一式
--  48×32 [ymm4_48x32_soft-kun.zip](./ymm4_48x32_soft-kun.zip)
--  32×32 [ymm4_32x32_soft-kun.zip](./ymm4_32x32_soft-kun.zip)
+-  48×32 [ymm4_48x32_soft-kun.zip](./YMM4/ymm4_48x32_soft-kun.zip)
+-  32×32 [ymm4_32x32_soft-kun.zip](./YMM4/ymm4_32x32_soft-kun.zip)
 
 ### PNG形式
-- ![ソフトくん 48x32](./ymm4_48x32_soft-kun.png) 48×32 [ymm4_48x32_soft-kun.png](./ymm4_48x32_soft-kun.png)
-- ![ソフトくん 32x32](./ymm4_32x32_soft-kun.png) 32×32 [ymm4_32x32_soft-kun.png](./ymm4_32x32_soft-kun.png)
+- ![ソフトくん 48x32](./YMM4/ymm4_48x32_soft-kun.png) 48×32 [ymm4_48x32_soft-kun.png](./YMM4/ymm4_48x32_soft-kun.png)
+- ![ソフトくん 32x32](./YMM4/ymm4_32x32_soft-kun.png) 32×32 [ymm4_32x32_soft-kun.png](./YMM4/ymm4_32x32_soft-kun.png)

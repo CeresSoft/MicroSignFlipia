@@ -44,7 +44,7 @@ YMM4で一番最初に行う「動画の設定」です
 |ケレスちゃん|![32x32](../Materials/YMM4/ymm4_32x32_ceres-chan.png)|![48x32](../Materials/YMM4/ymm4_48x32_ceres-chan.png)|
 |ソフトくん  |![32x32](../Materials/YMM4/ymm4_32x32_soft-kun.png)|![48x32](../Materials/YMM4/ymm4_48x32_soft-kun.png)|
 
-**◆すべてのYMM4向け素材は [こちら](../Materials/YMM4/readme.md) で公開しています**
+**◆すべてのYMM4向け素材は [こちら](../Materials/ymm4.md) で公開しています**
 
 メニューから「ファイル」→「アイテムを追加」→「画像アイテム」を開きます
 
