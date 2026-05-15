@@ -30,7 +30,7 @@ MicroSignシリーズの表示パネル用のアニメーションを作成す�
 
 ### MicroSign パネルテスト アニメーション
 
-[MicroSign パネルテスト アニメーション](./SampleAnimations/MicroSignパネルテストアニメーション/)
+[MicroSign パネルテスト アニメーション](./Materials/MicroSignPanelTest/)
 
 MicroSignの全LEDが正しく点灯しているか確認するためのアニメーション
 
@@ -40,7 +40,7 @@ MicroSignの全LEDが正しく点灯しているか確認するためのアニ�
 
 ### MicroSign プロモーション アニメーション
 
-[MicroSign プロモーション アニメーション](./SampleAnimations/MicroSignプロモーションアニメーション/)
+[MicroSign プロモーション アニメーション](./Materials/MicroSignPromotion/)
 
 MicroSignのプロモーション用に作成したアニメーション
 
@@ -60,7 +60,8 @@ Clip Studio PAINTのアニメーション機能を使ってアニメーション
 
 以下のページよりMicroSign用の素材をダウンロードいただけます。
 
-- **[YMM4向け素材](./SampleAnimations/YMM4向け素材/readme.md)**
+- **[YMM4向け素材](./Materials/YMM4/readme.md)**
+- **[季節アニメーション](./Materials/Seasons/readme.md)**
 
 
 ## 更新履歴
