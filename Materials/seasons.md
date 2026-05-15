@@ -25,12 +25,12 @@ MicroSignでの再生用途であれば、個人・企業・商用・非商用�
 
 |サンプル  |ダウンロードURL |更新日|
 |----------|----------------|------|
-|![桜](./seasons_128x32_cherry-tree.gif)|[MicroSignImage-seasons_128x32_cherry-tree.bin](./MicroSignImage-seasons_128x32_cherry-tree.bin)|2026/5/15|
+|![桜](./Seasons/seasons_128x32_cherry-tree.gif)|[MicroSignImage-seasons_128x32_cherry-tree.bin](./Seasons/MicroSignImage-seasons_128x32_cherry-tree.bin)|2026/5/15|
 
 ## 64dot × 64dot 用
 
 |サンプル  |ダウンロードURL |更新日|
 |----------|----------------|------|
-|![梅雨](./seasons_64x64_rain.gif)|[MicroSignImage-seasons_64x64_rain.bin](./MicroSignImage-seasons_64x64_rain.bin)|2026/5/15|
-|![ハロウィン](./seasons_64x64_halloween.gif)|[MicroSignImage-seasons_64x64_halloween.bin](./MicroSignImage-seasons_64x64_halloween.bin)|2026/5/15|
-|![雪模様](./seasons_64x64_snow.gif)|[MicroSignImage-seasons_64x64_snow.bin](./MicroSignImage-seasons_64x64_snow.bin)|2026/5/15|
+|![梅雨](./Seasons/seasons_64x64_rain.gif)|[MicroSignImage-seasons_64x64_rain.bin](./Seasons/MicroSignImage-seasons_64x64_rain.bin)|2026/5/15|
+|![ハロウィン](./Seasons/seasons_64x64_halloween.gif)|[MicroSignImage-seasons_64x64_halloween.bin](./Seasons/MicroSignImage-seasons_64x64_halloween.bin)|2026/5/15|
+|![雪模様](./Seasons/seasons_64x64_snow.gif)|[MicroSignImage-seasons_64x64_snow.bin](./Seasons/MicroSignImage-seasons_64x64_snow.bin)|2026/5/15|
