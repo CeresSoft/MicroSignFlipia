@@ -405,6 +405,8 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="6"/>
                             <ColumnDefinition Width="64"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="64"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -415,7 +417,19 @@
                         <TextBox x:Name="DefaultDisplayPeriodText1" Grid.Column="3" Text="{Binding DefaultDisplayPeriod, Mode=TwoWay, StringFormat=#0.000, UpdateSourceTrigger=LostFocus}" ToolTip="デフォルトの表示秒数を設定してください" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}"/>
                         <TextBlock Text="秒" Grid.Column="5" />
 
-                        <Button x:Name="ApplyAllDisplayPeriodButton" Content="一括反映" Style="{StaticResource OperationButtonStyle}" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Grid.Column="7" Click="ApplyAllDisplayPeriodButton_Click"/>
+                        <ComboBox SelectedValue="{Binding DefaultDisplayPeriod, Mode=TwoWay}" DisplayMemberPath="Name" SelectedValuePath="Value" Grid.Column="7">
+                            <ComboBox.ItemsSource>
+                                <x:Array Type="{x:Type core:SelectFpsItem}">
+                                    <core:SelectFpsItem Name="5fps" Value="0.200"/>
+                                    <core:SelectFpsItem Name="10fps" Value="0.100"/>
+                                    <core:SelectFpsItem Name="15fps" Value="0.066"/>
+                                    <core:SelectFpsItem Name="20fps" Value="0.050"/>
+                                    <core:SelectFpsItem Name="30fps" Value="0.033"/>
+                                </x:Array>
+                            </ComboBox.ItemsSource>
+                        </ComboBox>
+
+                        <Button x:Name="ApplyAllDisplayPeriodButton" Content="一括反映" Style="{StaticResource OperationButtonStyle}" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Grid.Column="9" Click="ApplyAllDisplayPeriodButton_Click"/>
                     </Grid>
                 </Grid>
                 
