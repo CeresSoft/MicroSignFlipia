@@ -29,6 +29,8 @@
                 </Grid.DataContext>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="20"/>
                     <RowDefinition/>
                     <RowDefinition Height="20"/>
@@ -238,8 +240,50 @@
                         </Button>
                     </StackPanel>
                 </Grid>
+                
+                <!--サウンド-->
+                <Grid x:Name="SoundGrid" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Background="{StaticResource Group.Background}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Style="{StaticResource InputHeaderTextBlockStyle}" Text="サウンド設定" Grid.ColumnSpan="7"/>
 
-                <Grid x:Name="SourceImageGrid" Grid.Row="2" Grid.Column="1">
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="サウンドファイル" Grid.Row="0" Grid.Column="0"/>
+                        <TextBox x:Name="SoundFile" Grid.Row="0"  Grid.Column="2" Text="{Binding SoundFilePath, Mode=TwoWay}" ToolTip="サウンドファイルを設定してください" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}"/>
+                        <Button  Grid.Row="0"  Grid.Column="4" Grid.RowSpan="3" x:Name="SelectSoundFileButton" ToolTip="サウンドファイルを選択します" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Style="{StaticResource OperationButtonStyle}" Click="SelectSoundFileButton_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="&#xE8E5;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
+                                <TextBlock Text="..." Grid.Column="1"/>
+                            </Grid>
+                        </Button>
+
+                        <!--ステータス-->
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding SoundFileStatus}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="MMM" Visibility="Hidden"/>
+                    </Grid>
+
+                </Grid>
+
+                <!--アニメーション設定-->
+                <Grid x:Name="SourceImageGrid" Grid.Row="4" Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="0"/>
@@ -364,7 +408,9 @@
                         <Button x:Name="ApplyAllDisplayPeriodButton" Content="一括反映" Style="{StaticResource OperationButtonStyle}" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Grid.Column="7" Click="ApplyAllDisplayPeriodButton_Click"/>
                     </Grid>
                 </Grid>
-                <Grid x:Name="PreviewGrid" Grid.Column="3" Grid.Row="2" UseLayoutRounding="True">
+                
+                <!--プレビュー-->
+                <Grid x:Name="PreviewGrid" Grid.Column="3" Grid.Row="4" UseLayoutRounding="True">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="6"/>
@@ -438,8 +484,9 @@
                     </Grid>
                 </Grid>
 
-                <GridSplitter Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" ShowsPreview="True" Width="10" />
-                <TextBlock FontFamily="{StaticResource IconFontFamily}" Text="&#xE784;" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" IsHitTestVisible="False"/>
+                <!--スライダー-->
+                <GridSplitter Grid.Row="4" Grid.Column="2" HorizontalAlignment="Center" ShowsPreview="True" Width="10" />
+                <TextBlock FontFamily="{StaticResource IconFontFamily}" Text="&#xE784;" Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" IsHitTestVisible="False"/>
             </Grid>
         </Grid>
     </Grid>

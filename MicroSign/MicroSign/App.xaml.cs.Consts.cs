@@ -38,6 +38,23 @@ namespace MicroSign
                 /// GIFフィルター
                 /// </summary>
                 public const string GifFilter = "GIF Image(*.gif)|*.gif|すべてのファイル (*.*)|*.*";
+
+            }
+
+            /// <summary>
+            /// サウンドファイル関連
+            /// </summary>
+            public static class SoundFiles
+            {
+                /// <summary>
+                /// デフォルトサウンド拡張子
+                /// </summary>
+                public const string DefaultExt = ".wav";
+
+                /// <summary>
+                /// フィルター
+                /// </summary>
+                public const string Filter = "Sound(*.wav,*.mp3,*.m4a,*.mp4,*.wma)|*.wav;*.mp3;*.m4a;*.mp4;*.wma|すべてのファイル (*.*)|*.*";
             }
         }
     }

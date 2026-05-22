@@ -703,6 +703,162 @@ namespace MicroSign.Core.ViewModels
             }
         }
         #endregion
+        #region サウンドファイルパス
+        /// <summary>
+        /// 初期値
+        /// </summary>
+        public static new partial class InitializeValues
+        {
+            /// <summary>
+            /// サウンドファイルパス初期値
+            /// </summary>
+            public const string? SoundFilePath = null;
+        }
+
+        /// <summary>
+        /// プロパティ名
+        /// </summary>
+        public static new partial class PropertyNames
+        {
+            /// <summary>
+            /// サウンドファイルパスプロパティ名
+            /// </summary>
+            public const string SoundFilePath = "SoundFilePath";
+        }
+
+        /// <summary>
+        /// サウンドファイルパス保持変数
+        /// </summary>
+        protected string? _SoundFilePath = InitializeValues.SoundFilePath;
+
+        /// <summary>
+        /// サウンドファイルパス
+        /// </summary>
+        /// <remarks>
+        /// 2026.05.22:CS)杉原:サウンド機能追加
+        /// </remarks>
+        public string? SoundFilePath
+        {
+            get
+            {
+                return this._SoundFilePath;
+            }
+            set
+            {
+                string? now = this._SoundFilePath;
+                if (now == value)
+                {
+                    return;
+                }
+                this._SoundFilePath = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        #endregion
+        #region サウンドステータス
+        /// <summary>
+        /// 初期値
+        /// </summary>
+        public static new partial class InitializeValues
+        {
+            /// <summary>
+            /// サウンドステータス初期値
+            /// </summary>
+            public const string? SoundFileStatus = null;
+        }
+
+        /// <summary>
+        /// プロパティ名
+        /// </summary>
+        public static new partial class PropertyNames
+        {
+            /// <summary>
+            /// サウンドステータスプロパティ名
+            /// </summary>
+            public const string SoundFileStatus = "SoundFileStatus";
+        }
+
+        /// <summary>
+        /// サウンドステータス保持変数
+        /// </summary>
+        protected string? _SoundFileStatus = InitializeValues.SoundFileStatus;
+
+        /// <summary>
+        /// サウンドステータス
+        /// </summary>
+        /// <remarks>
+        /// 2026.05.22:CS)杉原:サウンド機能追加
+        /// </remarks>
+        public string? SoundFileStatus
+        {
+            get
+            {
+                return this._SoundFileStatus;
+            }
+            set
+            {
+                string? now = this._SoundFileStatus;
+                if (now == value)
+                {
+                    return;
+                }
+                this._SoundFileStatus = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        #endregion
+        #region サウンドPCM8データ
+        /// <summary>
+        /// 初期値
+        /// </summary>
+        public static new partial class InitializeValues
+        {
+            /// <summary>
+            /// サウンドPCM8データ初期値
+            /// </summary>
+            public const byte[]? SoundPcm8Data = null;
+        }
+
+        /// <summary>
+        /// プロパティ名
+        /// </summary>
+        public static new partial class PropertyNames
+        {
+            /// <summary>
+            /// サウンドPCM8データプロパティ名
+            /// </summary>
+            public const string SoundPcm8Data = "SoundPcm8Data";
+        }
+
+        /// <summary>
+        /// サウンドPCM8データ保持変数
+        /// </summary>
+        protected byte[]? _SoundPcm8Data = InitializeValues.SoundPcm8Data;
+
+        /// <summary>
+        /// サウンドPCM8データ
+        /// </summary>
+        /// <remarks>
+        /// 2026.05.22:CS)杉原:サウンド機能追加-PCM8とはPCMは16ビットだが、上位8ビットだけにしたデータです
+        /// </remarks>
+        public byte[]? SoundPcm8Data
+        {
+            get
+            {
+                return this._SoundPcm8Data;
+            }
+            set
+            {
+                byte[]? now = this._SoundPcm8Data;
+                if (now == value)
+                {
+                    return;
+                }
+                this._SoundPcm8Data = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        #endregion
 
         //「Documents\ViewModelプロパティ作成テンプレート.xlsx」の「MainWindowViewModel」をコピー <<<<< ここまで
     }

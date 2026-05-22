@@ -1552,5 +1552,49 @@ namespace MicroSign
             }
         }
 
+        /// <summary>
+        /// サウンドファイル選択ボタンクリック
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SelectSoundFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //読込イメージ選択
+                Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
+
+                //タイトル
+                dialog.Title = "サウンドファイル選択";
+
+                // Default file name
+                dialog.FileName = "";
+
+                // Default file extension
+                dialog.DefaultExt = App.Consts.SoundFiles.DefaultExt;
+
+                // Filter files by extension
+                dialog.Filter = App.Consts.SoundFiles.Filter;
+
+                //表示
+                bool ret = dialog.ShowDialog(this) ?? false;
+                if (ret)
+                {
+                    //選択した場合は処理続行
+                }
+                else
+                {
+                    //選択しなかった場合は変更せずに終了
+                    return;
+                }
+
+                //選択サウンドファイルパス設定
+                this.ViewModel.SoundFilePath = dialog.FileName;
+            }
+            catch (Exception ex)
+            {
+                this.ShowError(CommonLogger.Error("サウンドファイル選択で例外発生"), ex);
+            }
+        }
     }
 }
