@@ -21,6 +21,8 @@ namespace MicroSign.Core.ViewModels
                         //無効の場合は何もせずに終了
                         // >> ステータスを初期値に設定する
                         this.SoundFileStatus = MainWindowViewModel.InitializeValues.SoundFileStatus;
+                        // >> PCM8データを初期値にする
+                        this.SoundPcm8Data = MainWindowViewModel.InitializeValues.SoundPcm8Data;
                         return;
 
                     }
@@ -37,13 +39,17 @@ namespace MicroSign.Core.ViewModels
                     if (isSuccess)
                     {
                         //成功の場合
+                        // >> フォーマット文字列をステータスに設定
                         this.SoundFileStatus = ret.FormatText;
+                        // >> PCM8データを設定
                         this.SoundPcm8Data = ret.Pcm8Data;
                     }
                     else
                     {
                         //失敗の場合
+                        // >> ステータスにエラーメッセージを設定
                         this.SoundFileStatus = ret.Message;
+                        // >> PCM8データを初期値にする
                         this.SoundPcm8Data = MainWindowViewModel.InitializeValues.SoundPcm8Data;
                     }
                 }

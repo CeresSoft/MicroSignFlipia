@@ -44,8 +44,16 @@ namespace MicroSign
             /// <summary>
             /// サウンドファイル関連
             /// </summary>
+            /// <remarks>
+            /// 2026.05.22:CS)杉原:サウンド機能追加で追加
+            /// </remarks>
             public static class SoundFiles
             {
+                /// <summary>
+                /// 受け入れ可能なサウンドファイル拡張子
+                /// </summary>
+                public static Regex VaridExtensions = new Regex(@"(\.wav|\.mp3|\.m4a|\.mp4|\.wma)$", RegexOptions.IgnoreCase);
+
                 /// <summary>
                 /// デフォルトサウンド拡張子
                 /// </summary>

@@ -107,29 +107,42 @@ namespace MicroSign.Core.ViewModels
             // >> コンストラクタで生成しているのでnullチェック不要
             AnimationImageItemCollection animationImages = this.AnimationImages;
 
-            //変換
-            //2025.08.12:CS)杉原:パレット処理の流れを変更 >>>>> ここから
-            //Models.Model.ConvertResult ret = this.Model.ConvertAnimation(name, formatKind, animationImages, redThreshold, greenThreshold, blueThreshold, matrixLedWidth, matrixLedHeight, matrixLedBrightness);
-            //this.ConvertImage = ret.ConvertImage;
-            //this.Code = ret.Code;
+            //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
             //----------
-            // >> 変換コードは無くなりました
-            //2025.08.18:CS)土田:ガンマ補正対応で引数を追加 >>>>> ここから
-            //Models.Model.ConvertResult ret = this.Model.ConvertAnimation(formatKind, animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness);
+            // PCM8データ取得
+            byte[]? pcm8 = this.SoundPcm8Data;
+            //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
+
+            //変換
+            //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+            ////2025.08.12:CS)杉原:パレット処理の流れを変更 >>>>> ここから
+            ////Models.Model.ConvertResult ret = this.Model.ConvertAnimation(name, formatKind, animationImages, redThreshold, greenThreshold, blueThreshold, matrixLedWidth, matrixLedHeight, matrixLedBrightness);
+            ////this.ConvertImage = ret.ConvertImage;
+            ////this.Code = ret.Code;
+            ////----------
+            //// >> 変換コードは無くなりました
+            ////2025.08.18:CS)土田:ガンマ補正対応で引数を追加 >>>>> ここから
+            ////Models.Model.ConvertResult ret = this.Model.ConvertAnimation(formatKind, animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness);
+            ////-----
+            ////2025.08.21:CS)土田:残像軽減対応で引数を追加 >>>>> ここから
+            ////Models.Model.ConvertResult ret = this.Model.ConvertAnimation(formatKind, animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness, gamma);
+            ////-----
+            ////2025.10.03:CS)土田:変換結果の保存先を選択できるように引数追加 >>>>> ここから
+            ////Models.Model.ConvertResult ret = this.Model.ConvertAnimation(formatKind, animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness, gamma, motionBlurReduction);
+            ////-----
+            //Models.Model.ConvertResult ret = this.Model.ConvertAnimation(formatKind, animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness, gamma, motionBlurReduction, savePath);
+            ////2025.10.03:CS)土田:変換結果の保存先を選択できるように引数追加 <<<<< ここまで
+            ////2025.08.21:CS)土田:残像軽減対応で引数を追加 <<<<< ここまで
+            ////2025.08.18:CS)土田:ガンマ補正対応で引数を追加 <<<<< ここまで
+            //this.AnimationMergedBitmap = ret.AnimationMergedBitmap;
+            //this.AnimationDatas = ret.AnimationDatas;
+            ////2025.08.12:CS)杉原:パレット処理の流れを変更 <<<<< ここまで
             //-----
-            //2025.08.21:CS)土田:残像軽減対応で引数を追加 >>>>> ここから
-            //Models.Model.ConvertResult ret = this.Model.ConvertAnimation(formatKind, animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness, gamma);
-            //-----
-            //2025.10.03:CS)土田:変換結果の保存先を選択できるように引数追加 >>>>> ここから
-            //Models.Model.ConvertResult ret = this.Model.ConvertAnimation(formatKind, animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness, gamma, motionBlurReduction);
-            //-----
-            Models.Model.ConvertResult ret = this.Model.ConvertAnimation(formatKind, animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness, gamma, motionBlurReduction, savePath);
-            //2025.10.03:CS)土田:変換結果の保存先を選択できるように引数追加 <<<<< ここまで
-            //2025.08.21:CS)土田:残像軽減対応で引数を追加 <<<<< ここまで
-            //2025.08.18:CS)土田:ガンマ補正対応で引数を追加 <<<<< ここまで
+            Models.Model.ConvertResult ret = this.Model.ConvertAnimation(formatKind, animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness, gamma, motionBlurReduction, savePath, pcm8);
             this.AnimationMergedBitmap = ret.AnimationMergedBitmap;
             this.AnimationDatas = ret.AnimationDatas;
-            //2025.08.12:CS)杉原:パレット処理の流れを変更 <<<<< ここまで
+            //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
+
 
             //終了
             //2025.08.12:CS)杉原:パレット処理の流れを変更 >>>>> ここから

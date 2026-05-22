@@ -210,6 +210,12 @@ namespace MicroSign.Core
             /// version 1.1.0
             /// </summary>
             public const int V110 = 110;
+
+            /// <summary>
+            /// version 1.2.0
+            /// </summary>
+            /// <remarks>2026.05.22:CS)杉原:サウンド機能追加</remarks>
+            public const int V120 = 120;
         }
 
         /// <summary>

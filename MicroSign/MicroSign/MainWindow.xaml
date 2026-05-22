@@ -261,6 +261,8 @@
                             <ColumnDefinition/>
                             <ColumnDefinition Width="5"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="サウンドファイル" Grid.Row="0" Grid.Column="0"/>
                         <TextBox x:Name="SoundFile" Grid.Row="0"  Grid.Column="2" Text="{Binding SoundFilePath, Mode=TwoWay}" ToolTip="サウンドファイルを設定してください" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}"/>
@@ -271,7 +273,15 @@
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="&#xE8E5;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
-                                <TextBlock Text="..." Grid.Column="1"/>
+                            </Grid>
+                        </Button>
+                        <Button  Grid.Row="0"  Grid.Column="6" Grid.RowSpan="3" x:Name="ClearSoundFileButton" ToolTip="サウンドファイルの選択を解除します" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Style="{StaticResource OperationButtonStyle}" Click="ClearSoundFileButton_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="&#xED61;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
                             </Grid>
                         </Button>
 
