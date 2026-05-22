@@ -9,7 +9,11 @@
         /// <returns></returns>
         public Models.Model.SaveAnimationResult SaveAnimation(string path)
         {
-            return this.Model.SaveAnimation(path, this.AnimationName, this.AnimationImages, this.MatrixLedWidth, this.MatrixLedHeight, this.MatrixLedBrightness, this.DefaultDisplayPeriod);
+            //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+            //return this.Model.SaveAnimation(path, this.AnimationName, this.AnimationImages, this.MatrixLedWidth, this.MatrixLedHeight, this.MatrixLedBrightness, this.DefaultDisplayPeriod);
+            //-----
+            return this.Model.SaveAnimation(path, this.AnimationName, this.AnimationImages, this.MatrixLedWidth, this.MatrixLedHeight, this.MatrixLedBrightness, this.DefaultDisplayPeriod, this.SoundFilePath);
+            //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
         }
     }
 }

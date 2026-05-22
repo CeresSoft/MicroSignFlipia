@@ -22,7 +22,7 @@ namespace MicroSign
         /// <summary>
         /// LOG4NETのロガー
         /// </summary>
-        private static readonly log4net.ILog LOGGER = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
+        private static readonly log4net.ILog LOGGER = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
 
         /// <summary>
         /// アニメーション用タイマー
@@ -1448,11 +1448,47 @@ namespace MicroSign
                     return;
                 }
 
-                //ファイルの一覧を取得
-                string[]? imagePaths = ret.DropImageFiles;
 
-                //アニメーション画像追加
-                this.AddAnimationImages(imagePaths);
+                //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                ////ファイルの一覧を取得
+                //string[]? imagePaths = ret.DropImageFiles;
+                //
+                ////アニメーション画像追加
+                //this.AddAnimationImages(imagePaths);
+                //-----
+                // >> アニメーション画像追加
+                {
+                    string[]? imagePaths = ret.DropImageFiles;
+                    int n = CommonUtils.GetCount(imagePaths);
+                    if(CommonConsts.Collection.Empty < n)
+                    {
+                        //要素がある場合は追加
+                        CommonLogger.Debug($"ドロップ画像あり ({n}件)");
+                        this.AddAnimationImages(imagePaths);
+                    }
+                    else
+                    {
+                        //画像がない場合は何もしない
+                        CommonLogger.Debug($"ドロップ画像なし");
+                    }
+                }
+                // >> サウンドファイル
+                {
+                    string? soundPath = ret.SoundFile;
+                    bool isNull = string.IsNullOrEmpty(soundPath);
+                    if (isNull)
+                    {
+                        //サウンドファイルがない場合は何もしない
+                        CommonLogger.Debug($"ドロップサウンドなし");
+                    }
+                    else
+                    {
+                        //存在する場合は設定する
+                        CommonLogger.Debug($"ドロップサウンドあり");
+                        this.ViewModel.SetSoundFilePath(soundPath);
+                    }
+                }
+                //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
             }
             catch (Exception ex)
             {
@@ -1552,5 +1588,60 @@ namespace MicroSign
             }
         }
 
+        /// <summary>
+        /// サウンドファイル選択ボタンクリック
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SelectSoundFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //読込イメージ選択
+                Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
+
+                //タイトル
+                dialog.Title = "サウンドファイル選択";
+
+                // Default file name
+                dialog.FileName = "";
+
+                // Default file extension
+                dialog.DefaultExt = App.Consts.SoundFiles.DefaultExt;
+
+                // Filter files by extension
+                dialog.Filter = App.Consts.SoundFiles.Filter;
+
+                //表示
+                bool ret = dialog.ShowDialog(this) ?? false;
+                if (ret)
+                {
+                    //選択した場合は処理続行
+                }
+                else
+                {
+                    //選択しなかった場合は変更せずに終了
+                    return;
+                }
+
+                //選択サウンドファイルパス設定
+                string path = dialog.FileName;
+                this.ViewModel.SetSoundFilePath(path);
+            }
+            catch (Exception ex)
+            {
+                this.ShowError(CommonLogger.Error("サウンドファイル選択で例外発生"), ex);
+            }
+        }
+
+        /// <summary>
+        /// サウンドファイル選択クリアボタンクリック
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ClearSoundFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.ViewModel.ClearSoundFilePath();
+        }
     }
 }

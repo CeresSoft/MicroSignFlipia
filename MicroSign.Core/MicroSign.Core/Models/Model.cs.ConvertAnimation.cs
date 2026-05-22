@@ -31,11 +31,12 @@ namespace MicroSign.Core.Models
         /// <param name="gamma">ガンマ値(2025.08.18:CS)土田:ガンマ補正対応で追加)</param>
         /// <param name="motionBlurReduction">残像軽減(2025.08.21:CS)土田:残像軽減対応で追加)</param>
         /// <param name="savePath">保存先(2025.10.03:CS)土田:変換結果の保存先を選択できるように引数追加)</param>
+        /// <param name="pcm8">PCM(=16ビット)の上位8bitだけにしたサウンドデータ(2026.05.22:CS)杉原:サウンド機能追加)</param>
         /// <returns></returns>
         /// <remarks>
         /// 2025.08.12:CS)杉原:パレット処理の流れを変更で不要なパラメータを削除
         /// </remarks>
-        public ConvertResult ConvertAnimation(FormatKinds formatKind, AnimationImageItemCollection animationImages, int matrixLedWidth, int matrixLedHeight, int matrixLedBrightness, double gamma, int motionBlurReduction, string savePath)
+        public ConvertResult ConvertAnimation(FormatKinds formatKind, AnimationImageItemCollection animationImages, int matrixLedWidth, int matrixLedHeight, int matrixLedBrightness, double gamma, int motionBlurReduction, string savePath, byte[]? pcm8)
         //2025.08.12:CS)杉原:パレット処理の流れを変更 <<<<< ここまで
         {
             switch (formatKind)
@@ -57,20 +58,24 @@ namespace MicroSign.Core.Models
                     return ConvertResult.Failed($"フォーマット'{formatKind}'は現在のバージョンでは非対応です");
 
                 case FormatKinds.IndexColor:
-                    //2025.08.18:CS)土田:ガンマ補正対応で引数を追加 >>>>> ここから
-                    //return this.ConvertAnimationIndexColor(animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness);
+                    //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                    ////2025.08.18:CS)土田:ガンマ補正対応で引数を追加 >>>>> ここから
+                    ////return this.ConvertAnimationIndexColor(animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness);
+                    ////-----
+                    ////2025.08.21:CS)土田:残像軽減対応で引数を追加 >>>>> ここから
+                    ////return this.ConvertAnimationIndexColor(animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness, gamma);
+                    ////----------
+                    ////2025.10.03:CS)土田:変換結果の保存先を選択できるように引数追加 >>>>> ここから
+                    ////return this.ConvertAnimationIndexColor(animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness, gamma, motionBlurReduction);
+                    ////----------
+                    //return this.ConvertAnimationIndexColor(animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness, gamma, motionBlurReduction, savePath);
+                    ////2025.10.03:CS)土田:変換結果の保存先を選択できるように引数追加 <<<<< ここまで
+                    ////2025.08.21:CS)土田:残像軽減対応で引数を追加 <<<<< ここまで
+                    ////2025.08.18:CS)土田:ガンマ補正対応で引数を追加 <<<<< ここまで
+                    ////2025.08.05:CS)土田:インデックスカラー対応 <<<<< ここまで
                     //-----
-                    //2025.08.21:CS)土田:残像軽減対応で引数を追加 >>>>> ここから
-                    //return this.ConvertAnimationIndexColor(animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness, gamma);
-                    //----------
-                    //2025.10.03:CS)土田:変換結果の保存先を選択できるように引数追加 >>>>> ここから
-                    //return this.ConvertAnimationIndexColor(animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness, gamma, motionBlurReduction);
-                    //----------
-                    return this.ConvertAnimationIndexColor(animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness, gamma, motionBlurReduction, savePath);
-                //2025.10.03:CS)土田:変換結果の保存先を選択できるように引数追加 <<<<< ここまで
-                //2025.08.21:CS)土田:残像軽減対応で引数を追加 <<<<< ここまで
-                //2025.08.18:CS)土田:ガンマ補正対応で引数を追加 <<<<< ここまで
-                //2025.08.05:CS)土田:インデックスカラー対応 <<<<< ここまで
+                    return this.ConvertAnimationIndexColor(animationImages, matrixLedWidth, matrixLedHeight, matrixLedBrightness, gamma, motionBlurReduction, savePath, pcm8);
+                    //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
 
                 default:
                     //不明な形式
