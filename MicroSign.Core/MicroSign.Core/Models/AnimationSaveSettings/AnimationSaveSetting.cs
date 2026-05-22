@@ -33,6 +33,14 @@ namespace MicroSign.Core.Models.AnimationSaveSettings
         public double DefaultDisplayPeriod { get; set; } = MainWindowViewModel.InitializeValues.DefaultDisplayPeriod;
 
         /// <summary>
+        /// サウンドファイルパス
+        /// </summary>
+        /// <remarks>
+        /// 2026.05.22:CS)杉原:サウンド機能追加で追加
+        /// </remarks>
+        public string? SoundFilePath { get; set; } = MainWindowViewModel.InitializeValues.SoundFilePath;
+
+        /// <summary>
         ///  保存用アニメーションデータコレクション
         /// </summary>
         public AnimationSaveDataCollection AnimationDatas { get; set; } = new AnimationSaveDataCollection();

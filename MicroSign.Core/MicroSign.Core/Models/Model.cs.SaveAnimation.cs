@@ -66,8 +66,9 @@ namespace MicroSign.Core.Models
         /// <param name="matrixLedHeight">マトリクスLED縦幅</param>
         /// <param name="matrixLedBrightness">マトリクスLED明るさ</param>
         /// <param name="defaultDisplayPeriod">デフォルト表示期間(秒)</param>
+        /// <param name="soundFilePath">サウンドファイルパス(2026.05.22:CS)杉原:サウンド機能追加)</param>
         /// <returns>アニメーション保存結果</returns>
-        public SaveAnimationResult SaveAnimation(string path, string? name, AnimationImageItemCollection animationDatas, int matrixLedWidth, int matrixLedHeight, int matrixLedBrightness, double defaultDisplayPeriod)
+        public SaveAnimationResult SaveAnimation(string path, string? name, AnimationImageItemCollection animationDatas, int matrixLedWidth, int matrixLedHeight, int matrixLedBrightness, double defaultDisplayPeriod, string? soundFilePath)
         {
             //保存先パス有効判定
             {
@@ -126,6 +127,25 @@ namespace MicroSign.Core.Models
 
             //デフォルトの表示期間を設定
             animationSaveSetting.DefaultDisplayPeriod = defaultDisplayPeriod;
+
+            //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+            //-----
+            {
+                bool isNull = string.IsNullOrEmpty(soundFilePath);
+                if(isNull)
+                {
+                    //サウンドファイルが指定されない場合は何もしない
+                }
+                else
+                {
+                    //サウンドファイルが指定されている場合
+                    // >> 相対パスに変換する
+                    string? relativePath = CommonUtils.GetRelativePath(baseDir, soundFilePath);
+                    // >> 設定する
+                    animationSaveSetting.SoundFilePath = relativePath;
+                }
+            }
+            //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
 
             //アニメーション画像アイテムコレクションを変換
             AnimationSaveDataCollection animationSaveDatas = animationSaveSetting.AnimationDatas;

@@ -22,7 +22,7 @@ namespace MicroSign
         /// <summary>
         /// LOG4NETのロガー
         /// </summary>
-        private static readonly log4net.ILog LOGGER = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
+        private static readonly log4net.ILog LOGGER = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
 
         /// <summary>
         /// アニメーション用タイマー
