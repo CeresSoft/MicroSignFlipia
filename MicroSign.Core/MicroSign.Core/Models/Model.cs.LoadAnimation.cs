@@ -156,6 +156,26 @@ namespace MicroSign.Core.Models
                 }
             }
 
+            //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+            //-----
+            // >> サウンドファイルのパスをフルパスにする
+            {
+                string? soundFilePath = saveSetting.SoundFilePath;
+                bool isNull = string.IsNullOrEmpty(soundFilePath);
+                if(isNull)
+                {
+                    //無効の場合は何もしない
+                }
+                else
+                {
+                    //有効の場合はフルパスに変換
+                    string? soundFullPath = System.IO.Path.Combine(baseDir, soundFilePath!);
+                    CommonLogger.Debug($"サウンドフルパス (path='{soundFullPath}')");
+                    saveSetting.SoundFilePath = soundFullPath;
+                }
+            }
+            //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
+
             //ここまで来たら成功
             return LoadAnimationResult.Success(result, saveSetting);
         }

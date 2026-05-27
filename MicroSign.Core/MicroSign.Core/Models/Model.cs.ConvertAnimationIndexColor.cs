@@ -21,8 +21,9 @@ namespace MicroSign.Core.Models
         /// <param name="gamma">ガンマ値(2025.08.18:CS)土田:ガンマ補正対応で追加)</param>
         /// <param name="motionBlurReduction">残像軽減(2025.08.21:CS)土田:残像軽減対応で追加)</param>
         /// <param name="savePath">保存先(2025.10.03:CS)土田:変換結果の保存先を選択できるように引数追加)</param>
+        /// <param name="pcm8">PCM(=16ビット)の上位8bitだけにしたサウンドデータ(2026.05.22:CS)杉原:サウンド機能追加)</param>
         /// <returns></returns>
-        private ConvertResult ConvertAnimationIndexColor(AnimationImageItemCollection animationImages, int matrixLedWidth, int matrixLedHeight, int matrixLedBrightness, double gamma, int motionBlurReduction, string savePath)
+        private ConvertResult ConvertAnimationIndexColor(AnimationImageItemCollection animationImages, int matrixLedWidth, int matrixLedHeight, int matrixLedBrightness, double gamma, int motionBlurReduction, string savePath, byte[]? pcm8)
         {
             //2025.08.12:CS)杉原:パレット処理の流れを変更 >>>>> ここから
             ////アニメーション画像からマージしたアニメーション用画像を生成
@@ -136,19 +137,24 @@ namespace MicroSign.Core.Models
             //ファイルに保存する
             BitmapSource? usedImage = null;  //ConvertAnimationIndexColor_SaveToFileで使用した画像
             {
-                //2025.08.18:CS)土田:ガンマ補正対応で使用する画像を変更 >>>>> ここから
-                //ConvertAnimationIndexColor_SaveToFileResult ret = this.ConvertAnimationIndexColor_SaveToFile(margeImage, animationDatas, matrixLedWidth, matrixLedHeight, matrixLedBrightness);
-                //----------
-                //2025.08.21:CS)土田:残像軽減対応で引数を追加 >>>>> ここから
-                //ConvertAnimationIndexColor_SaveToFileResult ret = this.ConvertAnimationIndexColor_SaveToFile(correctedImage, animationDatas, matrixLedWidth, matrixLedHeight, matrixLedBrightness);
-                //----------
-                //2025.10.03:CS)土田:変換結果の保存先を選択できるように引数追加 >>>>> ここから
-                //ConvertAnimationIndexColor_SaveToFileResult ret = this.ConvertAnimationIndexColor_SaveToFile(correctedImage, animationDatas, matrixLedWidth, matrixLedHeight, matrixLedBrightness, motionBlurReduction);
-                //----------
-                ConvertAnimationIndexColor_SaveToFileResult ret = this.ConvertAnimationIndexColor_SaveToFile(correctedImage, animationDatas, matrixLedWidth, matrixLedHeight, matrixLedBrightness, motionBlurReduction, savePath);
-                //2025.10.03:CS)土田:変換結果の保存先を選択できるように引数追加 <<<<< ここまで
-                //2025.08.21:CS)土田:残像軽減対応で引数を追加 <<<<< ここまで
-                //2025.08.18:CS)土田:ガンマ補正対応で使用する画像を変更 <<<<< ここまで
+                //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                ////2025.08.18:CS)土田:ガンマ補正対応で使用する画像を変更 >>>>> ここから
+                ////ConvertAnimationIndexColor_SaveToFileResult ret = this.ConvertAnimationIndexColor_SaveToFile(margeImage, animationDatas, matrixLedWidth, matrixLedHeight, matrixLedBrightness);
+                ////----------
+                ////2025.08.21:CS)土田:残像軽減対応で引数を追加 >>>>> ここから
+                ////ConvertAnimationIndexColor_SaveToFileResult ret = this.ConvertAnimationIndexColor_SaveToFile(correctedImage, animationDatas, matrixLedWidth, matrixLedHeight, matrixLedBrightness);
+                ////----------
+                ////2025.10.03:CS)土田:変換結果の保存先を選択できるように引数追加 >>>>> ここから
+                ////ConvertAnimationIndexColor_SaveToFileResult ret = this.ConvertAnimationIndexColor_SaveToFile(correctedImage, animationDatas, matrixLedWidth, matrixLedHeight, matrixLedBrightness, motionBlurReduction);
+                ////----------
+                //ConvertAnimationIndexColor_SaveToFileResult ret = this.ConvertAnimationIndexColor_SaveToFile(correctedImage, animationDatas, matrixLedWidth, matrixLedHeight, matrixLedBrightness, motionBlurReduction, savePath);
+                ////2025.10.03:CS)土田:変換結果の保存先を選択できるように引数追加 <<<<< ここまで
+                ////2025.08.21:CS)土田:残像軽減対応で引数を追加 <<<<< ここまで
+                ////2025.08.18:CS)土田:ガンマ補正対応で使用する画像を変更 <<<<< ここまで
+                //-----
+                ConvertAnimationIndexColor_SaveToFileResult ret = this.ConvertAnimationIndexColor_SaveToFile(correctedImage, animationDatas, matrixLedWidth, matrixLedHeight, matrixLedBrightness, motionBlurReduction, savePath, pcm8);
+                //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
+
                 if (ret.IsSuccess)
                 {
                     //成功した場合は処理続行
@@ -239,12 +245,13 @@ namespace MicroSign.Core.Models
         /// <param name="matrixLedBrightness">マトリクスLED明るさ</param>
         /// <param name="motionBlurReduction">残像軽減(2025.08.21:CS)土田:残像軽減対応で追加)</param>
         /// <param name="fname">保存先(2025.10.03:CS)土田:変換結果の保存先を選択できるように引数追加)</param>
+        /// <param name="pcm8">PCM(=16ビット)の上位8bitだけにしたサウンドデータ(2026.05.22:CS)杉原:サウンド機能追加)</param>
         /// <returns></returns>
         /// <remarks>
         /// 2025.08.12:CS)杉原:パレット処理の流れを変更で追加
         /// ConvertColorFile()を移植(=ConvertColorFile()は削除)
         /// </remarks>
-        public ConvertAnimationIndexColor_SaveToFileResult ConvertAnimationIndexColor_SaveToFile(BitmapSource? image, AnimationDataCollection? animationDatas, int matrixLedWidth, int matrixLedHeight, int matrixLedBrightness, int motionBlurReduction, string fname)
+        public ConvertAnimationIndexColor_SaveToFileResult ConvertAnimationIndexColor_SaveToFile(BitmapSource? image, AnimationDataCollection? animationDatas, int matrixLedWidth, int matrixLedHeight, int matrixLedBrightness, int motionBlurReduction, string fname, byte[]? pcm8)
         {
             //画像有効判定
             if (image == null)
@@ -404,13 +411,23 @@ namespace MicroSign.Core.Models
                 //2025.08.11:CS)杉原:インデックスカラー対応修正 <<<<< ここまで
             }
 
+            //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+            //-----
+            // >> サウンドデータサイズ
+            int pcm8Size = CommonUtils.GetCount(pcm8);
+            //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
+
             //2023.10.16:CS)杉原バイナリデータとして保存
             using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
             using (System.IO.BinaryWriter bw = new System.IO.BinaryWriter(ms))
             {
                 //@@ ヘッダ(uint16 x 8のサイズ)
                 //バージョン(uint16)
-                bw.Write((UInt16)MicroSignConsts.Versions.V110);
+                //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                //bw.Write((UInt16)MicroSignConsts.Versions.V110);
+                //----------
+                bw.Write((UInt16)MicroSignConsts.Versions.V120);
+                //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
 
                 //マトリクスLED
                 {
@@ -428,7 +445,12 @@ namespace MicroSign.Core.Models
                     //bw.Write((UInt16)MicroSignConsts.FileData.Reserve);
                     //-----
                     //残像軽減
-                    bw.Write((UInt16)motionBlurReduction);
+                    //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                    //bw.Write((UInt16)motionBlurReduction);
+                    //-----
+                    // >> 常に0を書込
+                    bw.Write((UInt16)MicroSignConsts.FileData.Reserve);
+                    //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
                     //2025.08.21:CS)土田:残像軽減対応で値を追加 <<<<< ここまで
                 }
 
@@ -542,10 +564,27 @@ namespace MicroSign.Core.Models
                     bw.Write((UInt16)MicroSignConsts.FileData.Reserve);
                 }
 
-                //空き領域
+                //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                ////空き領域
+                //{
+                //    //空き
+                //    bw.Write((UInt16)MicroSignConsts.FileData.Reserve);
+                //
+                //    //空き
+                //    bw.Write((UInt16)MicroSignConsts.FileData.Reserve);
+                //
+                //    //空き
+                //    bw.Write((UInt16)MicroSignConsts.FileData.Reserve);
+                //
+                //    //空き
+                //    bw.Write((UInt16)MicroSignConsts.FileData.Reserve);
+                //}
+                //-----
+                //サウンド領域
                 {
-                    //空き
-                    bw.Write((UInt16)MicroSignConsts.FileData.Reserve);
+                    //サウンドサイズ
+                    // >> 16bitだと65535byteまでと小さいので、int(=32bit)にします
+                    bw.Write(pcm8Size);
 
                     //空き
                     bw.Write((UInt16)MicroSignConsts.FileData.Reserve);
@@ -553,9 +592,8 @@ namespace MicroSign.Core.Models
                     //空き
                     bw.Write((UInt16)MicroSignConsts.FileData.Reserve);
 
-                    //空き
-                    bw.Write((UInt16)MicroSignConsts.FileData.Reserve);
                 }
+                //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
 
                 //2025.08.11:CS)杉原:インデックスカラー対応修正 >>>>> ここから
                 //----------
@@ -635,6 +673,20 @@ namespace MicroSign.Core.Models
                     // >> 表示期間
                     bw.Write(t);
                 }
+
+                //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                //-----
+                // >> サウンドデータ書込
+                if(CommonConsts.Collection.Empty < pcm8Size)
+                {
+                    //サウンドデータ書き込み
+                    bw.Write(pcm8!);
+                }
+                else
+                {
+                    //サウンドデータがない場合は何もしない
+                }
+                //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
 
                 //@@ 書込みを完了する
                 bw.Flush();

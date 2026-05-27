@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
+using static MicroSign.App.Consts;
 
 namespace MicroSign
 {
@@ -29,16 +30,27 @@ namespace MicroSign
             public readonly string[]? DropImageFiles;
 
             /// <summary>
+            /// サウンドファイル
+            /// 2026.05.22:CS)杉原:サウンド機能追加で追加
+            /// </summary>
+            public readonly string? SoundFile;
+
+            /// <summary>
             /// コンストラクタ
             /// </summary>
             /// <param name="isSuccess">成功フラグ</param>
             /// <param name="message">メッセージ</param>
             /// <param name="dropImageFiles">ドロップされた画像ファイルの一覧</param>
-            private GetDropImageFilesResult(bool isSuccess, string message, string[]? dropImageFiles)
+            /// <param name="soundFile">サウンドファイル(2026.05.22:CS)杉原:サウンド機能追加)</param>
+            private GetDropImageFilesResult(bool isSuccess, string message, string[]? dropImageFiles, string? soundFile)
             {
                 this.IsSucess = isSuccess;
                 this.Message = message;
                 this.DropImageFiles = dropImageFiles;
+                //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                //-----
+                this.SoundFile = soundFile;
+                //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
             }
 
             /// <summary>
@@ -48,7 +60,11 @@ namespace MicroSign
             /// <returns></returns>
             public static GetDropImageFilesResult Failed(string message)
             {
-                GetDropImageFilesResult result = new GetDropImageFilesResult(false, message, null);
+                //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                //GetDropImageFilesResult result = new GetDropImageFilesResult(false, message, null);
+                //-----
+                GetDropImageFilesResult result = new GetDropImageFilesResult(false, message, null, null);
+                //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
                 return result;
             }
 
@@ -56,10 +72,15 @@ namespace MicroSign
             /// 成功
             /// </summary>
             /// <param name="dropImageFiles">ドロップされた画像ファイルの一覧</param>
+            /// <param name="soundFile">サウンドファイル(2026.05.22:CS)杉原:サウンド機能追加)</param>
             /// <returns></returns>
-            public static GetDropImageFilesResult Success(string[]? dropImageFiles)
+            public static GetDropImageFilesResult Success(string[]? dropImageFiles, string? soundFile)
             {
-                GetDropImageFilesResult result = new GetDropImageFilesResult(true, string.Empty, dropImageFiles);
+                //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                //GetDropImageFilesResult result = new GetDropImageFilesResult(true, string.Empty, dropImageFiles);
+                //-----
+                GetDropImageFilesResult result = new GetDropImageFilesResult(true, string.Empty, dropImageFiles, soundFile);
+                //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
                 return result;
             }
         }
@@ -135,7 +156,11 @@ namespace MicroSign
                         //dropImageFiles.Add(file);
                         // >> 成功の場合は有効なリストなので成功を返す
                         // >> >> 中身はnull
-                        return GetDropImageFilesResult.Success(null);
+                        //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                        //return GetDropImageFilesResult.Success(null);
+                        //-----
+                        return GetDropImageFilesResult.Success(null, null);
+                        //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
                     }
                     else
                     {
@@ -147,6 +172,29 @@ namespace MicroSign
                     //例外は握りつぶす
                     CommonLogger.Warn($"ドロップされたファイルの拡張子判定で例外発生 path='{file}'", ex);
                 }
+
+                //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                //-----
+                try
+                {
+                    Match m = App.Consts.SoundFiles.VaridExtensions.Match(file);
+                    if (m.Success)
+                    {
+                        //成功の場合は成功を返す
+                        // >> 中身はnull
+                        return GetDropImageFilesResult.Success(null, null);
+                    }
+                    else
+                    {
+                        //失敗の場合は何もしない
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //例外は握りつぶす
+                    CommonLogger.Warn($"ドロップされたサウンドファイルの拡張子判定で例外発生 path='{file}'", ex);
+                }
+                //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
             }
 
             //ここまで来たら有効なファイルが存在しないので失敗を返す
@@ -199,6 +247,12 @@ namespace MicroSign
                 return GetDropImageFilesResult.Failed("ファイル一覧が空でした");
             }
 
+            //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+            //-----
+            // >> サウンドファイルは最後に１つだけ覚える
+            string? soundFile = null;
+            //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
+
             //画像ファイルを抽出
             List<string> dropImageFiles = new List<string>();
             for (int i = CommonConsts.Index.First; i < n; i += CommonConsts.Index.Step)
@@ -226,27 +280,76 @@ namespace MicroSign
                     //例外は握りつぶす
                     CommonLogger.Warn($"ドロップされたファイルの拡張子判定で例外発生 path='{file}'", ex);
                 }
+
+                //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                //-----
+                try
+                {
+                    Match m = App.Consts.SoundFiles.VaridExtensions.Match(file);
+                    if (m.Success)
+                    {
+                        //成功の場合は保持する
+                        soundFile = file;
+                    }
+                    else
+                    {
+                        //失敗の場合は何もしない
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //例外は握りつぶす
+                    CommonLogger.Warn($"ドロップされたサウンドファイルの拡張子判定で例外発生 path='{file}'", ex);
+                }
+                //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
             }
 
             //抽出したファイルが存在するか判定
             {
+                //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                //-----
+                bool isSound = string.IsNullOrEmpty(soundFile);
+                //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
+
                 int m = dropImageFiles.Count;
                 if (CommonConsts.Collection.Empty < m)
                 {
                     //存在する場合は処理続行
-                    CommonLogger.Debug($"画像ファイル数={m}");
+                    //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                    //CommonLogger.Debug($"画像ファイル数={m}");
+                    //-----
+                    CommonLogger.Debug($"画像ファイル数={m}, サウンドファイル={isSound}");
+                    //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
                 }
                 else
                 {
-                    //存在しない場合は失敗を返す
-                    return GetDropImageFilesResult.Failed("画像ファイルが存在しません");
+                    //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                    ////存在しない場合は失敗を返す
+                    //return GetDropImageFilesResult.Failed("画像ファイルが存在しません");
+                    //-----
+                    // >> サウンドファイルの存在を確認
+                    if(isSound)
+                    {
+                        //存在しない場合は失敗を返す
+                        return GetDropImageFilesResult.Failed("対象のファイルが存在しません");
+                    }
+                    else
+                    {
+                        //存在する場合は処理続行
+                        CommonLogger.Debug($"画像ファイル数=None, サウンドファイル={isSound}");
+                    }
+                    //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
                 }
             }
 
             //ここまで来たら成功で返す
             {
                 string[] dropImageFileArray = dropImageFiles.ToArray();
-                return GetDropImageFilesResult.Success(dropImageFileArray);
+                //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+                //return GetDropImageFilesResult.Success(dropImageFileArray);
+                //-----
+                return GetDropImageFilesResult.Success(dropImageFileArray, soundFile);
+                //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
             }
         }
     }

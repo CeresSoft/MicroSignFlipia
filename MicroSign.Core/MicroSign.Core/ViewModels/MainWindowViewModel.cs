@@ -18,34 +18,5 @@ namespace MicroSign.Core.ViewModels
                 return Models.Model.Instance;
             }
         }
-
-        protected override void RaisePropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            base.RaisePropertyChanged(propertyName);
-
-            //追加の処理
-            switch(propertyName)
-            {
-                case MainWindowViewModel.PropertyNames.SelectedAnimationImageItem:
-                    //アニメーション画像の選択が変化したら画面に反映
-                    {
-                        AnimationImageItem? item = this.SelectedAnimationImageItem;
-                        if(item == null)
-                        {
-                            //無効の場合は何もしない
-                        }
-                        else
-                        {
-                            //読込画像に設定し表示する
-                            this.LoadImage = item.Image;
-                        }
-                    }
-                    break;
-
-                default:
-                    //それ以外は何もしない
-                    break;
-            }
-        }
     }
 }

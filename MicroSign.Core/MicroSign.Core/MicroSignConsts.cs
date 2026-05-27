@@ -210,6 +210,12 @@ namespace MicroSign.Core
             /// version 1.1.0
             /// </summary>
             public const int V110 = 110;
+
+            /// <summary>
+            /// version 1.2.0
+            /// </summary>
+            /// <remarks>2026.05.22:CS)杉原:サウンド機能追加</remarks>
+            public const int V120 = 120;
         }
 
         /// <summary>
@@ -255,6 +261,38 @@ namespace MicroSign.Core
                 /// </summary>
                 public const int FixedSize = 3;
             }
+        }
+
+        /// <summary>
+        /// サウンド
+        /// </summary>
+        public static class Sounds
+        {
+            /// <summary>
+            /// PCMフォーマット
+            /// </summary>
+            public static class PcmFormat
+            {
+                /// <summary>
+                /// サンプルレート
+                /// </summary>
+                public const int SampleRate = 44_100;
+
+                /// <summary>
+                /// サンプルビット数
+                /// </summary>
+                public const int BitsPerSample = 16;
+
+                /// <summary>
+                /// チャンネル数
+                /// </summary>
+                public const int Channels = 2;
+            }
+
+            /// <summary>
+            /// 再サンプル読込バッファサイズ
+            /// </summary>
+            public const int ResampleReadBuffSize = 4096;
         }
     }
 }

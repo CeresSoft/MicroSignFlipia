@@ -61,7 +61,7 @@ namespace MicroSign.Core.ViewModels
         public LoadAnimationResult LoadAnimation(string path)
         {
             //読込
-            var retLoad = this.Model.LoadAnimation(path);
+            MicroSign.Core.Models.Model.LoadAnimationResult retLoad = this.Model.LoadAnimation(path);
             if(retLoad.IsSuccess)
             {
                 //成功の場合は処理続行
@@ -141,6 +141,25 @@ namespace MicroSign.Core.ViewModels
 
             //デフォルト表示期間(秒)を復元
             this.DefaultDisplayPeriod = saveSetting.DefaultDisplayPeriod;
+
+            //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
+            //-----
+            {
+                string? soundFilePath = saveSetting.SoundFilePath;
+                bool isNull = string.IsNullOrEmpty(soundFilePath);
+                if (isNull)
+                {
+                    //サウンドファイルが指定されない場合はサウンドファイルパスをクリアする
+                    this.ClearSoundFilePath();
+                }
+                else
+                {
+                    //サウンドファイルが指定されている場合設定する
+                    CommonLogger.Debug($"サウンドファイル有効 (path={soundFilePath})");
+                    this.SetSoundFilePath(soundFilePath);
+                }
+            }
+            //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
 
             //アニメーション画像コレクション
             // >> コンストラクタで生成しているのでnullチェック不要
