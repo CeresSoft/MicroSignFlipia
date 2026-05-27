@@ -18,97 +18,108 @@ MicroSignの操作方法は[基本操作](./microsign_manual_basic.md)を参照�
 YMM4で一番最初に行う「動画の設定」です
 メニューから「ファイル」→「動画の設定」を開きます
 
-![動画の設定メニュー](./images//microsign_ymm4_001.png)
+![動画の設定メニュー](./images/microsign_ymm4_001.png)
 
 以下のように設定してください
 
 |項目          |設定値  |
-|--------------|-------|
-|画面サイズ     |「カスタム」で表示パネルのドット数(128x32など)に設定してください|
-|フレームレート  |10fps,15fps,20fp,30fpsあたりを選択してください。15fpsか20fpsがおすすめです|
-|音声サンプリングレート|MicroSignでは音声は扱わないのでなんでもよいです|
+|--------------|--------|
+|画面サイズ    |「カスタム」で表示パネルのドット数(128x32など)に設定してください|
+|フレームレート|10fps、15fps、20fp、30fpsあたりを選択してください<br/>弊社では動きの激しいものは30fps、手書きアニメーションは15fpsで作成しています|
+|音声サンプリングレート|44,100Hzを選択してください|
 
-![動画の設定](./images//microsign_ymm4_002.png)
+![動画の設定](./images/microsign_ymm4_002.png)
 
 これで動画の作成を行ってください
 
 
 ### キャラクターの配置
 
-当リポジトリにて配布しているYMM4向け素材をダウンロードします
+任意のキャラクター素材をプロジェクトに追加し、立ち絵として使用します  
+**キャラクター素材の導入方法は、各素材の配布元にてご確認ください**
 
-#### 素材の一例
+MicroSignリポジトリにて配布しているYMM4向け素材を使用する場合は、以下のページをご覧ください
 
-|            | 32×32 | 48×32 |
-|------------|--------|--------|
-|ケレスちゃん|![32x32](../Materials/YMM4/ymm4_32x32_ceres-chan.png)|![48x32](../Materials/YMM4/ymm4_48x32_ceres-chan.png)|
-|ソフトくん  |![32x32](../Materials/YMM4/ymm4_32x32_soft-kun.png)|![48x32](../Materials/YMM4/ymm4_48x32_soft-kun.png)|
+- [**YMM4向け素材 配布ページ**](../Materials/ymm4.md)  
+- [**キャラクター素材の導入方法**](../Manuals/ymm4_material_usage.md) 
 
-**◆すべてのYMM4向け素材は [こちら](../Materials/ymm4.md) で公開しています**
+メニューから「ファイル」→「アイテムを追加」→「立ち絵アイテム」を選択します
 
-メニューから「ファイル」→「アイテムを追加」→「画像アイテム」を開きます
+![アイテムを追加](./images/microsign_ymm4_011.png)
 
-![アイテムを追加](./images//microsign_ymm4_011.png)
+キャラクターの立ち絵が動画に追加されます
 
-ファイル選択画面が開くので、ダウンロードした素材から画像ファイルを選択します
+![立ち絵追加](./images/microsign_ymm4_012.png)
 
-![ファイル選択](./images//microsign_ymm4_012.png)
+立ち絵をドラッグし、配置を調整します
 
-以下のように画像が追加されます
+![画像追加](./images/microsign_ymm4_013.png)
 
-![画像追加](./images//microsign_ymm4_013.png)
+動画に音声を追加する場合、「ボイスアイテム」または「音声アイテム」を追加します
 
-画像をドラッグし、配置を調整します
+![ボイス追加](./images/microsign_ymm4_014.png)
 
-![画像移動](./images//microsign_ymm4_014.png)
+必要に応じて、エフェクトや別のキャラクターを追加し、動画を作成します
 
-必要に応じてエフェクトや図形を追加します
-
-![エフェクト再生](./images//microsign_ymm4_015.png)
+![キャラクター追加](./images/microsign_ymm4_015.png)
 
 ### 動画出力
 
 YMM4で動画の出力を行う画面を開きます
 
-![動画出力メニュー](./images//microsign_ymm4_003.png)
+![動画出力メニュー](./images/microsign_ymm4_003.png)
 
 
 動画出力画面が開くので以下のように設定して出力してください
 
-|項目          |設定値           |
-|--------------|----------------|
+|項目           |設定値           |
+|---------------|-----------------|
 |動画出力       |連番PNG + WAV出力|
-|連番PNG出力    |ON              |
-|WAV出力        |OFF(ONでもよいですが使用しません)|
+|連番PNG出力    |ON               |
+|WAV出力        |音声を使用している場合はON|
 
 その他は出力したい動画に合わせてください
 
-![動画出力](./images//microsign_ymm4_004.png)
+![動画出力](./images/microsign_ymm4_004.png)
 
 フォルダの選択画面が開くので、連番pngを出力するフォルダを選択します
 
-![動画出力](./images//microsign_ymm4_005.png)
+![動画出力](./images/microsign_ymm4_005.png)
 
 以下のように動画が出力されます
 
-![動画出力](./images//microsign_ymm4_006.png)
+![動画出力](./images/microsign_ymm4_006.png)
 
 ### MicroSignへの取り込み
 
 MicroSignを起動し、ドット数を表示パネルのドット数にします
 
-![MicroSign起動](./images//microsign_ymm4_007.png)
+![MicroSign起動](./images/microsign_ymm4_007.png)
 
 標準表示期間をYMM4で設定したFPSの表示期間に設定します
-今回は15 fps で作成したので「0.066」を設定します
+今回は15 fps で作成したので、コンボボックスから「15fps」を選択します
 
-![MicroSign表示期間](./images//microsign_ymm4_008.png)
+![MicroSign表示期間](./images/microsign_ymm4_008.png)
 
 YMM4で出力した連番PNGをMicroSignのタイムラインにドラッグ＆ドロップして
 連番PNGをフレームとして登録します
 
-![MicroSign表示期間](./images//microsign_ymm4_009.png)
+![MicroSign表示期間](./images/microsign_ymm4_009.png)
 
 以上でYMM4で作成したアニメーションをフレームとして登録できます
 
-![MicroSign表示期間](./images//microsign_ymm4_010.png)
+![アニメーションをフレーム登録](./images/microsign_ymm4_010.png)
+
+サウンドファイル選択ボタンをクリックし、音声を取り込みます
+
+![サウンドファイル選択](./images/microsign_ymm4_016.png)
+
+連番PNGと同じフォルダに作成された音声ファイルを選択します
+
+![音声ファイル選択](./images/microsign_ymm4_017.png)
+
+以上でYMM4で作成した音声をサウンドファイルとして登録できます
+
+![サウンドファイル登録](./images/microsign_ymm4_018.png)
+
+※音声を使用しない場合、サウンドファイルの選択は不要です
