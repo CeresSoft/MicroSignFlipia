@@ -24,7 +24,7 @@ ZIPファイルに同梱されている `license.txt` をお読みください�
 |----------|------------|------|
 |![MicroSignプロモーション](./YMM4/ymm4_sample.gif)|[![MicroSignプロモーション 128×32](https://img.shields.io/badge/ZIP-Download-f27135)](./YMM4/MicroSignImage-ymm4_sample.zip)|2026/5/26|
 
-**YMM4用のプロジェクトファイルは[こちら](./ymm4.md)からダウンロードできます**
+**YMM4用の素材およびサンプルプロジェクトは[こちら](./ymm4.md)からダウンロードできます**
 
 ### 季節もの
 
