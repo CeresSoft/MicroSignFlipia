@@ -1,9 +1,6 @@
-﻿using System;
+﻿using OpenCvSharp.WpfExtensions;
+using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -85,6 +82,8 @@ namespace MicroSign.Core.Models
         /// >> 2025.08.13:CS)杉原:FormatConvertedBitmapでDestinationFormatをPixelFormats.Indexed8と
         /// >> 指定する方法を試してみましたが、パレットの指定が必要(=Webセーフカラーなパレットで代用できるが)なことと
         /// >> Freeze()でで以外が発生したので諦めました
+        /// 2026.05.27:CS)杉原:OpenCVのK-means減色に変更
+        /// >> GIF保存ではWebセーフカラーになるようで色合いがかなり変わってしまうので、よりよいK-means減色に変更
         /// </remarks>
         public ConvertBitmapColorReductionResult ConvertBitmapColorReduction(BitmapSource? image)
         {
@@ -101,50 +100,280 @@ namespace MicroSign.Core.Models
 
             try
             {
-                //GifBitmapEncoderを作成する
-                GifBitmapEncoder encoder = new GifBitmapEncoder();
+                //2026.05.27:CS)杉原:OpenCVのK-means減色に変更 >>>>> ここから
+                ////GifBitmapEncoderを作成する
+                //GifBitmapEncoder encoder = new GifBitmapEncoder();
+                //
+                ////ビットマップフレームを作成
+                //BitmapFrame bmpFrame = BitmapFrame.Create(image);
+                //
+                ////GifBitmapEncoderにビットマップフレームを追加
+                //encoder.Frames.Add(bmpFrame);
+                //
+                ////変換
+                //using (MemoryStream ms = new MemoryStream())
+                //{
+                //    //GifBitmapEncoderをメモリーストリームに保存
+                //    encoder.Save(ms);
+                //
+                //    //メモリーストリームを先頭に移動
+                //    ms.Seek(CommonConsts.Index.First, SeekOrigin.Begin);
+                //
+                //    //メモリーストリームからBitmapSourceを生成
+                //    BitmapImage colorReductionimage = new BitmapImage();
+                //
+                //    // >> https://pierre3.hatenablog.com/entry/2015/10/25/001207
+                //    // >> BitmapImage.StreamSourceに渡したStreamは解除できない(=nullを渡しても解除できない)ので
+                //    // >>  Streamをラップし、ラップしたStreamのDispose
+                //    using (ImageDataStream ids = new ImageDataStream(ms))
+                //    {
+                //        colorReductionimage.BeginInit();
+                //        colorReductionimage.CacheOption = BitmapCacheOption.OnLoad;
+                //        colorReductionimage.CreateOptions = BitmapCreateOptions.None;
+                //        colorReductionimage.StreamSource = ids;
+                //
+                //        colorReductionimage.EndInit();
+                //        colorReductionimage.Freeze();
+                //    }
+                //
+                //    //終了
+                //    return ConvertBitmapColorReductionResult.Success(colorReductionimage);
+                //}
+                //----------
+                //画像をBgr24に変換
+                FormatConvertedBitmap newFormatedBitmapSource = new FormatConvertedBitmap();
+                newFormatedBitmapSource.BeginInit();
+                newFormatedBitmapSource.Source = image;
+                newFormatedBitmapSource.DestinationFormat = PixelFormats.Bgr24; //OpenCV標準のBGRになるように変換
+                newFormatedBitmapSource.EndInit();
 
-                //ビットマップフレームを作成
-                BitmapFrame bmpFrame = BitmapFrame.Create(image);
+                //カラーパレット数
+                int paletteCount = CommonConsts.Palettes.Count.Max;
+                OpenCvSharp.Size paletteSize = new OpenCvSharp.Size(paletteCount, CommonConsts.Collection.One);
 
-                //GifBitmapEncoderにビットマップフレームを追加
-                encoder.Frames.Add(bmpFrame);
-
-                //変換
-                using (MemoryStream ms = new MemoryStream())
+                //MATに変換
+                using (OpenCvSharp.Mat srcMat = newFormatedBitmapSource.ToMat())
                 {
-                    //GifBitmapEncoderをメモリーストリームに保存
-                    encoder.Save(ms);
+                    //MATサイズを計算
+                    int imageWidth = srcMat.Width;
+                    int imageHeight = srcMat.Height;
+                    int imageSize = imageWidth * imageHeight;
+                    OpenCvSharp.Size matSize = new OpenCvSharp.Size(imageSize, CommonConsts.Collection.One);
 
-                    //メモリーストリームを先頭に移動
-                    ms.Seek(CommonConsts.Index.First, SeekOrigin.Begin);
-
-                    //メモリーストリームからBitmapSourceを生成
-                    BitmapImage colorReductionimage = new BitmapImage();
-
-                    // >> https://pierre3.hatenablog.com/entry/2015/10/25/001207
-                    // >> BitmapImage.StreamSourceに渡したStreamは解除できない(=nullを渡しても解除できない)ので
-                    // >>  Streamをラップし、ラップしたStreamのDispose
-                    using (ImageDataStream ids = new ImageDataStream(ms))
+                    //デバッグ用に画像を保存
                     {
-                        colorReductionimage.BeginInit();
-                        colorReductionimage.CacheOption = BitmapCacheOption.OnLoad;
-                        colorReductionimage.CreateOptions = BitmapCreateOptions.None;
-                        colorReductionimage.StreamSource = ids;
+                        // 色の集合（重複なし）
+                        HashSet<OpenCvSharp.Vec3b> colors = new HashSet<OpenCvSharp.Vec3b>();
 
-                        colorReductionimage.EndInit();
-                        colorReductionimage.Freeze();
+                        for (int y = CommonConsts.Index.First; y < imageHeight; y += CommonConsts.Index.Step)
+                        {
+                            for (int x = CommonConsts.Index.First; x < imageWidth; x += CommonConsts.Index.Step)
+                            {
+                                OpenCvSharp.Vec3b pixel = srcMat.At<OpenCvSharp.Vec3b>(y, x);
+                                colors.Add(pixel);
+                            }
+                        }
+
+                        int colorCount = colors.Count;
+                        System.Diagnostics.Trace.WriteLine($"Reduction Before Colors={colorCount}");
                     }
 
-                    //終了
-                    return ConvertBitmapColorReductionResult.Success(colorReductionimage);
+
+                    //画像の色(BGR)をFloat[3]の1次元配列に変換する
+                    // >> OpenCVの仕様でBGRの順に入る
+                    using (OpenCvSharp.Mat pixelArray = new OpenCvSharp.Mat(matSize, OpenCvSharp.MatType.CV_32FC3))
+                    {
+                        //画像の色をFloat[3]の1次元配列に設定
+                        {
+                            int i = CommonConsts.Index.First;
+                            for (int y = CommonConsts.Index.First; y < imageHeight; y += CommonConsts.Index.Step)
+                            {
+                                for (int x = CommonConsts.Index.First; x < imageWidth; x += CommonConsts.Index.Step)
+                                {
+                                    OpenCvSharp.Vec3b srcPixel = srcMat.At<OpenCvSharp.Vec3b>(y, x);
+                                    byte b = srcPixel.Item0;
+                                    byte g = srcPixel.Item1;
+                                    byte r = srcPixel.Item2;
+                                    OpenCvSharp.Vec3f pixel = new OpenCvSharp.Vec3f(b, g, r);
+                                    pixelArray.Set<OpenCvSharp.Vec3f>(CommonConsts.Index.First, i, pixel);
+
+                                    i += CommonConsts.Index.Step;
+                                }
+                            }
+                        }
+
+                        //クラスタリング
+                        using (OpenCvSharp.Mat clusters = new OpenCvSharp.Mat(imageSize, CommonConsts.Collection.One, OpenCvSharp.MatType.CV_32FC1))
+                        {
+                            //K-means++を実行
+                            OpenCvSharp.Cv2.Kmeans(
+                                pixelArray,                             //画像の色
+                                CommonConsts.Palettes.Count.Max,        //クラスター数(=パレット数)
+                                clusters,                               //クラスター(=グループ化)の結果
+                                OpenCvSharp.TermCriteria.Both(10, 1.0), //K-meansの繰り返し条件(10回または精度が1.0で終了)
+                                10,                                     //初期値を変えて10回実行し、最も良い結果を採用する(=標準敵な値)
+                                OpenCvSharp.KMeansFlags.PpCenters       //K-means++を指定
+                                );
+
+                            //各クラスタの平均値(=パレット値)を計算
+                            using (OpenCvSharp.Mat colorSums = new OpenCvSharp.Mat(paletteSize, OpenCvSharp.MatType.CV_32FC3))
+                            using (OpenCvSharp.Mat colorCounts = new OpenCvSharp.Mat(paletteSize, OpenCvSharp.MatType.CV_32SC1))
+                            {
+                                //ゼロに初期化
+                                colorSums.SetTo(OpenCvSharp.Scalar.All(CommonConsts.Values.Zero.D));
+                                colorCounts.SetTo(OpenCvSharp.Scalar.All(CommonConsts.Collection.Empty));
+
+                                //クラスター毎に色を合計する
+                                {
+                                    int i = CommonConsts.Index.First;
+                                    for (int y = CommonConsts.Index.First; y < imageHeight; y += CommonConsts.Index.Step)
+                                    {
+                                        for (int x = CommonConsts.Index.First; x < imageWidth; x += CommonConsts.Index.Step)
+                                        {
+                                            //色を取得
+                                            OpenCvSharp.Vec3b srcPixel = srcMat.At<OpenCvSharp.Vec3b>(y, x);
+                                            byte b = srcPixel.Item0;
+                                            byte g = srcPixel.Item1;
+                                            byte r = srcPixel.Item2;
+
+                                            //クラスター値(=パレット番号)を取得
+                                            int cluster = clusters.At<int>(i);
+
+                                            //クラスターの色合計値を取得
+                                            OpenCvSharp.Vec3f v = colorSums.At<OpenCvSharp.Vec3f>(CommonConsts.Index.First, cluster);
+
+                                            //クラスターの要素数を取得
+                                            int c = colorCounts.At<int>(CommonConsts.Index.First, cluster);
+
+                                            //計算
+                                            v.Item0 += (float)b;
+                                            v.Item1 += (float)g;
+                                            v.Item2 += (float)r;
+
+                                            //要素数をカウントアップ
+                                            c += CommonConsts.Collection.Step;
+
+                                            //計算値を戻す
+                                            colorSums.Set<OpenCvSharp.Vec3f>(CommonConsts.Index.First, cluster, v);
+                                            colorCounts.Set<int>(CommonConsts.Index.First, cluster, c);
+
+                                            //クラスター配列インデックスを進める
+                                            i += CommonConsts.Index.Step;
+                                        }
+                                    }
+                                }
+
+                                //パレット計算
+                                using (OpenCvSharp.Mat paletts = new OpenCvSharp.Mat(paletteSize, OpenCvSharp.MatType.CV_8SC3))
+                                {
+                                    //パレットをクリア
+                                    paletts.SetTo(OpenCvSharp.Scalar.All(CommonConsts.Values.Zero.I));
+
+                                    //色の平均値(=パレット色)にする
+                                    for (int i = CommonConsts.Index.First; i < paletteCount; i += CommonConsts.Index.Step)
+                                    {
+                                        //クラスターに対応する現在値を取得
+                                        OpenCvSharp.Vec3f v = colorSums.At<OpenCvSharp.Vec3f>(CommonConsts.Index.First, i);
+
+                                        //クラスターに対応する要素数を取得
+                                        float c = (float)colorCounts.At<int>(CommonConsts.Index.First, i);
+
+                                        //平均にする
+                                        float v0 = v.Item0 / c;
+                                        float v1 = v.Item0 / c;
+                                        float v2 = v.Item2 / c;
+
+                                        //0～255に制限する
+                                        byte w0 = (byte)Math.Min(Math.Max(v0, byte.MinValue), byte.MaxValue);
+                                        byte w1 = (byte)Math.Min(Math.Max(v1, byte.MinValue), byte.MaxValue);
+                                        byte w2 = (byte)Math.Min(Math.Max(v2, byte.MinValue), byte.MaxValue);
+
+                                        //パレットに設定
+                                        OpenCvSharp.Vec3b p = new OpenCvSharp.Vec3b(w0, w1, w2);
+                                        paletts.Set<OpenCvSharp.Vec3b>(CommonConsts.Index.First, i, p);
+                                    }
+
+                                    //ソース画像の色をパレット色に変更する
+                                    {
+                                        int i = CommonConsts.Index.First;
+                                        for (int y = CommonConsts.Index.First; y < imageHeight; y += CommonConsts.Index.Step)
+                                        {
+                                            for (int x = CommonConsts.Index.First; x < imageWidth; x += CommonConsts.Index.Step)
+                                            {
+                                                //クラスター値(=パレット番号)を取得
+                                                int cluster = clusters.At<int>(CommonConsts.Index.First, i);
+
+                                                //パレット色を取得
+                                                OpenCvSharp.Vec3b pixel = paletts.At<OpenCvSharp.Vec3b>(CommonConsts.Index.First, cluster);
+
+                                                //設定
+                                                srcMat.Set<OpenCvSharp.Vec3b>(y, x, pixel);
+
+                                                //インデックスを進める
+                                                i += CommonConsts.Index.Step;
+                                            }
+                                        }
+                                    }
+
+
+                                }//パレット計算-end
+
+                            }//各クラスタの平均値(=パレット値)を計算-end
+
+                        }//クラスタリング-end
+
+                    }//画像の色(BGR)をFloat[3]の1次元配列に変換する - end
+
+
+                    //MATをBitmapSourceに変換して終了
+                    {
+                        BitmapSource colorReductionimage = BitmapSourceConverter.ToBitmapSource(srcMat);
+
+                        //デバッグ用に画像を保存
+                        {
+                            //GifBitmapEncoderを作成する
+                            PngBitmapEncoder encoder = new PngBitmapEncoder();
+
+                            //ビットマップフレームを作成
+                            BitmapFrame bmpFrame = BitmapFrame.Create(colorReductionimage);
+
+                            //GifBitmapEncoderにビットマップフレームを追加
+                            encoder.Frames.Add(bmpFrame);
+
+                            //変換
+                            using (System.IO.Stream stm = System.IO.File.Create(@"colorReductionimage.png"))
+                            {
+                                //GifBitmapEncoderをメモリーストリームに保存
+                                encoder.Save(stm);
+                            }
+
+                            // 色の集合（重複なし）
+                            HashSet<OpenCvSharp.Vec3b> colors = new HashSet<OpenCvSharp.Vec3b>();
+
+                            for (int y = CommonConsts.Index.First; y < imageHeight; y += CommonConsts.Index.Step)
+                            {
+                                for (int x = CommonConsts.Index.First; x < imageWidth; x += CommonConsts.Index.Step)
+                                {
+                                    OpenCvSharp.Vec3b pixel = srcMat.At<OpenCvSharp.Vec3b>(y, x);
+                                    colors.Add(pixel);
+                                }
+                            }
+
+                            int colorCount = colors.Count;
+                            System.Diagnostics.Trace.WriteLine($"Reduction After Colors={colorCount}");
+                        }
+
+                        return ConvertBitmapColorReductionResult.Success(colorReductionimage);
+                    }
                 }
+                //2026.05.27:CS)杉原:OpenCVのK-means減色に変更 <<<<< ここまで
             }
             catch (Exception ex)
             {
                 //例外は握りつぶす
                 return ConvertBitmapColorReductionResult.Failed(CommonLogger.Warn("減色処理で例外発生", ex));
             }
+
         }
     }
 }

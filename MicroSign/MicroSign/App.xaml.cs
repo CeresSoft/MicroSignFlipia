@@ -1,6 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.IO;
+using System.Windows;
 
 //LOG4NET
+// >> log4net.xmlの設定でログの出力先が{USERPROFILE}\MicroSign\Log\フォルダとなっています
+// >> これはアプリの配布がMicrosoft Storeのためログファイルを見つけやすい位置に保存するためです
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = @".\Prms\log4net.xml", Watch = true)]
 
 namespace MicroSign
