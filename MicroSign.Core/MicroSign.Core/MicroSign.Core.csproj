@@ -26,9 +26,6 @@
     <PackageReference Include="Magick.NET.SystemWindowsMedia" Version="8.0.22" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
     <PackageReference Include="NAudio" Version="2.3.0" />
-    <PackageReference Include="OpenCvSharp4" Version="4.13.0.20260526" />
-    <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.13.0.20260302" />
-    <PackageReference Include="OpenCvSharp4.WpfExtensions" Version="4.13.0.20260526" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,12 +1,6 @@
 ﻿using ImageMagick;
-using ImageMagick.Drawing;
-using OpenCvSharp;
-using OpenCvSharp.WpfExtensions;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace MicroSign.Core.Models
