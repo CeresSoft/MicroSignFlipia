@@ -40,6 +40,15 @@ namespace MicroSign.Core
             /// SPIFFS生成パス
             /// </summary>
             public const string SPIFFSPath = @".\Temp\SPIFFS.bin";
+
+            /// <summary>
+            /// ログ領域に保存する連結した画像
+            /// </summary>
+            /// <remarks>
+            /// log4netのログ出力先が「${USERPROFILE}\MicroSign\Log\log.txt」なので
+            /// ユーザプロファイル配下に保存します
+            /// </remarks>
+            public const string LogAnimationImagePath = @".\MicroSign\Log\AnimationImage.gif";
         }
 
         /// <summary>

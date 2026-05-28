@@ -895,6 +895,34 @@ namespace MicroSign.Core.Models
         /// </remarks>
         private ConvertAnimationIndexColor_GetColorDataResult ConvertAnimationIndexColor_GetColorData(BitmapSource? image)
         {
+            //連結された画像を保存
+            if(image == null)
+            {
+                //画像が無効の場合は何もしない
+            }
+            else
+            {
+                //画像が有効の場合はログフォルダに連結したアニメーション画像を保存
+                string userProfile = System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile);
+                string path = System.IO.Path.Combine(userProfile, MicroSignConsts.Path.LogAnimationImagePath);
+
+                //PNGで保存する
+                try
+                {
+                    using (System.IO.Stream st = System.IO.File.Create(path))
+                    {
+                        PngBitmapEncoder encoder = new PngBitmapEncoder();
+                        encoder.Frames.Add(BitmapFrame.Create(image));
+                        encoder.Save(st);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //例外は握りつぶして処理続行
+                    CommonLogger.Warn($"連結したアニメーション画像の保存に失敗 (path='{path}')", ex);
+                }
+            }
+
             //指定された画像のまま色データ取得実装呼出
             {
                 ConvertAnimationIndexColor_GetColorDataResult ret = this.ConvertAnimationIndexColor_GetColorDataImpl(image);
@@ -907,7 +935,6 @@ namespace MicroSign.Core.Models
 
                     default:
                         //それ以外はそのまま終了
-                        // >> ★★ 注意 ★★ 成功の場合もここにきます
                         return ret;
                 }
             }
