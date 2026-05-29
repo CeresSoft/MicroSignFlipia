@@ -42,13 +42,24 @@ namespace MicroSign.Core
             public const string SPIFFSPath = @".\Temp\SPIFFS.bin";
 
             /// <summary>
-            /// ログ領域に保存する連結した画像
+            /// ログ領域に保存する連結した画像のファイル名
             /// </summary>
             /// <remarks>
             /// log4netのログ出力先が「${USERPROFILE}\MicroSign\Log\log.txt」なので
-            /// ユーザプロファイル配下に保存します
+            /// ユーザプロファイル配下の.\MicroSign\Logに保存します
+            /// ログディレクトリはlog4netから取得するのでファイル名だけ指定します
             /// </remarks>
-            public const string LogAnimationImagePath = @".\MicroSign\Log\AnimationImage.gif";
+            public const string LogAnimationImageFilename = @"AnimationImage.png";
+
+            /// <summary>
+            /// ログ領域に保存する減色した画像のファイル名
+            /// </summary>
+            /// <remarks>
+            /// log4netのログ出力先が「${USERPROFILE}\MicroSign\Log\log.txt」なので
+            /// ユーザプロファイル配下の.\MicroSign\Logに保存します
+            /// ログディレクトリはlog4netから取得するのでファイル名だけ指定します
+            /// </remarks>
+            public const string LogColorReductionImageFilename = @"ColorReductionImage.png";
         }
 
         /// <summary>

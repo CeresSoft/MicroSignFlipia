@@ -294,5 +294,54 @@ namespace MicroSign.Core
             //終了
             return message;
         }
+
+        /// <summary>
+        /// ログディレクトリ
+        /// </summary>
+        public static string? LogDir { get; private set; } = null;
+
+        /// <summary>
+        /// ログディレクトリを設定
+        /// </summary>
+        /// <param name="logfilepath">ログファイルのパスを指定する</param>
+        public static void SetLogDir(string? logfilepath)
+        {
+            //パス有効判定
+            {
+                bool isNull = string.IsNullOrEmpty(logfilepath);
+                if (isNull)
+                {
+                    //無効の場合は何もしないで終了
+                    CommonLogger.Debug($"LOG PATH 無効");
+                    return;
+                }
+                else
+                {
+                    //有効の場合は処理続行
+                    CommonLogger.Debug($"LOG PATH 有効 ('{logfilepath}')");
+                }
+            }
+
+            //ディレクトリを取得
+            string? dir = System.IO.Path.GetDirectoryName(logfilepath);
+
+            {
+                bool isNull = string.IsNullOrEmpty(dir);
+                if (isNull)
+                {
+                    //無効の場合は何もしないで終了
+                    CommonLogger.Debug($"LOG DIR 無効 ('{logfilepath}' -> null)");
+                    return;
+                }
+                else
+                {
+                    //有効の場合は処理続行
+                    CommonLogger.Debug($"LOG PATH 有効 ('{logfilepath}' -> '{dir}')");
+                }
+            }
+
+            //ディレクトリを保持する
+            CommonLogger.LogDir = dir;
+        }
     }
 }

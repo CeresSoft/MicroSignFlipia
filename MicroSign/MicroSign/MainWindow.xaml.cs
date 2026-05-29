@@ -675,6 +675,16 @@ namespace MicroSign
                     // >> >> 取得できない場合は空文字となり、InitialDirectory未指定と同じ動作となる
                     string dir = System.IO.Path.GetDirectoryName(imagePath) ?? string.Empty;
 
+                    //2026.05.29:CS)杉原:出力先を画像のあるディレクトリの一つ上のフォルダに変更 >>>>> ここから
+                    //----------
+                    // >> 出力アニメーションが画像の中に紛れてしまうので1つ親のフォルダに
+                    // >> 出力されるように変更
+                    {
+                        dir = System.IO.Path.GetDirectoryName(dir) ?? string.Empty;
+                    }
+                    //2026.05.29:CS)杉原:出力先を画像のあるディレクトリの一つ上のフォルダに変更 <<<<< ここまで
+
+
                     //保存ダイアログを開く
                     Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
                     dialog.Title = "アニメーションデータを保存します";

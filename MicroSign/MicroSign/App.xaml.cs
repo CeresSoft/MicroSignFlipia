@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MicroSign.Core;
+using System;
 using System.IO;
 using System.Windows;
 
@@ -38,6 +39,24 @@ namespace MicroSign
                 MicroSign.Core.CommonLogger.WarnExceptionAction = logger.Warn;
                 MicroSign.Core.CommonLogger.ErrorMessageAction = logger.Error;
                 MicroSign.Core.CommonLogger.ErrorExceptionAction = logger.Error;
+
+                //ログのディレクトリを取得して設定
+                log4net.Appender.IAppender[]? appenders = logger.Logger.Repository?.GetAppenders();
+                int n = CommonUtils.GetCount(appenders);
+                for(int i = CommonConsts.Index.First; i < n; i += CommonConsts.Index.Step)
+                {
+                    log4net.Appender.IAppender appender = appenders![i];
+                    if(appender is log4net.Appender.FileAppender fileAppender)
+                    {
+                        //FileAppenderの場合ファイル名を取得して設定
+                        string? path = fileAppender.File;
+                        MicroSign.Core.CommonLogger.SetLogDir(path);
+                    }
+                    else
+                    {
+                        //異なる場合は何もしない
+                    }
+                }
             }
         }
     }
