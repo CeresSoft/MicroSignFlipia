@@ -314,5 +314,26 @@ namespace MicroSign.Core
             /// </summary>
             public const int ResampleReadBuffSize = 4096;
         }
+
+        /// <summary>
+        /// クリップ処理向け定義
+        /// </summary>
+        public class Clip
+        {
+            /// <summary>
+            /// デフォルト倍率
+            /// </summary>
+            public const double DefaultScale = 1;
+
+            /// <summary>
+            /// デフォルトX始点
+            /// </summary>
+            public const int DefaultX = 0;
+
+            /// <summary>
+            /// デフォルトY始点
+            /// </summary>
+            public const int DefaultY = 0;
+        }
     }
 }

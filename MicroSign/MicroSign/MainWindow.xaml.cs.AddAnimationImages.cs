@@ -83,16 +83,15 @@ namespace MicroSign
                 return;
             }
 
-            //2024.04.30:CS)杉原:リリース向けの機能追加 >>>>> ここから
-            //----------
-            // >> そのうちスクロール機能を入れようと思って画像サイズは2の累乗であればなんでも良い仕様にしていましたが
-            // >> パネルが128x32の設定なのに64x64の画像を追加して変換できてしまうのは少々わかりにくい
-            // >> とりあえずパネルのサイズと異なるサイズの画像が有った場合は変換できないようにします
-            //設定されているパネルサイズを取得
-            int panelWidth = this.ViewModel.MatrixLedWidth;
-            int panelHeight = this.ViewModel.MatrixLedHeight;
-            //2024.04.30:CS)杉原:リリース向けの機能追加 <<<<< ここまで
-
+            ////2024.04.30:CS)杉原:リリース向けの機能追加 >>>>> ここから
+            ////----------
+            //// >> そのうちスクロール機能を入れようと思って画像サイズは2の累乗であればなんでも良い仕様にしていましたが
+            //// >> パネルが128x32の設定なのに64x64の画像を追加して変換できてしまうのは少々わかりにくい
+            //// >> とりあえずパネルのサイズと異なるサイズの画像が有った場合は変換できないようにします
+            ////設定されているパネルサイズを取得
+            //int panelWidth = this.ViewModel.MatrixLedWidth;
+            //int panelHeight = this.ViewModel.MatrixLedHeight;
+            ////2024.04.30:CS)杉原:リリース向けの機能追加 <<<<< ここまで
 
             //ファイル名でソートしながら読込
             //2026.04.14:CS)杉原:自然順ソートに変更 >>>>> ここから
@@ -118,7 +117,7 @@ namespace MicroSign
                     }
                 }
             }
-            // >> ソート下パスを得る
+            // >> ソートしたパスを得る
             IEnumerable<string> sortedImagePaths = imageFilePaths.OrderBy(x => x).Select(x => x.Path);
             //2026.04.14:CS)杉原:自然順ソートに変更 <<<<< ここまで
             foreach (string imagePath in sortedImagePaths)
@@ -136,9 +135,17 @@ namespace MicroSign
                         this.ViewModel.LoadGifAnimation(imagePath);
                         break;
 
+                    //2026.05.31:CS)杉原:MP4対応 >>>>> ここから
+                    //----------
+                    case CommonConsts.File.MP4Extension:
+                        //MP4アニメーション追加
+                        this.ViewModel.LoadMp4Animation(imagePath);
+                        break;
+                    //2026.05.31:CS)杉原:MP4対応 >>>>> ここから
+
                     default:
                         //通常のアニメーション画像追加
-                        this.AddAnimationImagesImpl(imagePath, displayPeriod, panelWidth, panelHeight);
+                        this.AddAnimationImagesImpl(imagePath, displayPeriod /*,panelWidth, panelHeight*/);
                         break;
                 }
             }
@@ -149,9 +156,7 @@ namespace MicroSign
         /// </summary>
         /// <param name="imagePath"></param>
         /// <param name="defaultDisplayPeriod"></param>
-        /// <param name="panelWidth"></param>
-        /// <param name="panelHeight"></param>
-        private void AddAnimationImagesImpl(string imagePath, double defaultDisplayPeriod, int panelWidth, int panelHeight)
+        private void AddAnimationImagesImpl(string imagePath, double defaultDisplayPeriod)
         {
             //画像を読込
             BitmapImage? image = this.ViewModel.GetImage(imagePath);
@@ -166,6 +171,16 @@ namespace MicroSign
                 //有効の場合は処理続行
                 CommonLogger.Info($"画像ファイル読込\npath='{imagePath}'");
             }
+
+            //2024.04.30:CS)杉原:リリース向けの機能追加 >>>>> ここから
+            //----------
+            // >> そのうちスクロール機能を入れようと思って画像サイズは2の累乗であればなんでも良い仕様にしていましたが
+            // >> パネルが128x32の設定なのに64x64の画像を追加して変換できてしまうのは少々わかりにくい
+            // >> とりあえずパネルのサイズと異なるサイズの画像が有った場合は変換できないようにします
+            //設定されているパネルサイズを取得
+            int panelWidth = this.ViewModel.MatrixLedWidth;
+            int panelHeight = this.ViewModel.MatrixLedHeight;
+            //2024.04.30:CS)杉原:リリース向けの機能追加 <<<<< ここまで
 
             //2025.08.12:CS)杉原:パレット処理の流れを変更 >>>>> ここから
             ////2023.11.30:CS)土田:プレビュー表示の改造 >>>>> ここから

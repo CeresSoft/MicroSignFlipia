@@ -1598,5 +1598,58 @@ namespace MicroSign.Core
             //ここまできたら0～255の有効な整数
             return result;
         }
+
+        /// <summary>
+        /// COM解放処理
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <remarks>安全にCOMを解放します</remarks>
+        public static void SafeComRelease<T>(T? obj) where T : class
+        {
+            try
+            {
+                //インスタンス有効判定
+                if (obj == null)
+                {
+                    //NULLの場合は何もしない
+                    return;
+                }
+                else
+                {
+                    //非NULLの場合処理続行
+                }
+
+                //非NULLの場合COMオブジェクトか判定
+                bool isCom = System.Runtime.InteropServices.Marshal.IsComObject(obj);
+                if (isCom)
+                {
+                    //COMならReleaseComObject()する
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                }
+                else
+                {
+                    //非COMの場合Disposableを実装しているか判定
+                    // >> COMオブジェクトだと誤認して呼び出している可能性があるので
+                    // >> 一応解放します
+                    IDisposable? disposable = obj as IDisposable;
+                    if (disposable == null)
+                    {
+                        //Disposableを実装していない場合何もしない
+                    }
+                    else
+                    {
+                        //Disposableを実装している場合Disposeを呼ぶ
+                        disposable.Dispose();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //例外は握りつぶす
+                CommonLogger.Warn("COM解放処理で例外発生", ex);
+            }
+        }
+
     }
 }

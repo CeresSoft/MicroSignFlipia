@@ -72,7 +72,7 @@ namespace MicroSign.Core.ViewModels
         }
 
         /// <summary>
-        /// 
+        /// GIF読込
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -251,11 +251,13 @@ namespace MicroSign.Core.ViewModels
                         if (isFit)
                         {
                             //適合した場合は処理続行
+                            CommonLogger.Debug($"パネルサイズに適合 (panel=[{panelWidth},{panelHeight}] == pixel=[{pixelWidth}, {pixelHeight}])");
                         }
                         else
                         {
+                            aaa
                             //適合しない場合は失敗にする
-                            string msg = $"パネルサイズに適合しない画像です (path='{path}')";
+                            string msg = $"パネルサイズに適合しない画像です (path='{path}') (panel=[{panelWidth},{panelHeight}] == pixel=[{pixelWidth}, {pixelHeight}])";
                             CommonLogger.Warn(msg);
                             return LoadGifAnimationResult.Failed(msg);
                         }

@@ -5,6 +5,7 @@ using MicroSign.Core.ViewModels;
 using MicroSign.Core.Views.Pages;
 using System;
 using System.Collections.Generic;
+using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -1652,6 +1653,28 @@ namespace MicroSign
         private void ClearSoundFileButton_Click(object sender, RoutedEventArgs e)
         {
             this.ViewModel.ClearSoundFilePath();
+        }
+
+        /// <summary>
+        /// MP4クリップ要求
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ViewModel_ClipMp4Request(object sender, MicroSign.Core.ViewModels.Mp4ClipRequestEventArgs e)
+        {
+            try
+            {
+                //クリップ処理画面を表示
+                // >> 結果は直接引数eに設定する
+                MicroSign.Core.Views.Pages.Mp4ClipPage page = new MicroSign.Core.Views.Pages.Mp4ClipPage();
+                page.SetMp4ClipRequest(e);
+                this.NaviPanel.NavigationCallWait(page, null);
+            }
+            catch (Exception ex)
+            {
+                //例外は握りつぶして終了
+                LOGGER.Warn("MP4クリップ要求で例外発生", ex);
+            }
         }
     }
 }

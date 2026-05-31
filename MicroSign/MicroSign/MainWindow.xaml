@@ -25,7 +25,7 @@
         <Grid x:Name="NaviPanel" navi:WpfNavigationController.Enabled="True">
             <Grid>
                 <Grid.DataContext>
-                    <vms:MainWindowViewModel x:Name="ViewModel"/>
+                    <vms:MainWindowViewModel x:Name="ViewModel" ClipMp4Request="ViewModel_ClipMp4Request"/>
                 </Grid.DataContext>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100"/>

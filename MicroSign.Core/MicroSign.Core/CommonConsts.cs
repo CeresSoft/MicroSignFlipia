@@ -469,6 +469,26 @@ namespace MicroSign.Core
                 /// </summary>
                 public const int I = 1;
 
+                /// <summary>
+                /// double 0
+                /// </summary>
+                public const double D = 1;
+            }
+
+            /// <summary>
+            /// 10値
+            /// </summary>
+            public static class Ten
+            {
+                /// <summary>
+                /// int 1
+                /// </summary>
+                public const int I = 10;
+
+                /// <summary>
+                /// double 0
+                /// </summary>
+                public const double D = 10;
             }
 
             /// <summary>
@@ -558,6 +578,15 @@ namespace MicroSign.Core
             /// switch分岐で使用するためconstにします
             /// </remarks>
             public const string GifExtension = ".gif";
+
+            /// <summary>
+            /// MP4ファイル拡張子
+            /// </summary>
+            /// <remarks>
+            /// 2026.05.31:CS)杉原:MP4対応
+            /// switch分岐で使用するためconstにします
+            /// </remarks>
+            public const string MP4Extension = ".mp4";
         }
 
         /// <summary>
