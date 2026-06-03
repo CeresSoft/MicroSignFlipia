@@ -255,7 +255,9 @@ namespace MicroSign.Core.ViewModels
                         }
                         else
                         {
-                            aaa
+#warning GIFで画像サイズが異なる場合はクリップする
+
+
                             //適合しない場合は失敗にする
                             string msg = $"パネルサイズに適合しない画像です (path='{path}') (panel=[{panelWidth},{panelHeight}] == pixel=[{pixelWidth}, {pixelHeight}])";
                             CommonLogger.Warn(msg);

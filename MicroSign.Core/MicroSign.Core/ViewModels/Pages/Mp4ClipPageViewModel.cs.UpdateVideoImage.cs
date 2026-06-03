@@ -9,12 +9,17 @@ namespace MicroSign.Core.ViewModels.Pages
     partial class Mp4ClipPageViewModel
     {
         /// <summary>
-        /// MP4クリップ要求引数設定
+        /// ビデオ画像を更新
         /// </summary>
-        /// <param name="args"></param>
-        public void SetArgs(MicroSign.Core.ViewModels.Mp4ClipRequestEventArgs args)
+        private void UpdateVideoImage()
         {
-            this._Args = args;
+
+
+
+
+
+
+
         }
     }
 }

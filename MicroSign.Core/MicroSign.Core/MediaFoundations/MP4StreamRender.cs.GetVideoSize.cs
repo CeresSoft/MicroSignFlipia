@@ -6,7 +6,7 @@ namespace MicroSign.Core.MediaFoundations
     partial class MP4StreamRender
     {
         /// <summary>
-        /// ビデオサイズ取得
+        /// ビデオサイズ取得結果
         /// </summary>
         public struct GetVideoSizeResult
         {
@@ -145,7 +145,7 @@ namespace MicroSign.Core.MediaFoundations
                 }
 
                 //成功で終了
-                CommonLogger.Info($"ビデオサイズ取得 - 完了 (width={videoWidth}, height={videoHeight}");
+                CommonLogger.Info($"ビデオサイズ取得 - 完了 (width={videoWidth}, height={videoHeight})");
                 return GetVideoSizeResult.Success((int)videoWidth, (int)videoHeight);
             }
             finally

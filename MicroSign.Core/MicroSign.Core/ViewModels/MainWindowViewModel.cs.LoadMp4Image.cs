@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +13,7 @@ using System.Windows.Documents;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Xml.Linq;
 using static MicroSign.Core.CommonConsts;
 using static MicroSign.Core.MediaFoundations.MP4StreamRender;
@@ -341,6 +343,22 @@ namespace MicroSign.Core.ViewModels
                 {
                     //横サイズが無効の場合は終了
                     string msg = $"ビデオの縦サイズが0";
+                    CommonLogger.Warn(msg);
+                    return LoadMp4AnimationResult.Failed(msg);
+                }
+            }
+
+            //メディアタイプをRGB32に設定
+            {
+                SetMediaTypeRGB32Result ret = mp4.SetMediaTypeRGB32(videoWidth, videoHeight);
+                bool isSuccess = ret.IsSuccess;
+                if(isSuccess)
+                {
+                    CommonLogger.Info("ビデオの出力をRGB32に設定 - 成功");
+                }
+                else
+                {
+                    string msg = $"ビデオの出力をRGB32に設定 - 失敗 ({ret.ErrorMessage})";
                     CommonLogger.Warn(msg);
                     return LoadMp4AnimationResult.Failed(msg);
                 }

@@ -11,6 +11,6 @@ namespace MicroSign.Core.ViewModels.Pages
         /// <summary>
         /// MP4クリップ要求引数
         /// </summary>
-        private MicroSign.Core.ViewModels.Mp4ClipRequestEventArgs _Args = null;
+        private MicroSign.Core.ViewModels.Mp4ClipRequestEventArgs? _Args = null;
     }
 }
