@@ -25,8 +25,6 @@ namespace MicroSign.Core.ViewModels.Pages
                 case Mp4ClipPageViewModel.PropertyNames.VideoWidth:
                 case Mp4ClipPageViewModel.PropertyNames.VideoHeight:
                 case Mp4ClipPageViewModel.PropertyNames.SelectScale:
-                case Mp4ClipPageViewModel.PropertyNames.SelectClipX:
-                case Mp4ClipPageViewModel.PropertyNames.SelectClipY:
                     //枠表示を更新
                     this.UpdateClipFrame();
                     break;

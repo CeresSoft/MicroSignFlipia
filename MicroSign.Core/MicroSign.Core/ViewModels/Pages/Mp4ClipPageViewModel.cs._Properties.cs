@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
+﻿using System.Windows.Media.Imaging;
 
 namespace MicroSign.Core.ViewModels.Pages
 {
@@ -117,7 +112,7 @@ namespace MicroSign.Core.ViewModels.Pages
             /// <summary>
             /// ビデオ画像初期値
             /// </summary>
-            public const BitmapSource? VideoImage = null;
+            public const WriteableBitmap? VideoImage = null;
         }
 
         /// <summary>
@@ -134,12 +129,12 @@ namespace MicroSign.Core.ViewModels.Pages
         /// <summary>
         /// ビデオ画像保持変数
         /// </summary>
-        protected BitmapSource? _VideoImage = InitializeValues.VideoImage;
+        protected WriteableBitmap? _VideoImage = InitializeValues.VideoImage;
 
         /// <summary>
         /// ビデオ画像
         /// </summary>
-        public BitmapSource? VideoImage
+        public WriteableBitmap? VideoImage
         {
             get
             {
@@ -147,7 +142,7 @@ namespace MicroSign.Core.ViewModels.Pages
             }
             set
             {
-                BitmapSource? now = this._VideoImage;
+                WriteableBitmap? now = this._VideoImage;
                 if (now == value)
                 {
                     return;
@@ -413,7 +408,7 @@ namespace MicroSign.Core.ViewModels.Pages
             /// <summary>
             /// クリップX最小値初期値
             /// </summary>
-            public const int MinClipX = 0;
+            public const double MinClipX = 0;
         }
 
         /// <summary>
@@ -430,12 +425,12 @@ namespace MicroSign.Core.ViewModels.Pages
         /// <summary>
         /// クリップX最小値保持変数
         /// </summary>
-        protected int _MinClipX = InitializeValues.MinClipX;
+        protected double _MinClipX = InitializeValues.MinClipX;
 
         /// <summary>
         /// クリップX最小値
         /// </summary>
-        public int MinClipX
+        public double MinClipX
         {
             get
             {
@@ -443,7 +438,7 @@ namespace MicroSign.Core.ViewModels.Pages
             }
             set
             {
-                int now = this._MinClipX;
+                double now = this._MinClipX;
                 if (now == value)
                 {
                     return;
@@ -462,7 +457,7 @@ namespace MicroSign.Core.ViewModels.Pages
             /// <summary>
             /// クリップX最大値初期値
             /// </summary>
-            public const int MaxClipX = 0;
+            public const double MaxClipX = 0;
         }
 
         /// <summary>
@@ -479,12 +474,12 @@ namespace MicroSign.Core.ViewModels.Pages
         /// <summary>
         /// クリップX最大値保持変数
         /// </summary>
-        protected int _MaxClipX = InitializeValues.MaxClipX;
+        protected double _MaxClipX = InitializeValues.MaxClipX;
 
         /// <summary>
         /// クリップX最大値
         /// </summary>
-        public int MaxClipX
+        public double MaxClipX
         {
             get
             {
@@ -492,61 +487,12 @@ namespace MicroSign.Core.ViewModels.Pages
             }
             set
             {
-                int now = this._MaxClipX;
+                double now = this._MaxClipX;
                 if (now == value)
                 {
                     return;
                 }
                 this._MaxClipX = value;
-                this.RaisePropertyChanged();
-            }
-        }
-        #endregion
-        #region クリップX
-        /// <summary>
-        /// 初期値
-        /// </summary>
-        public static new partial class InitializeValues
-        {
-            /// <summary>
-            /// クリップX初期値
-            /// </summary>
-            public const int SelectClipX = 0;
-        }
-
-        /// <summary>
-        /// プロパティ名
-        /// </summary>
-        public static new partial class PropertyNames
-        {
-            /// <summary>
-            /// クリップXプロパティ名
-            /// </summary>
-            public const string SelectClipX = "SelectClipX";
-        }
-
-        /// <summary>
-        /// クリップX保持変数
-        /// </summary>
-        protected int _SelectClipX = InitializeValues.SelectClipX;
-
-        /// <summary>
-        /// クリップX
-        /// </summary>
-        public int SelectClipX
-        {
-            get
-            {
-                return this._SelectClipX;
-            }
-            set
-            {
-                int now = this._SelectClipX;
-                if (now == value)
-                {
-                    return;
-                }
-                this._SelectClipX = value;
                 this.RaisePropertyChanged();
             }
         }
@@ -561,7 +507,7 @@ namespace MicroSign.Core.ViewModels.Pages
             /// <summary>
             /// クリップY最小値初期値
             /// </summary>
-            public const int MinClipY = 0;
+            public const double MinClipY = 0;
         }
 
         /// <summary>
@@ -578,12 +524,12 @@ namespace MicroSign.Core.ViewModels.Pages
         /// <summary>
         /// クリップY最小値保持変数
         /// </summary>
-        protected int _MinClipY = InitializeValues.MinClipY;
+        protected double _MinClipY = InitializeValues.MinClipY;
 
         /// <summary>
         /// クリップY最小値
         /// </summary>
-        public int MinClipY
+        public double MinClipY
         {
             get
             {
@@ -591,7 +537,7 @@ namespace MicroSign.Core.ViewModels.Pages
             }
             set
             {
-                int now = this._MinClipY;
+                double now = this._MinClipY;
                 if (now == value)
                 {
                     return;
@@ -610,7 +556,7 @@ namespace MicroSign.Core.ViewModels.Pages
             /// <summary>
             /// クリップY最大値初期値
             /// </summary>
-            public const int MaxClipY = 0;
+            public const double MaxClipY = 0;
         }
 
         /// <summary>
@@ -627,12 +573,12 @@ namespace MicroSign.Core.ViewModels.Pages
         /// <summary>
         /// クリップY最大値保持変数
         /// </summary>
-        protected int _MaxClipY = InitializeValues.MaxClipY;
+        protected double _MaxClipY = InitializeValues.MaxClipY;
 
         /// <summary>
         /// クリップY最大値
         /// </summary>
-        public int MaxClipY
+        public double MaxClipY
         {
             get
             {
@@ -640,61 +586,12 @@ namespace MicroSign.Core.ViewModels.Pages
             }
             set
             {
-                int now = this._MaxClipY;
+                double now = this._MaxClipY;
                 if (now == value)
                 {
                     return;
                 }
                 this._MaxClipY = value;
-                this.RaisePropertyChanged();
-            }
-        }
-        #endregion
-        #region クリップY
-        /// <summary>
-        /// 初期値
-        /// </summary>
-        public static new partial class InitializeValues
-        {
-            /// <summary>
-            /// クリップY初期値
-            /// </summary>
-            public const int SelectClipY = 0;
-        }
-
-        /// <summary>
-        /// プロパティ名
-        /// </summary>
-        public static new partial class PropertyNames
-        {
-            /// <summary>
-            /// クリップYプロパティ名
-            /// </summary>
-            public const string SelectClipY = "SelectClipY";
-        }
-
-        /// <summary>
-        /// クリップY保持変数
-        /// </summary>
-        protected int _SelectClipY = InitializeValues.SelectClipY;
-
-        /// <summary>
-        /// クリップY
-        /// </summary>
-        public int SelectClipY
-        {
-            get
-            {
-                return this._SelectClipY;
-            }
-            set
-            {
-                int now = this._SelectClipY;
-                if (now == value)
-                {
-                    return;
-                }
-                this._SelectClipY = value;
                 this.RaisePropertyChanged();
             }
         }
@@ -949,6 +846,303 @@ namespace MicroSign.Core.ViewModels.Pages
                     return;
                 }
                 this._IsReady = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region RGB32取得バッファ
+        /// <summary>
+        /// 初期値
+        /// </summary>
+        public static new partial class InitializeValues
+        {
+            /// <summary>
+            /// RGB32取得バッファ初期値
+            /// </summary>
+            public const byte[]? Rgb32Buffer = null;
+        }
+
+        /// <summary>
+        /// プロパティ名
+        /// </summary>
+        public static new partial class PropertyNames
+        {
+            /// <summary>
+            /// RGB32取得バッファプロパティ名
+            /// </summary>
+            public const string Rgb32Buffer = "Rgb32Buffer";
+        }
+
+        /// <summary>
+        /// RGB32取得バッファ保持変数
+        /// </summary>
+        protected byte[]? _Rgb32Buffer = InitializeValues.Rgb32Buffer;
+
+        /// <summary>
+        /// RGB32取得バッファ
+        /// </summary>
+        public byte[]? Rgb32Buffer
+        {
+            get
+            {
+                return this._Rgb32Buffer;
+            }
+            set
+            {
+                byte[]? now = this._Rgb32Buffer;
+                if (now == value)
+                {
+                    return;
+                }
+                this._Rgb32Buffer = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region クリップ枠位置X
+        /// <summary>
+        /// 初期値
+        /// </summary>
+        public static new partial class InitializeValues
+        {
+            /// <summary>
+            /// クリップ枠位置X初期値
+            /// </summary>
+            public const double ClipFrameX = 0;
+        }
+
+        /// <summary>
+        /// プロパティ名
+        /// </summary>
+        public static new partial class PropertyNames
+        {
+            /// <summary>
+            /// クリップ枠位置Xプロパティ名
+            /// </summary>
+            public const string ClipFrameX = "ClipFrameX";
+        }
+
+        /// <summary>
+        /// クリップ枠位置X保持変数
+        /// </summary>
+        protected double _ClipFrameX = InitializeValues.ClipFrameX;
+
+        /// <summary>
+        /// クリップ枠位置X
+        /// </summary>
+        public double ClipFrameX
+        {
+            get
+            {
+                return this._ClipFrameX;
+            }
+            set
+            {
+                double now = this._ClipFrameX;
+                if (now == value)
+                {
+                    return;
+                }
+                this._ClipFrameX = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        #endregion
+        #region クリップ枠位置Y
+        /// <summary>
+        /// 初期値
+        /// </summary>
+        public static new partial class InitializeValues
+        {
+            /// <summary>
+            /// クリップ枠位置Y初期値
+            /// </summary>
+            public const double ClipFrameY = 0;
+        }
+
+        /// <summary>
+        /// プロパティ名
+        /// </summary>
+        public static new partial class PropertyNames
+        {
+            /// <summary>
+            /// クリップ枠位置Yプロパティ名
+            /// </summary>
+            public const string ClipFrameY = "ClipFrameY";
+        }
+
+        /// <summary>
+        /// クリップ枠位置Y保持変数
+        /// </summary>
+        protected double _ClipFrameY = InitializeValues.ClipFrameY;
+
+        /// <summary>
+        /// クリップ枠位置Y
+        /// </summary>
+        public double ClipFrameY
+        {
+            get
+            {
+                return this._ClipFrameY;
+            }
+            set
+            {
+                double now = this._ClipFrameY;
+                if (now == value)
+                {
+                    return;
+                }
+                this._ClipFrameY = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        #endregion
+        #region クリップ枠位置Width
+        /// <summary>
+        /// 初期値
+        /// </summary>
+        public static new partial class InitializeValues
+        {
+            /// <summary>
+            /// クリップ枠位置Width初期値
+            /// </summary>
+            public const double ClipFrameWidth = 0;
+        }
+
+        /// <summary>
+        /// プロパティ名
+        /// </summary>
+        public static new partial class PropertyNames
+        {
+            /// <summary>
+            /// クリップ枠位置Widthプロパティ名
+            /// </summary>
+            public const string ClipFrameWidth = "ClipFrameWidth";
+        }
+
+        /// <summary>
+        /// クリップ枠位置Width保持変数
+        /// </summary>
+        protected double _ClipFrameWidth = InitializeValues.ClipFrameWidth;
+
+        /// <summary>
+        /// クリップ枠位置Width
+        /// </summary>
+        public double ClipFrameWidth
+        {
+            get
+            {
+                return this._ClipFrameWidth;
+            }
+            set
+            {
+                double now = this._ClipFrameWidth;
+                if (now == value)
+                {
+                    return;
+                }
+                this._ClipFrameWidth = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        #endregion
+        #region クリップ枠位置Height
+        /// <summary>
+        /// 初期値
+        /// </summary>
+        public static new partial class InitializeValues
+        {
+            /// <summary>
+            /// クリップ枠位置Height初期値
+            /// </summary>
+            public const double ClipFrameHeight = 0;
+        }
+
+        /// <summary>
+        /// プロパティ名
+        /// </summary>
+        public static new partial class PropertyNames
+        {
+            /// <summary>
+            /// クリップ枠位置Heightプロパティ名
+            /// </summary>
+            public const string ClipFrameHeight = "ClipFrameHeight";
+        }
+
+        /// <summary>
+        /// クリップ枠位置Height保持変数
+        /// </summary>
+        protected double _ClipFrameHeight = InitializeValues.ClipFrameHeight;
+
+        /// <summary>
+        /// クリップ枠位置Height
+        /// </summary>
+        public double ClipFrameHeight
+        {
+            get
+            {
+                return this._ClipFrameHeight;
+            }
+            set
+            {
+                double now = this._ClipFrameHeight;
+                if (now == value)
+                {
+                    return;
+                }
+                this._ClipFrameHeight = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region ビデオファイル名
+        /// <summary>
+        /// 初期値
+        /// </summary>
+        public static new partial class InitializeValues
+        {
+            /// <summary>
+            /// ビデオファイル名初期値
+            /// </summary>
+            public const string? VideoFilename = null;
+        }
+
+        /// <summary>
+        /// プロパティ名
+        /// </summary>
+        public static new partial class PropertyNames
+        {
+            /// <summary>
+            /// ビデオファイル名プロパティ名
+            /// </summary>
+            public const string VideoFilename = "VideoFilename";
+        }
+
+        /// <summary>
+        /// ビデオファイル名保持変数
+        /// </summary>
+        protected string? _VideoFilename = InitializeValues.VideoFilename;
+
+        /// <summary>
+        /// ビデオファイル名
+        /// </summary>
+        public string? VideoFilename
+        {
+            get
+            {
+                return this._VideoFilename;
+            }
+            set
+            {
+                string? now = this._VideoFilename;
+                if (now == value)
+                {
+                    return;
+                }
+                this._VideoFilename = value;
                 this.RaisePropertyChanged();
             }
         }

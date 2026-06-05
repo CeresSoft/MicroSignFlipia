@@ -569,7 +569,7 @@ namespace MicroSign.Core
             /// <summary>
             /// PNGファイルフォーマット
             /// </summary>
-            public static readonly string PngFileFormat = "{0}.png";
+            public static readonly string PngFileFormat = "{0} {1}.png";
 
             /// <summary>
             /// GIFファイル拡張子

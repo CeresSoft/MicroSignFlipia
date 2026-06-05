@@ -22,7 +22,12 @@
             }
 
             //選択する
-            this.SetSelectAnimationImage(MainWindowViewModel.InitializeValues.SelectedAnimationImageItem);
+            //2026.06.05:CS)杉原:複数選択対応 >>>>> ここから
+            //this.SetSelectAnimationImage(MainWindowViewModel.InitializeValues.SelectedAnimationImageItem);
+            //----------
+            // >> 選択解除する
+            this.UnselectAnimationImages();
+            //2026.06.05:CS)杉原:複数選択対応 <<<<< ここまで
         }
     }
 }

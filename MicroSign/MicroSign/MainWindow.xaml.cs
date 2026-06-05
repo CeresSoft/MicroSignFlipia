@@ -415,26 +415,69 @@ namespace MicroSign
         {
             try
             {
-                //選択されているアニメーション画像を取得
-                AnimationImageItem? selectedAnimationImage = this.ViewModel.GetSelectAnimationImage();
-                if (selectedAnimationImage == null)
+                //2026.06.05:CS)杉原:複数選択対応 >>>>> ここから
+                //AnimationImageItem? selectedAnimationImage = this.ViewModel.GetSelectAnimationImage();
+                //if (selectedAnimationImage == null)
+                //{
+                //    //選択されているアニメーション画像が無い場合はメッセージを表示して終了
+                //    this.ShowWarning(CommonLogger.Warn("アニメーション画像が選択されていません"));
+                //    return;
+                //}
+                //else
+                //{
+                //    //選択されている場合は処理続行
+                //}
+                //
+                ////確認画面
+                ////2025.10.01:CS)土田:Variousから移植したNavigationの引数にあわせて修正 >>>>> ここから
+                ////this.NaviPanel.NavigationOverwrap(new MicroSign.Core.Views.Overlaps.ConfirmMessageBox("選択されているアニメーション画像を削除します。\nよろしいですか?", this.Title), selectedAnimationImage, this.RemoveAnimationImageButton_Retrun);
+                ////----------
+                //object result = this.MsgGrid.NavigationOverwrapWait(new MicroSign.Core.Views.Overlaps.ConfirmMessageBox("選択されているアニメーション画像を削除します。\nよろしいですか?", this.Title), selectedAnimationImage);
+                //this.RemoveAnimationImageButton_Retrun(selectedAnimationImage, result);
+                ////2025.10.01:CS)土田:Variousから移植したNavigationの引数にあわせて修正 <<<<< ここまで
+                //----------
+                AnimationImageItemCollection? selectedAnimationImages = this.ViewModel.GetSelectAnimationImages();
+                int n = CommonUtils.GetCount(selectedAnimationImages);
+                if (CommonConsts.Collection.Empty < n)
+                {
+                    //選択されている場合は処理続行
+                }
+                else
                 {
                     //選択されているアニメーション画像が無い場合はメッセージを表示して終了
                     this.ShowWarning(CommonLogger.Warn("アニメーション画像が選択されていません"));
                     return;
                 }
-                else
-                {
-                    //選択されている場合は処理続行
-                }
 
                 //確認画面
-                //2025.10.01:CS)土田:Variousから移植したNavigationの引数にあわせて修正 >>>>> ここから
-                //this.NaviPanel.NavigationOverwrap(new MicroSign.Core.Views.Overlaps.ConfirmMessageBox("選択されているアニメーション画像を削除します。\nよろしいですか?", this.Title), selectedAnimationImage, this.RemoveAnimationImageButton_Retrun);
-                //----------
-                object result = this.MsgGrid.NavigationOverwrapWait(new MicroSign.Core.Views.Overlaps.ConfirmMessageBox("選択されているアニメーション画像を削除します。\nよろしいですか?", this.Title), selectedAnimationImage);
-                this.RemoveAnimationImageButton_Retrun(selectedAnimationImage, result);
-                //2025.10.01:CS)土田:Variousから移植したNavigationの引数にあわせて修正 <<<<< ここまで
+                object result = this.MsgGrid.NavigationOverwrapWait(new MicroSign.Core.Views.Overlaps.ConfirmMessageBox("選択されているアニメーション画像を削除します。\nよろしいですか?", this.Title));
+                if (result is MicroSign.Core.Navigations.Enums.NavigationResultKind resultKind)
+                {
+                    //確認結果により分岐
+                    switch (resultKind)
+                    {
+                        case NavigationResultKind.Success:
+                            //成功(=Yes)の場合
+                            //>> 選択アイテムを削除
+                            for(int i = CommonConsts.Index.First; i< n; i+= CommonConsts.Index.Step)
+                            {
+                                AnimationImageItem? selectedAnimationImage = selectedAnimationImages[i];
+                                this.ViewModel.RemoveAnimationImage(selectedAnimationImage);
+                            }
+                            break;
+
+                        default:
+                            //それ以外の場合は何もしない
+                            break;
+                    }
+                }
+                else
+                {
+                    //無効の場合は何もせずに終了
+                    CommonLogger.Warn($"アニメーション画像削除確認の結果が判定できませんでした (ret={result})");
+                }
+                //2026.06.05:CS)杉原:複数選択対応 <<<<< ここまで
+
             }
             catch (Exception ex)
             {
@@ -442,38 +485,41 @@ namespace MicroSign
             }
         }
 
-        /// <summary>
-        /// アニメーション画像削除確認結果
-        /// </summary>
-        /// <param name="callArgs">呼出引数(=AnimationImageItem)</param>
-        /// <param name="result">戻り値(=MicroSign.Core.Navigations.Enums.NavigationResultKind)</param>
-        private void RemoveAnimationImageButton_Retrun(object? callArgs, object? result)
-        {
-            if(result is MicroSign.Core.Navigations.Enums.NavigationResultKind resultKind)
-            {
-                //呼出時の引数の選択アニメーションを取得
-                AnimationImageItem? selectedAnimationImage = callArgs as AnimationImageItem;
-
-                //確認結果により分岐
-                switch (resultKind)
-                {
-                    case NavigationResultKind.Success:
-                        //成功(=Yes)の場合
-                        //>> 選択アイテムを削除
-                        this.ViewModel.RemoveAnimationImage(selectedAnimationImage);
-                        break;
-
-                    default:
-                        //それ以外の場合は何もしない
-                        break;
-                }
-            }
-            else
-            {
-                //無効の場合は何もせずに終了
-                CommonLogger.Warn($"アニメーション画像削除確認の結果が判定できませんでした (ret={result})");
-            }
-        }
+        //2026.06.05:CS)杉原:複数選択対応 >>>>> ここから
+        ///// <summary>
+        ///// アニメーション画像削除確認結果
+        ///// </summary>
+        ///// <param name="callArgs">呼出引数(=AnimationImageItem)</param>
+        ///// <param name="result">戻り値(=MicroSign.Core.Navigations.Enums.NavigationResultKind)</param>
+        //private void RemoveAnimationImageButton_Retrun(object? callArgs, object? result)
+        //{
+        //    if(result is MicroSign.Core.Navigations.Enums.NavigationResultKind resultKind)
+        //    {
+        //        //呼出時の引数の選択アニメーションを取得
+        //        AnimationImageItem? selectedAnimationImage = callArgs as AnimationImageItem;
+        //
+        //        //確認結果により分岐
+        //        switch (resultKind)
+        //        {
+        //            case NavigationResultKind.Success:
+        //                //成功(=Yes)の場合
+        //                //>> 選択アイテムを削除
+        //                this.ViewModel.RemoveAnimationImage(selectedAnimationImage);
+        //                break;
+        //
+        //            default:
+        //                //それ以外の場合は何もしない
+        //                break;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        //無効の場合は何もせずに終了
+        //        CommonLogger.Warn($"アニメーション画像削除確認の結果が判定できませんでした (ret={result})");
+        //    }
+        //}
+        //----------
+        //2026.06.05:CS)杉原:複数選択対応 <<<<< ここまで
 
         /// <summary>
         /// 全アニメーション画像削除ボタン
@@ -489,7 +535,34 @@ namespace MicroSign
                 //this.MsgGrid.NavigationOverwrap(new MicroSign.Core.Views.Overlaps.ConfirmMessageBox("全アニメーション画像を削除します。\nよろしいですか?", this.Title), null, this.RemoveAllAnimationImageButton_Retrun);
                 //----------
                 object ret = this.MsgGrid.NavigationOverwrapWait(new MicroSign.Core.Views.Overlaps.ConfirmMessageBox("全アニメーション画像を削除します。\nよろしいですか?", this.Title), null);
-                this.RemoveAllAnimationImageButton_Retrun(null, ret);
+                //2026.06.05:CS)杉原:複数選択対応 >>>>> ここから
+                //this.RemoveAllAnimationImageButton_Retrun(null, ret);
+                //----------
+                if (ret is MicroSign.Core.Navigations.Enums.NavigationResultKind resultKind)
+                {
+                    //呼出時の引数の選択アニメーションを取得
+                    AnimationImageItem? selectedAnimationImage = ret as AnimationImageItem;
+
+                    //確認結果により分岐
+                    switch (resultKind)
+                    {
+                        case NavigationResultKind.Success:
+                            //成功(=Yes)の場合
+                            //>> 選択アイテムを削除
+                            this.ViewModel.RemoveAllAnimationImage();
+                            break;
+
+                        default:
+                            //それ以外の場合は何もしない
+                            break;
+                    }
+                }
+                else
+                {
+                    //無効の場合は何もせずに終了
+                    CommonLogger.Warn($"全アニメーション画像削除確認の結果が判定できませんでした (ret={ret})");
+                }
+                //2026.06.05:CS)杉原:複数選択対応 <<<<< ここまで
                 //2025.10.01:CS)土田:Variousから移植したNavigationの引数にあわせて修正 <<<<< ここまで
             }
             catch (Exception ex)
@@ -498,38 +571,41 @@ namespace MicroSign
             }
         }
 
-        /// <summary>
-        /// アニメーション画像削除確認結果
-        /// </summary>
-        /// <param name="callArgs">呼出引数(=AnimationImageItem)</param>
-        /// <param name="result">戻り値(=MicroSign.Core.Navigations.Enums.NavigationResultKind)</param>
-        private void RemoveAllAnimationImageButton_Retrun(object? callArgs, object? result)
-        {
-            if (result is MicroSign.Core.Navigations.Enums.NavigationResultKind resultKind)
-            {
-                //呼出時の引数の選択アニメーションを取得
-                AnimationImageItem? selectedAnimationImage = callArgs as AnimationImageItem;
-
-                //確認結果により分岐
-                switch (resultKind)
-                {
-                    case NavigationResultKind.Success:
-                        //成功(=Yes)の場合
-                        //>> 選択アイテムを削除
-                        this.ViewModel.RemoveAllAnimationImage();
-                        break;
-
-                    default:
-                        //それ以外の場合は何もしない
-                        break;
-                }
-            }
-            else
-            {
-                //無効の場合は何もせずに終了
-                CommonLogger.Warn($"全アニメーション画像削除確認の結果が判定できませんでした (ret={result})");
-            }
-        }
+        //2026.06.05:CS)杉原:複数選択対応 >>>>> ここから
+        ///// <summary>
+        ///// アニメーション画像削除確認結果
+        ///// </summary>
+        ///// <param name="callArgs">呼出引数(=AnimationImageItem)</param>
+        ///// <param name="result">戻り値(=MicroSign.Core.Navigations.Enums.NavigationResultKind)</param>
+        //private void RemoveAllAnimationImageButton_Retrun(object? callArgs, object? result)
+        //{
+        //    if (result is MicroSign.Core.Navigations.Enums.NavigationResultKind resultKind)
+        //    {
+        //        //呼出時の引数の選択アニメーションを取得
+        //        AnimationImageItem? selectedAnimationImage = callArgs as AnimationImageItem;
+        //
+        //        //確認結果により分岐
+        //        switch (resultKind)
+        //        {
+        //            case NavigationResultKind.Success:
+        //                //成功(=Yes)の場合
+        //                //>> 選択アイテムを削除
+        //                this.ViewModel.RemoveAllAnimationImage();
+        //                break;
+        //
+        //            default:
+        //                //それ以外の場合は何もしない
+        //                break;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        //無効の場合は何もせずに終了
+        //        CommonLogger.Warn($"全アニメーション画像削除確認の結果が判定できませんでした (ret={result})");
+        //    }
+        //}
+        //----------
+        //2026.06.05:CS)杉原:複数選択対応 <<<<< ここまで
 
         /// <summary>
         /// アニメーション画像上へ移動ボタン
@@ -540,21 +616,70 @@ namespace MicroSign
         {
             try
             {
-                //選択されているアニメーション画像を取得
-                AnimationImageItem? selectedAnimationImage = this.ViewModel.GetSelectAnimationImage();
-                if (selectedAnimationImage == null)
-                {
-                    //選択されているアニメーション画像が無い場合はメッセージを表示して終了
-                    this.ShowWarning("アニメーション画像が選択されていません");
-                    return;
-                }
-                else
+                //2026.06.05:CS)杉原:複数選択対応 >>>>> ここから
+                ////選択されているアニメーション画像を取得
+                //AnimationImageItem? selectedAnimationImage = this.ViewModel.GetSelectAnimationImage();
+                //if (selectedAnimationImage == null)
+                //{
+                //    //選択されているアニメーション画像が無い場合はメッセージを表示して終了
+                //    this.ShowWarning("アニメーション画像が選択されていません");
+                //    return;
+                //}
+                //else
+                //{
+                //    //選択されている場合は処理続行
+                //}
+                //
+                ////選択されているアニメーション画像を上に移動
+                //this.ViewModel.UpAnimationImage(selectedAnimationImage);
+                //----------
+                AnimationImageItemCollection? selectedAnimationImages = this.ViewModel.GetSelectAnimationImages();
+                int n = CommonUtils.GetCount(selectedAnimationImages);
+                if (CommonConsts.Collection.Empty < n)
                 {
                     //選択されている場合は処理続行
                 }
+                else
+                {
+                    //選択されているアニメーション画像が無い場合はメッセージを表示して終了
+                    this.ShowWarning(CommonLogger.Warn("アニメーション画像が選択されていません"));
+                    return;
+                }
 
-                //選択されているアニメーション画像を上に移動
-                this.ViewModel.UpAnimationImage(selectedAnimationImage);
+                //先頭の選択項目がリストの先頭項目か判定
+                {
+                    AnimationImageItem? selectedAnimationImage = selectedAnimationImages[CommonConsts.Index.First];
+                    MainWindowViewModel.TestFirstAnimationImageResult ret = this.ViewModel.TestFirstAnimationImageItem(selectedAnimationImage);
+                    switch(ret)
+                    {
+                        case MainWindowViewModel.TestFirstAnimationImageResult.First:
+                            //先頭の場合は上に移動できないので終了
+                            this.ShowWarning(CommonLogger.Warn("先頭アニメーション画像は上に移動できません"));
+                            return;
+
+                        case MainWindowViewModel.TestFirstAnimationImageResult.NoFirst:
+                            //先頭以外の場合は上に移動できるので処理続行
+                            break;
+
+                        default:
+                            //それ以外はエラー
+                            this.ShowWarning(CommonLogger.Warn($"アニメーション画像を上に移動できません({ret})"));
+                            return;
+                    }
+                }
+
+                // >> 選択アイテムを上に移動(先頭から行う)
+                // >> >> 1 > 2 > 3 > 4 で2と3を上に移動
+                // >> >> 2 > 1 > 3 > 4
+                // >> >> 2 > 3 > 1 > 4
+                for (int i = CommonConsts.Index.First; i < n; i += CommonConsts.Index.Step)
+                {
+                    AnimationImageItem? selectedAnimationImage = selectedAnimationImages[i];
+
+                    //選択されているアニメーション画像を上に移動
+                    this.ViewModel.UpAnimationImage(selectedAnimationImage);
+                }
+                //2026.06.05:CS)杉原:複数選択対応 <<<<< ここまで
             }
             catch (Exception ex)
             {
@@ -571,21 +696,72 @@ namespace MicroSign
         {
             try
             {
-                //選択されているアニメーション画像を取得
-                AnimationImageItem? selectedAnimationImage = this.ViewModel.GetSelectAnimationImage();
-                if (selectedAnimationImage == null)
+                //2026.06.05:CS)杉原:複数選択対応 >>>>> ここから
+                ////選択されているアニメーション画像を取得
+                //AnimationImageItem? selectedAnimationImage = this.ViewModel.GetSelectAnimationImage();
+                //if (selectedAnimationImage == null)
+                //{
+                //    //選択されているアニメーション画像が無い場合はメッセージを表示して終了
+                //    this.ShowWarning(CommonLogger.Warn("アニメーション画像が選択されていません"));
+                //    return;
+                //}
+                //else
+                //{
+                //    //選択されている場合は処理続行
+                //}
+                //
+                ////選択されているアニメーション画像を下に移動
+                //this.ViewModel.DownAnimationImage(selectedAnimationImage);
+                //----------
+                AnimationImageItemCollection? selectedAnimationImages = this.ViewModel.GetSelectAnimationImages();
+                int n = CommonUtils.GetCount(selectedAnimationImages);
+                if (CommonConsts.Collection.Empty < n)
+                {
+                    //選択されている場合は処理続行
+                }
+                else
                 {
                     //選択されているアニメーション画像が無い場合はメッセージを表示して終了
                     this.ShowWarning(CommonLogger.Warn("アニメーション画像が選択されていません"));
                     return;
                 }
-                else
+
+                //最終選択項目がリストの最後項目か判定
                 {
-                    //選択されている場合は処理続行
+                    int i = CommonConsts.Collection.ToIndex(n);
+                    AnimationImageItem? selectedAnimationImage = selectedAnimationImages[i];
+                    MainWindowViewModel.TestLastAnimationImageResult ret = this.ViewModel.TestLastAnimationImageItem(selectedAnimationImage);
+                    switch (ret)
+                    {
+                        case MainWindowViewModel.TestLastAnimationImageResult.Last:
+                            //先頭の場合は上に移動できないので終了
+                            this.ShowWarning(CommonLogger.Warn("最終アニメーション画像は下に移動できません"));
+                            return;
+
+                        case MainWindowViewModel.TestLastAnimationImageResult.NoLast:
+                            //先頭以外の場合は上に移動できるので処理続行
+                            break;
+
+                        default:
+                            //それ以外はエラー
+                            this.ShowWarning(CommonLogger.Warn($"アニメーション画像を下に移動できません({ret})"));
+                            return;
+                    }
                 }
 
-                //選択されているアニメーション画像を下に移動
-                this.ViewModel.DownAnimationImage(selectedAnimationImage);
+                // >> 選択アイテムを下に移動(後ろからやっていく)
+                // >> >> 1 > 2 > 3 > 4 で2と3を下に移動
+                // >> >> 1 > 2 > 4 > 3
+                // >> >> 1 > 4 > 2 > 3
+                for (int i = n; CommonConsts.Collection.Empty < i; i -= CommonConsts.Collection.Step)
+                {
+                    int j = CommonConsts.Collection.ToIndex(i);
+                    AnimationImageItem? selectedAnimationImage = selectedAnimationImages[j];
+
+                    //選択されているアニメーション画像を下に移動
+                    this.ViewModel.DownAnimationImage(selectedAnimationImage);
+                }
+                //2026.06.05:CS)杉原:複数選択対応 <<<<< ここまで
             }
             catch (Exception ex)
             {
@@ -1660,7 +1836,7 @@ namespace MicroSign
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ViewModel_ClipMp4Request(object sender, MicroSign.Core.ViewModels.Mp4ClipRequestEventArgs e)
+        private void ViewModel_Mp4ClipRequest(object sender, MicroSign.Core.ViewModels.Mp4ClipRequestEventArgs e)
         {
             try
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Imaging;
 
 namespace MicroSign.Core
 {
@@ -318,7 +319,7 @@ namespace MicroSign.Core
         /// <summary>
         /// クリップ処理向け定義
         /// </summary>
-        public class Clip
+        public static class Clip
         {
             /// <summary>
             /// デフォルト倍率
@@ -334,6 +335,16 @@ namespace MicroSign.Core
             /// デフォルトY始点
             /// </summary>
             public const int DefaultY = 0;
+
+            /// <summary>
+            /// ビットマップのピクセルフォーマット
+            /// </summary>
+            public static readonly System.Windows.Media.PixelFormat BitmapFormat = System.Windows.Media.PixelFormats.Bgr32;
+
+            /// <summary>
+            /// ビットマップのストライド
+            /// </summary>
+            public static readonly int BitmapStride = BitmapFormat.BitsPerPixel / CommonConsts.BitCount.BYTE;
         }
     }
 }

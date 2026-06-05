@@ -17,7 +17,7 @@ namespace MicroSign
                 /// <summary>
                 /// 受け入れ可能なファイル拡張子
                 /// </summary>
-                public static Regex VaridExtensions = new Regex(@"(\.jpg|\.jpeg|\.png|\.gif)$", RegexOptions.IgnoreCase);
+                public static Regex VaridExtensions = new Regex(@"(\.jpg|\.jpeg|\.png|\.gif|\.mp4)$", RegexOptions.IgnoreCase);
 
                 /// <summary>
                 /// デフォルト拡張子

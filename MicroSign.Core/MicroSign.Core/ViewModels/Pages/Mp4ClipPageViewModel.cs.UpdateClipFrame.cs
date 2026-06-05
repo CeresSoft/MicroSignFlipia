@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MicroSign.Core.ViewModels.Pages
 {
-    public class Mp4ClipPageViewModel
+    partial class Mp4ClipPageViewModel
     {
         /// <summary>
         /// クリップフレームを更新
@@ -36,22 +32,37 @@ namespace MicroSign.Core.ViewModels.Pages
             double panelHeight = this.PanelHeight;
 
             //スケールを取得
+            double minScale = this.MinScale;
+            double maxScale = this.MaxScale;
             double selectScale = this.SelectScale;
-            if(CommonConsts.Values.Zero.D < selectScale)
+            double scale = CommonUtils.Clamp(minScale, maxScale, selectScale);
+
+            //クリップするサイズを計算
+            double clipWidth = panelWidth / scale;
+            double clipHeight = panelHeight / scale;
+
+            //移動範囲
+            double minX = this.MinClipX;
+            double maxX = videoWidth - clipWidth;
+            double minY = this.MinClipY;
+            double maxY = videoHeight - clipHeight;
+            this.MaxClipX = maxX;
+            this.MaxClipY = maxY;
+
+            //現在の座標を範囲内にする
+            double selectX = this.ClipFrameX;
+            double x = CommonUtils.Clamp(minX, maxX, selectX);
+
+            double selectY = this.ClipFrameY;
+            double y = CommonUtils.Clamp(minY, maxY, selectY);
+
+            //クリップ枠を計算
             {
-                //選択スケールが有効の場合
+                this.ClipFrameX = x;
+                this.ClipFrameY = y;
+                this.ClipFrameWidth = clipWidth;
+                this.ClipFrameHeight = clipHeight;
             }
-            else
-            {
-                //選択スケールが無効の場合は1倍にする
-                selectScale = Mp4ClipPageViewModel.InitializeValues.SelectScale
-            }
-
-            2026.05.31:時間切れで一旦保留
-
-
-
-
         }
     }
 }

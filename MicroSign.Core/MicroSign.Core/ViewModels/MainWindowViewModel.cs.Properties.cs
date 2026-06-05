@@ -1,5 +1,4 @@
-﻿using MicroSign.Core.Models;
-using MicroSign.Core.Models.AnimationDatas;
+﻿using MicroSign.Core.Models.AnimationDatas;
 using System.Windows.Media.Imaging;
 
 namespace MicroSign.Core.ViewModels

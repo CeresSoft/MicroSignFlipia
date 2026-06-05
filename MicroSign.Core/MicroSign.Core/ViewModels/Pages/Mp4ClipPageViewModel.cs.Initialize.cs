@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace MicroSign.Core.ViewModels.Pages
 {
@@ -9,8 +11,8 @@ namespace MicroSign.Core.ViewModels.Pages
         /// </summary>
         public void Initialize()
         {
-            //引数取得
-            MicroSign.Core.ViewModels.Mp4ClipRequestEventArgs args = this._Args;
+            //MP4クリップ要求引数取得
+            MicroSign.Core.ViewModels.Mp4ClipRequestEventArgs? args = this._Args;
             if(args == null)
             {
                 //無効の場合は終了
@@ -45,6 +47,13 @@ namespace MicroSign.Core.ViewModels.Pages
             {
                 //有効の場合は処理続行
                 CommonLogger.Debug("MP4有効");
+            }
+
+            //ビデオのパスを取得
+            string? path = mp4.Path;
+            {
+                string? filename = System.IO.Path.GetFileName(path);
+                this.VideoFilename = filename;
             }
 
             //ビデオサイズ取得
@@ -189,6 +198,20 @@ namespace MicroSign.Core.ViewModels.Pages
 
             this.MaxDurationTicks = durationTicks;
 
+            //画像取得先生成
+            {
+                //RGB32バッファ
+                {
+                    byte[] rgb32buffer = CommonUtils.CreateBgr32Buff(videoWidth, videoHeight);
+                    this.Rgb32Buffer = rgb32buffer;
+                }
+
+                //書込バッファ
+                {
+                    WriteableBitmap wbitmap =CommonUtils.CreateBgr32Bitmap(videoWidth, videoHeight);
+                    this.VideoImage = wbitmap;
+                }
+            }
 
             //準備完了
             {

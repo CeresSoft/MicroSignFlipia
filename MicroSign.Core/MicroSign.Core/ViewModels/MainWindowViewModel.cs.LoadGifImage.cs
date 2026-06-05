@@ -97,12 +97,13 @@ namespace MicroSign.Core.ViewModels
 
             //出力フォルダーを生成
             string? outputFolder = null;
+            string? outputFilename = null;
             try
             {
                 //拡張子をのぞいたファイル名を取得
-                string? fname = System.IO.Path.GetFileNameWithoutExtension(path);
+                outputFilename = System.IO.Path.GetFileNameWithoutExtension(path);
                 {
-                    bool isNull = string.IsNullOrEmpty(fname);
+                    bool isNull = string.IsNullOrEmpty(outputFilename);
                     if (isNull)
                     {
                         //無効の場合は修了
@@ -113,7 +114,7 @@ namespace MicroSign.Core.ViewModels
                     else
                     {
                         //取得できた場合は処理続行
-                        CommonLogger.Debug($"ファイル名の取得成功  (path='{path}' -> '{fname}')");
+                        CommonLogger.Debug($"ファイル名の取得成功  (path='{path}' -> '{outputFilename}')");
                     }
                 }
 
@@ -136,8 +137,8 @@ namespace MicroSign.Core.ViewModels
                 }
 
                 //出力フォルダ名を生成
-                outputFolder = System.IO.Path.Combine(dir!, fname!);
-                CommonLogger.Debug($"出力先フォルダ ('{dir}' + '{fname}' -> '{outputFolder}')");
+                outputFolder = System.IO.Path.Combine(dir!, outputFilename!);
+                CommonLogger.Debug($"出力先フォルダ ('{dir}' + '{outputFilename}' -> '{outputFolder}')");
 
                 //出力フォルダを作成
                 CommonLogger.Debug($"出力先フォルダの生成  ('{outputFolder}')");
@@ -285,8 +286,12 @@ namespace MicroSign.Core.ViewModels
                         gif.SelectActiveFrame(fd, i);
 
                         //PNGで保存
-                        string fileNumberText = i.ToString(fileNumberFormat);
-                        string saveName = string.Format(CommonConsts.File.PngFileFormat, fileNumberText);
+                        //ファイル名をMP4と同じとなるようにする >>>>> ここから
+                        //string fileNumberText = i.ToString(fileNumberFormat);
+                        //string saveName = string.Format(CommonConsts.File.PngFileFormat, fileNumberText);
+                        //----------
+                        string saveName = string.Format(CommonConsts.File.PngFileFormat, outputFilename, i);
+                        //ファイル名をMP4と同じとなるようにする <<<<< ここまで
                         string savePath = System.IO.Path.Combine(outputFolder, saveName);
                         gif.Save(savePath, System.Drawing.Imaging.ImageFormat.Png);
 
@@ -386,7 +391,12 @@ namespace MicroSign.Core.ViewModels
                 else
                 {
                     //要素が無い場合は何もしない
-                    this.SetSelectAnimationImage(MainWindowViewModel.InitializeValues.SelectedAnimationImageItem);
+                    //2026.06.05:CS)杉原:複数選択対応 >>>>> ここから
+                    //this.SetSelectAnimationImage(MainWindowViewModel.InitializeValues.SelectedAnimationImageItem);
+                    //----------
+                    // >> 選択解除する
+                    this.UnselectAnimationImages();
+                    //2026.06.05:CS)杉原:複数選択対応 <<<<< ここまで
                 }
             }
 

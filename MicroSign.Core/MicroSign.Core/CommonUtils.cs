@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace MicroSign.Core
 {
@@ -1650,6 +1652,46 @@ namespace MicroSign.Core
                 CommonLogger.Warn("COM解放処理で例外発生", ex);
             }
         }
+
+        /// <summary>
+        /// Min-Maxの範囲に制限します
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static double Clamp(double min, double max, double value)
+        {
+            double v = Math.Min(Math.Max(min, value), max);
+            return v;
+        }
+
+        /// <summary>
+        /// BGR32バッファ生成
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <returns></returns>
+        public static byte[] CreateBgr32Buff(int width, int height)
+        {
+            int imageStride = width * MicroSignConsts.Clip.BitmapStride;
+            int imageSize = imageStride * height;
+            byte[] rgb32buffer = new byte[imageSize];
+            return rgb32buffer;
+        }
+
+        /// <summary>
+        /// BGR32バッファ生成
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <returns></returns>
+        public static WriteableBitmap CreateBgr32Bitmap(int width, int height)
+        {
+            WriteableBitmap wbitmap = new WriteableBitmap(width, height, CommonConsts.DPIs.DIP, CommonConsts.DPIs.DIP, MicroSignConsts.Clip.BitmapFormat, null);
+            return wbitmap;
+        }
+
 
     }
 }

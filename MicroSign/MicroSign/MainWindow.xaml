@@ -25,7 +25,7 @@
         <Grid x:Name="NaviPanel" navi:WpfNavigationController.Enabled="True">
             <Grid>
                 <Grid.DataContext>
-                    <vms:MainWindowViewModel x:Name="ViewModel" ClipMp4Request="ViewModel_ClipMp4Request"/>
+                    <vms:MainWindowViewModel x:Name="ViewModel" Mp4ClipRequest="ViewModel_Mp4ClipRequest"/>
                 </Grid.DataContext>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100"/>
@@ -385,11 +385,12 @@
                         </Button>
                     </Grid>
 
-                    <ListView x:Name="TimeLineView" Style="{StaticResource ImageListViewStyle}" d:ItemsSource="{d:SampleData ItemCount=8}" ItemsSource="{Binding AnimationImages}" SelectedItem="{Binding SelectedAnimationImageItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Grid.Row="4" SelectionMode="Single" AllowDrop="True" PreviewDrop="ListView_PreviewDrop" PreviewDragOver="ListView_PreviewDragOver">
+                    <ListView x:Name="TimeLineView" Style="{StaticResource ImageListViewStyle}" d:ItemsSource="{d:SampleData ItemCount=8}" ItemsSource="{Binding AnimationImages}"  SelectedItem="{Binding SelectedAnimationImageItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Grid.Row="4" SelectionMode="Extended" AllowDrop="True" PreviewDrop="ListView_PreviewDrop" PreviewDragOver="ListView_PreviewDragOver">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="BorderThickness" Value="1"/>
                                 <Setter Property="Padding" Value="0"/>
+                                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 <EventSetter Event="MouseDoubleClick" Handler="AnimationImageItem_MouseDoubleClick"/>
                             </Style>
                         </ListView.ItemContainerStyle>
