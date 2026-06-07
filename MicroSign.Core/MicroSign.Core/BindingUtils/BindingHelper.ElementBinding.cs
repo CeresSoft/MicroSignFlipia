@@ -121,7 +121,7 @@ namespace MicroSign.Core
             if (target == null)
             {
                 //取得できなかった場合はエラー終了
-                CommonLogger.Warn($"ターゲットエレメントが見つかりませんでした [name='{targetElementName}' property={targetPropertyName}' vm.property='{pname}']");
+                LOGGER.Warn($"ターゲットエレメントが見つかりませんでした [name='{targetElementName}' property={targetPropertyName}' vm.property='{pname}']");
                 return;
             }
 
@@ -156,7 +156,7 @@ namespace MicroSign.Core
                     if (obj == null)
                     {
                         //生成失敗の場合
-                        CommonLogger.Warn($"ValueConverterの生成に失敗しました [name='{targetElementName}' property={targetPropertyName}' vm.property='{pname}']");
+                        LOGGER.Warn($"ValueConverterの生成に失敗しました [name='{targetElementName}' property={targetPropertyName}' vm.property='{pname}']");
                         return;
                     }
 
@@ -165,14 +165,14 @@ namespace MicroSign.Core
                     if (converter == null)
                     {
                         //キャストできない場合はエラー終了
-                        CommonLogger.Warn($"IValueConverterにキャストできませんでした [name='{targetElementName}' property={targetPropertyName}' vm.property='{pname}']");
+                        LOGGER.Warn($"IValueConverterにキャストできませんでした [name='{targetElementName}' property={targetPropertyName}' vm.property='{pname}']");
                         return;
                     }
                 }
                 catch (Exception ex)
                 {
                     //例外が発生した場合握りつぶして終了
-                    CommonLogger.Warn($"ValueConverterの生成で例外発生 [name='{targetElementName}' property={targetPropertyName}' vm.property='{pname}']", ex);
+                    LOGGER.WarnEx($"ValueConverterの生成で例外発生 [name='{targetElementName}' property={targetPropertyName}' vm.property='{pname}']", ex);
                     return;
                 }
             }
@@ -194,13 +194,13 @@ namespace MicroSign.Core
             if (dp == null)
             {
                 //フィールド値が取得できない場合はエラー終了
-                CommonLogger.Warn($"ターゲットにプロパティが見つかりませんでした [name='{targetElementName}' property={targetPropertyName}' vm.property='{pname}']");
+                LOGGER.Warn($"ターゲットにプロパティが見つかりませんでした [name='{targetElementName}' property={targetPropertyName}' vm.property='{pname}']");
                 return;
             }
 
             //バインディング
             BindingHelper.SetBinding(target, dp, vm, pname, converter, param);
-            CommonLogger.Info($"ターゲットプロパティをバインドしました [name='{targetElementName}' property={targetPropertyName}' vm.property='{pname}']");
+            LOGGER.Info($"ターゲットプロパティをバインドしました [name='{targetElementName}' property={targetPropertyName}' vm.property='{pname}']");
         }
 
         /// <summary>
@@ -336,7 +336,7 @@ namespace MicroSign.Core
             if (dp == null)
             {
                 //フィールド値が取得できない場合はエラー終了
-                CommonLogger.Warn($"ターゲットにプロパティが存在しません [name='{targetElementName}' property='{targetPropertyName}' vm.property='{pname}'");
+                LOGGER.Warn($"ターゲットにプロパティが存在しません [name='{targetElementName}' property='{targetPropertyName}' vm.property='{pname}'");
                 return;
             }
 
@@ -351,7 +351,7 @@ namespace MicroSign.Core
                     if (obj == null)
                     {
                         //生成失敗の場合
-                        CommonLogger.Warn($"ValueConverterの生成に失敗しました [name='{targetElementName}' property='{targetPropertyName}' vm.property='{pname}'");
+                        LOGGER.Warn($"ValueConverterの生成に失敗しました [name='{targetElementName}' property='{targetPropertyName}' vm.property='{pname}'");
                         return;
                     }
 
@@ -360,21 +360,21 @@ namespace MicroSign.Core
                     if (converter == null)
                     {
                         //キャストできない場合はエラー終了
-                        CommonLogger.Warn($"IValueConverterにキャストできませんでした [name='[targetElementName]' property='{targetPropertyName}' vm.property='{pname}'");
+                        LOGGER.Warn($"IValueConverterにキャストできませんでした [name='[targetElementName]' property='{targetPropertyName}' vm.property='{pname}'");
                         return;
                     }
                 }
                 catch (Exception ex)
                 {
                     //例外が発生した場合握りつぶして終了
-                    CommonLogger.Warn($"ValueConverterの生成で例外発生 [name='{targetElementName}' property='{targetPropertyName}' vm.property='{pname}'", ex);
+                    LOGGER.WarnEx($"ValueConverterの生成で例外発生 [name='{targetElementName}' property='{targetPropertyName}' vm.property='{pname}'", ex);
                     return;
                 }
             }
 
             //バインディング
             BindingHelper.SetBinding(target, dp, value, pname, converter, param);
-            CommonLogger.Info($"ターゲットプロパティをバインドしました [name='{targetElementName}' property='{targetPropertyName}' vm.property='{pname}'");
+            LOGGER.Info($"ターゲットプロパティをバインドしました [name='{targetElementName}' property='{targetPropertyName}' vm.property='{pname}'");
         }
 
         /// <summary>
@@ -469,7 +469,7 @@ namespace MicroSign.Core
                 if (fi == null)
                 {
                     //フィールドが取得できない場合はエラー終了
-                    CommonLogger.Warn($"ターゲットプロパティが見つからない [property='{propertyName}'");
+                    LOGGER.Warn($"ターゲットプロパティが見つからない [property='{propertyName}'");
                     return null;
                 }
 

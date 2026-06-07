@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Media.Imaging;
 
 namespace MicroSign.Core
 {
@@ -13,6 +14,18 @@ namespace MicroSign.Core
     /// </summary>
     public static class CommonUtils
     {
+        //2026.06.07:CS)杉原:LOGGERを修正 >>>>> ここから
+        ///// <summary>
+        ///// LOG4NETのロガー
+        ///// </summary>
+        //private static readonly log4net.ILog LOGGER = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //----------
+        /// <summary>
+        /// LOG4NETのロガー
+        /// </summary>
+        private static readonly MicroSignLogger LOGGER = MicroSignLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //2026.06.07:CS)杉原:LOGGERを修正 <<<<< ここまで
+
         /// <summary>
         /// 文字列長さ取得
         /// </summary>
@@ -1598,5 +1611,98 @@ namespace MicroSign.Core
             //ここまできたら0～255の有効な整数
             return result;
         }
+
+        /// <summary>
+        /// COM解放処理
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <remarks>安全にCOMを解放します</remarks>
+        public static void SafeComRelease<T>(T? obj) where T : class
+        {
+            try
+            {
+                //インスタンス有効判定
+                if (obj == null)
+                {
+                    //NULLの場合は何もしない
+                    return;
+                }
+                else
+                {
+                    //非NULLの場合処理続行
+                }
+
+                //非NULLの場合COMオブジェクトか判定
+                bool isCom = System.Runtime.InteropServices.Marshal.IsComObject(obj);
+                if (isCom)
+                {
+                    //COMならReleaseComObject()する
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                }
+                else
+                {
+                    //非COMの場合Disposableを実装しているか判定
+                    // >> COMオブジェクトだと誤認して呼び出している可能性があるので
+                    // >> 一応解放します
+                    IDisposable? disposable = obj as IDisposable;
+                    if (disposable == null)
+                    {
+                        //Disposableを実装していない場合何もしない
+                    }
+                    else
+                    {
+                        //Disposableを実装している場合Disposeを呼ぶ
+                        disposable.Dispose();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //例外は握りつぶす
+                LOGGER.WarnEx("COM解放処理で例外発生", ex);
+            }
+        }
+
+        /// <summary>
+        /// Min-Maxの範囲に制限します
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static double Clamp(double min, double max, double value)
+        {
+            double v = Math.Min(Math.Max(min, value), max);
+            return v;
+        }
+
+        /// <summary>
+        /// BGR32バッファ生成
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <returns></returns>
+        public static byte[] CreateBgr32Buff(int width, int height)
+        {
+            int imageStride = width * MicroSignConsts.Clip.BitmapStride;
+            int imageSize = imageStride * height;
+            byte[] rgb32buffer = new byte[imageSize];
+            return rgb32buffer;
+        }
+
+        /// <summary>
+        /// BGR32バッファ生成
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <returns></returns>
+        public static WriteableBitmap CreateBgr32Bitmap(int width, int height)
+        {
+            WriteableBitmap wbitmap = new WriteableBitmap(width, height, CommonConsts.DPIs.DIP, CommonConsts.DPIs.DIP, MicroSignConsts.Clip.BitmapFormat, null);
+            return wbitmap;
+        }
+
+
     }
 }

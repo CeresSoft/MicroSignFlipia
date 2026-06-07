@@ -12,6 +12,63 @@ namespace MicroSign.Core.Models
     partial class Model
     {
         /// <summary>
+        /// 文字レンダリングビットマップ生成結果
+        /// </summary>
+        public struct CreateTextRenderBitmapResult
+        {
+            /// <summary>
+            /// 成功フラグ
+            /// </summary>
+            public readonly bool IsSuccess;
+
+            /// <summary>
+            /// メッセージ
+            /// </summary>
+            public readonly string? Message;
+
+            /// <summary>
+            /// レンダービットマップ
+            /// </summary>
+            public readonly RenderTargetBitmap? RenderBitmap;
+
+            /// <summary>
+            /// コンストラクタ
+            /// </summary>
+            /// <param name="isSuccess">成功フラグ</param>
+            /// <param name="message">メッセージ</param>
+            /// <param name="correctedImage">補正画像</param>
+            private CreateTextRenderBitmapResult(bool isSuccess, string? message, RenderTargetBitmap? renderBitmap)
+            {
+                this.IsSuccess = isSuccess;
+                this.Message = message;
+                this.RenderBitmap = renderBitmap;
+            }
+
+            /// <summary>
+            /// 失敗
+            /// </summary>
+            /// <param name="message">メッセージ</param>
+            /// <returns></returns>
+            public static CreateTextRenderBitmapResult Failed(string message)
+            {
+                CreateTextRenderBitmapResult result = new CreateTextRenderBitmapResult(false, message, null);
+                return result;
+            }
+
+            /// <summary>
+            /// 成功
+            /// </summary>
+            /// <param name="renderBitmap">レンダービットマップ</param>
+            /// <returns></returns>
+            public static CreateTextRenderBitmapResult Success(RenderTargetBitmap? renderBitmap)
+            {
+                CreateTextRenderBitmapResult result = new CreateTextRenderBitmapResult(true, null, renderBitmap);
+                return result;
+            }
+        }
+
+
+        /// <summary>
         /// 文字レンダリングビットマップ生成
         /// </summary>
         /// <param name="fontSize">フォントサイズ</param>
@@ -20,7 +77,7 @@ namespace MicroSign.Core.Models
         /// <param name="minWidth">横幅</param>
         /// <param name="minHeight">縦幅</param>
         /// <returns></returns>
-        public (bool IsSuccess, string Message, RenderTargetBitmap? RenderBitmap) CreateTextRenderBitmap(int fontSize, int fontColor, string? displayText, double minWidth, double minHeight)
+        public CreateTextRenderBitmapResult CreateTextRenderBitmap(int fontSize, int fontColor, string? displayText, double minWidth, double minHeight)
         {
             //余白なしで生成
             Thickness padding = new Thickness();
@@ -37,7 +94,7 @@ namespace MicroSign.Core.Models
         /// <param name="height">縦幅</param>
         /// <param name="padding">余白</param>
         /// <returns></returns>
-        public (bool IsSuccess, string Message, RenderTargetBitmap? RenderBitmap) CreateTextRenderBitmap(int fontSize, int fontColor, string? displayText, double width, double height, Thickness padding)
+        public CreateTextRenderBitmapResult CreateTextRenderBitmap(int fontSize, int fontColor, string? displayText, double width, double height, Thickness padding)
         {
             //表示文字色取得
             Brush brush = Brushes.White;
@@ -100,7 +157,9 @@ namespace MicroSign.Core.Models
             }
             catch (Exception ex)
             {
-                return (false, CommonLogger.Warn($"文字列コントロールの生成に失敗しました (FontSize={fontSize}, FontColor={fontColor}, DisplayText='{displayText}')", ex), null);
+                string msg = $"文字列コントロールの生成に失敗しました (FontSize={fontSize}, FontColor={fontColor}, DisplayText='{displayText}')";
+                LOGGER.WarnEx(msg, ex);
+                return CreateTextRenderBitmapResult.Failed(msg);
             }
 
             //文字列コントロールが収まるビットマップのサイズを計算
@@ -121,8 +180,9 @@ namespace MicroSign.Core.Models
                 else
                 {
                     //失敗の場合
-                    CommonLogger.Warn($"レンダリングターゲットビットマップの生成に失敗しました (Width={textWidth}, Height={textHeight})");
-                    return (false, ret.Message, null);
+                    string msg = $"{ret.Message}";
+                    LOGGER.Warn($"レンダリングターゲットビットマップの生成に失敗しました (Width={textWidth}, Height={textHeight}) {msg}");
+                    return CreateTextRenderBitmapResult.Failed(msg);
                 }
             }
 
@@ -130,7 +190,9 @@ namespace MicroSign.Core.Models
             if (renderBitmap == null)
             {
                 //無効の場合は失敗で終了
-                return (false, CommonLogger.Warn("レンダリングターゲットビットマップが無効です"), null);
+                string msg = "レンダリングターゲットビットマップが無効です";
+                LOGGER.Warn(msg);
+                return CreateTextRenderBitmapResult.Failed(msg);
             }
             else
             {
@@ -145,11 +207,14 @@ namespace MicroSign.Core.Models
             }
             catch (Exception ex)
             {
-                return (false, CommonLogger.Warn($"レンダリングターゲットビットマップの描写に失敗しました", ex), null);
+                string msg = $"レンダリングターゲットビットマップの描写に失敗しました";
+                LOGGER.WarnEx(msg, ex);
+                return CreateTextRenderBitmapResult.Failed(msg);
             }
 
             //ここまで来たら成功で終了
-            return (true, string.Empty, renderBitmap);
+            return CreateTextRenderBitmapResult.Success(renderBitmap);
         }
+
     }
 }

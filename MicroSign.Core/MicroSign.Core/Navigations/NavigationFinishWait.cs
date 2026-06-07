@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Threading;
-using LOGGER = MicroSign.Core.CommonLogger;
+using LOGGER = MicroSign.Core.MicroSignLogger;
 
 #nullable disable //Variousから移植したコードなので、Null非許容警告を無効化します
 
@@ -8,6 +8,18 @@ namespace MicroSign.Core.Navigations
 {
     public class NavigationFinishWait
     {
+        //2026.06.07:CS)杉原:LOGGERを修正 >>>>> ここから
+        ///// <summary>
+        ///// LOG4NETのロガー
+        ///// </summary>
+        //private static readonly log4net.ILog LOGGER = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //----------
+        /// <summary>
+        /// LOG4NETのロガー
+        /// </summary>
+        private static readonly MicroSignLogger LOGGER = MicroSignLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //2026.06.07:CS)杉原:LOGGERを修正 <<<<< ここまで
+
         /// <summary>
         /// 完了フラグ
         /// </summary>
@@ -114,7 +126,7 @@ namespace MicroSign.Core.Navigations
                 catch (Exception ex)
                 {
                     //例外は握りつぶす
-                    LOGGER.Warn("DoEventで例外発生", ex);
+                    LOGGER.WarnEx("DoEventで例外発生", ex);
                 }
 
                 //ループ判定
@@ -143,7 +155,7 @@ namespace MicroSign.Core.Navigations
                 catch (Exception ex)
                 {
                     //例外は握りつぶす
-                    LOGGER.Warn("戻りコールバック呼出で例外発生", ex);
+                    LOGGER.WarnEx("戻りコールバック呼出で例外発生", ex);
                 }
             }
 

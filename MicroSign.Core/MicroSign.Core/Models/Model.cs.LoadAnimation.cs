@@ -170,7 +170,7 @@ namespace MicroSign.Core.Models
                 {
                     //有効の場合はフルパスに変換
                     string? soundFullPath = System.IO.Path.Combine(baseDir, soundFilePath!);
-                    CommonLogger.Debug($"サウンドフルパス (path='{soundFullPath}')");
+                    LOGGER.Debug($"サウンドフルパス (path='{soundFullPath}')");
                     saveSetting.SoundFilePath = soundFullPath;
                 }
             }
@@ -261,7 +261,7 @@ namespace MicroSign.Core.Models
             if (saveData == null)
             {
                 //無効の場合は無視する
-                CommonLogger.Debug($"[{index}]保存データ無効");
+                LOGGER.Debug($"[{index}]保存データ無効");
                 return LoadAnimationImplResult.Ignore();
             }
             else
@@ -275,17 +275,21 @@ namespace MicroSign.Core.Models
             {
                 case AnimationImageType.ImageFile:
                     //画像ファイルの場合
-                    CommonLogger.Debug($"[{index}]アニメーション画像タイプ =　画像ファイル");
+                    LOGGER.Debug($"[{index}]アニメーション画像タイプ =　画像ファイル");
                     return this.LoadAnimationImplByImageFile(baseDir, index, saveData);
 
                 case AnimationImageType.Text:
                     //テキストの場合
-                    CommonLogger.Debug($"[{index}]アニメーション画像タイプ =　テキスト");
+                    LOGGER.Debug($"[{index}]アニメーション画像タイプ =　テキスト");
                     return this.LoadAnimationImplByText(baseDir, matrixLedWidth, matrixLedHeight, index, saveData);
 
                 default:
                     //それ以外の場合
-                    return LoadAnimationImplResult.Failed(CommonLogger.Warn($"[{index}]不明なアニメーション画像タイプです ({imageType})"));
+                    {
+                        string msg = $"[{index}]不明なアニメーション画像タイプです ({imageType})";
+                        LOGGER.Warn(msg);
+                        return LoadAnimationImplResult.Failed(msg);
+                    }
             }
         }
 
@@ -302,13 +306,13 @@ namespace MicroSign.Core.Models
             if (saveData == null)
             {
                 //無効の場合は無視する
-                CommonLogger.Debug($"[{index}]保存データ無効");
+                LOGGER.Debug($"[{index}]保存データ無効");
                 return LoadAnimationImplResult.Success(null);
             }
             else
             {
                 //有効の場合は処理続行
-                CommonLogger.Debug($"[{index}]保存データ有効");
+                LOGGER.Debug($"[{index}]保存データ有効");
             }
 
             //有効の場合はコピーする
@@ -317,7 +321,9 @@ namespace MicroSign.Core.Models
             if (imagePath == null)
             {
                 //画像パスが無効の場合は終了
-                return LoadAnimationImplResult.Failed(CommonLogger.Warn($"[{index}]読込した画像パスが無効です"));
+                string msg = $"[{index}]読込した画像パスが無効です";
+                LOGGER.Warn(msg);
+                return LoadAnimationImplResult.Failed(msg);
             }
             else
             {
@@ -325,30 +331,34 @@ namespace MicroSign.Core.Models
                 if (isNull)
                 {
                     //画像パスが無効の場合は終了
-                    return LoadAnimationImplResult.Failed(CommonLogger.Warn($"[{index}]読込した画像パスが空です"));
+                    string msg = $"[{index}]読込した画像パスが空です";
+                    LOGGER.Warn(msg);
+                    return LoadAnimationImplResult.Failed(msg);
                 }
                 else
                 {
                     //有効の場合は処理続行
-                    CommonLogger.Debug($"[{index}]読込した画像パス有効 (path='{imagePath}')");
+                    LOGGER.Debug($"[{index}]読込した画像パス有効 (path='{imagePath}')");
                 }
             }
 
             // >> 画像パスをフルパスに変換
             string? imageFullPath = System.IO.Path.Combine(baseDir, imagePath);
-            CommonLogger.Debug($"[{index}]読込した画像フルパス (path='{imageFullPath}')");
+            LOGGER.Debug($"[{index}]読込した画像フルパス (path='{imageFullPath}')");
 
             // >> 画像を読込
             BitmapSource? bmp = this.GetImage(imageFullPath);
             if (bmp == null)
             {
                 //読込出来ない場合は終了
-                return LoadAnimationImplResult.Failed(CommonLogger.Warn($"[{index}]画像が読みできませんでした (path='{imageFullPath}')"));
+                string msg = $"[{index}]画像が読みできませんでした (path='{imageFullPath}')";
+                LOGGER.Warn(msg);
+                return LoadAnimationImplResult.Failed(msg);
             }
             else
             {
                 //有効の場合は処理続行
-                CommonLogger.Debug($"[{index}]画像読込成功 (path='{imageFullPath}')");
+                LOGGER.Debug($"[{index}]画像読込成功 (path='{imageFullPath}')");
             }
 
             //2025.08.12:CS)杉原:パレット処理の流れを変更 >>>>> ここから
@@ -411,13 +421,13 @@ namespace MicroSign.Core.Models
             if (saveData == null)
             {
                 //無効の場合は無視する
-                CommonLogger.Debug($"[{index}]保存データ無効");
+                LOGGER.Debug($"[{index}]保存データ無効");
                 return LoadAnimationImplResult.Ignore();
             }
             else
             {
                 //有効の場合は処理続行
-                CommonLogger.Debug($"[{index}]保存データ有効");
+                LOGGER.Debug($"[{index}]保存データ有効");
             }
 
             //レンダーターゲットビットマップを生成
@@ -431,7 +441,8 @@ namespace MicroSign.Core.Models
                 else
                 {
                     //失敗の場合は終了
-                    return LoadAnimationImplResult.Failed(CommonLogger.Warn($"[{index}]レンダーターゲットビットマップの生成に失敗 (理由='{ret.Message}')"));
+                    string msg = $"[{index}]レンダーターゲットビットマップの生成に失敗 (理由='{ret.Message}')";
+                    return LoadAnimationImplResult.Failed(msg);
                 }
 
                 //生成したレンダーターゲットビットマップを取得
@@ -453,7 +464,9 @@ namespace MicroSign.Core.Models
                 else
                 {
                     //失敗の場合は終了
-                    return LoadAnimationImplResult.Failed(CommonLogger.Warn($"[{index}]文字の描写に失敗 (理由='{ret.Message}')"));
+                    string msg = $"[{index}]文字の描写に失敗 (理由='{ret.Message}')";
+                    LOGGER.Warn(msg);
+                    return LoadAnimationImplResult.Failed(msg);
                 }
             }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Imaging;
 
 namespace MicroSign.Core
 {
@@ -40,6 +41,26 @@ namespace MicroSign.Core
             /// SPIFFS生成パス
             /// </summary>
             public const string SPIFFSPath = @".\Temp\SPIFFS.bin";
+
+            /// <summary>
+            /// ログ領域に保存する連結した画像のファイル名
+            /// </summary>
+            /// <remarks>
+            /// log4netのログ出力先が「${USERPROFILE}\MicroSign\Log\log.txt」なので
+            /// ユーザプロファイル配下の.\MicroSign\Logに保存します
+            /// ログディレクトリはlog4netから取得するのでファイル名だけ指定します
+            /// </remarks>
+            public const string LogAnimationImageFilename = @"AnimationImage.png";
+
+            /// <summary>
+            /// ログ領域に保存する減色した画像のファイル名
+            /// </summary>
+            /// <remarks>
+            /// log4netのログ出力先が「${USERPROFILE}\MicroSign\Log\log.txt」なので
+            /// ユーザプロファイル配下の.\MicroSign\Logに保存します
+            /// ログディレクトリはlog4netから取得するのでファイル名だけ指定します
+            /// </remarks>
+            public const string LogColorReductionImageFilename = @"ColorReductionImage.png";
         }
 
         /// <summary>
@@ -293,6 +314,37 @@ namespace MicroSign.Core
             /// 再サンプル読込バッファサイズ
             /// </summary>
             public const int ResampleReadBuffSize = 4096;
+        }
+
+        /// <summary>
+        /// クリップ処理向け定義
+        /// </summary>
+        public static class Clip
+        {
+            /// <summary>
+            /// デフォルト倍率
+            /// </summary>
+            public const double DefaultScale = 1;
+
+            /// <summary>
+            /// デフォルトX始点
+            /// </summary>
+            public const int DefaultX = 0;
+
+            /// <summary>
+            /// デフォルトY始点
+            /// </summary>
+            public const int DefaultY = 0;
+
+            /// <summary>
+            /// ビットマップのピクセルフォーマット
+            /// </summary>
+            public static readonly System.Windows.Media.PixelFormat BitmapFormat = System.Windows.Media.PixelFormats.Bgr32;
+
+            /// <summary>
+            /// ビットマップのストライド
+            /// </summary>
+            public static readonly int BitmapStride = BitmapFormat.BitsPerPixel / CommonConsts.BitCount.BYTE;
         }
     }
 }

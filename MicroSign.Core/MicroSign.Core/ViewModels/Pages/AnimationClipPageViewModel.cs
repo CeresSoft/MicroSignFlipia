@@ -7,6 +7,18 @@ namespace MicroSign.Core.ViewModels.Pages
     /// </summary>
     public partial class AnimationClipPageViewModel : OkCancelNavigationViewModelBase
     {
+        //2026.06.07:CS)杉原:LOGGERを修正 >>>>> ここから
+        ///// <summary>
+        ///// LOG4NETのロガー
+        ///// </summary>
+        //private static readonly log4net.ILog LOGGER = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //----------
+        /// <summary>
+        /// LOG4NETのロガー
+        /// </summary>
+        private static readonly MicroSignLogger LOGGER = MicroSignLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //2026.06.07:CS)杉原:LOGGERを修正 <<<<< ここまで
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -22,19 +34,19 @@ namespace MicroSign.Core.ViewModels.Pages
         /// <param name="parameter"></param>
         private void OnMoveDirectionSelect(object? parameter)
         {
-            CommonLogger.Debug($"移動方向選択クリック parameter='{parameter}'");
+            LOGGER.Debug($"移動方向選択クリック parameter='{parameter}'");
 
             //パラメータ有効判定
             if (parameter is AnimationMoveDirection direction)
             {
                 //移動方向を変更
-                CommonLogger.Debug($"移動方向変更 MoveDirection='{direction}'");
+                LOGGER.Debug($"移動方向変更 MoveDirection='{direction}'");
                 this.MoveDirection = direction;
             }
             else
             {
                 //型が異なる場合は何もしない
-                CommonLogger.Warn($"AnimationMoveDirection型以外のパラメータです");
+                LOGGER.Warn($"AnimationMoveDirection型以外のパラメータです");
             }
         }
 

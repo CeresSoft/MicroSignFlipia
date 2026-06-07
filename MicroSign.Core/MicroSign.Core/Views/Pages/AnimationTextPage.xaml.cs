@@ -15,6 +15,18 @@ namespace MicroSign.Core.Views.Pages
     /// </summary>
     public partial class AnimationTextPage : UserControl
     {
+        //2026.06.07:CS)杉原:LOGGERを修正 >>>>> ここから
+        ///// <summary>
+        ///// LOG4NETのロガー
+        ///// </summary>
+        //private static readonly log4net.ILog LOGGER = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //----------
+        /// <summary>
+        /// LOG4NETのロガー
+        /// </summary>
+        private static readonly MicroSignLogger LOGGER = MicroSignLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //2026.06.07:CS)杉原:LOGGERを修正 <<<<< ここまで
+
         /// <summary>
         /// AnimationTextPage結果
         /// </summary>
@@ -278,14 +290,14 @@ namespace MicroSign.Core.Views.Pages
                 int matrixLedHeight = vm.MatrixLedHeight;
 
                 //アニメーション切り抜きページを表示
-                CommonLogger.Debug("アニメーション切り抜きページを表示");
+                LOGGER.Debug("アニメーション切り抜きページを表示");
                 MicroSign.Core.Views.Pages.AnimationClipPage page = new MicroSign.Core.Views.Pages.AnimationClipPage(matrixLedWidth, matrixLedHeight, image, savePath, Consts.DefaultMoveSpeed);
                 // >> 画面からの戻りを待つ
                 object result = this.NavigationCallWait(page, null);
                 if (result == null)
                 {
                     //戻り値がnullの場合、成功でも失敗でもないので何もしない
-                    CommonLogger.Debug("アニメーション切り抜きページの戻り値なし");
+                    LOGGER.Debug("アニメーション切り抜きページの戻り値なし");
                     return;
                 }
                 else
@@ -302,17 +314,17 @@ namespace MicroSign.Core.Views.Pages
                     {
                         case NavigationResultKind.Success:
                             //成功の場合は処理続行
-                            CommonLogger.Debug("アニメーション切り抜き追加成功");
+                            LOGGER.Debug("アニメーション切り抜き追加成功");
                             break;
 
                         case NavigationResultKind.Cancel:
                             //キャンセルの場合は何もせずに終了
-                            CommonLogger.Info("アニメーション切り抜きキャンセル");
+                            LOGGER.Info("アニメーション切り抜きキャンセル");
                             return;
 
                         default:
                             //それ以外は失敗
-                            CommonLogger.Warn("アニメーション切り抜き失敗 (理由={resultKind}')");
+                            LOGGER.Warn("アニメーション切り抜き失敗 (理由={resultKind}')");
                             this.NavigationOverwrap(new WarnMessageBox($"アニメーション切り抜きに失敗しました (理由={resultKind}')"));
                             return;
                     }
@@ -379,7 +391,9 @@ namespace MicroSign.Core.Views.Pages
             }
             catch (Exception ex)
             {
-                this.ViewModel.SetStatus(AnimationTextPageStateKind.Failed, CommonLogger.Warn("Loadedで例外が発生しました", ex));
+                string msg = "Loadedで例外が発生しました";
+                LOGGER.WarnEx(msg, ex);
+                this.ViewModel.SetStatus(AnimationTextPageStateKind.Failed, msg);
             }
         }
     }

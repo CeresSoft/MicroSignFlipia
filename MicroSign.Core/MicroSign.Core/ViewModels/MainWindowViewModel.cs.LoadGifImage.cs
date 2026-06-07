@@ -1,15 +1,6 @@
-﻿using MicroSign.Core.Models.AnimationSaveSettings;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
+﻿using System;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Interop;
 using System.Windows.Media.Imaging;
-using static MicroSign.Core.CommonConsts;
 
 namespace MicroSign.Core.ViewModels
 {
@@ -72,7 +63,7 @@ namespace MicroSign.Core.ViewModels
         }
 
         /// <summary>
-        /// 
+        /// GIF読込
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -85,35 +76,36 @@ namespace MicroSign.Core.ViewModels
                 {
                     //無効の場合は終了
                     string msg = "読込先パスが無効です";
-                    CommonLogger.Warn(msg);
+                    LOGGER.Warn(msg);
                     return LoadGifAnimationResult.Failed(msg);
                 }
                 else
                 {
                     //有効の場合は処理続行
-                    CommonLogger.Debug($"読込先パス有効  (path='{path}')");
+                    LOGGER.Debug($"読込先パス有効  (path='{path}')");
                 }
             }
 
             //出力フォルダーを生成
             string? outputFolder = null;
+            string? outputFilename = null;
             try
             {
                 //拡張子をのぞいたファイル名を取得
-                string? fname = System.IO.Path.GetFileNameWithoutExtension(path);
+                outputFilename = System.IO.Path.GetFileNameWithoutExtension(path);
                 {
-                    bool isNull = string.IsNullOrEmpty(fname);
+                    bool isNull = string.IsNullOrEmpty(outputFilename);
                     if (isNull)
                     {
                         //無効の場合は修了
                         string msg = $"ファイル名の取得に失敗しました (path='{path}')";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return LoadGifAnimationResult.Failed(msg);
                     }
                     else
                     {
                         //取得できた場合は処理続行
-                        CommonLogger.Debug($"ファイル名の取得成功  (path='{path}' -> '{fname}')");
+                        LOGGER.Debug($"ファイル名の取得成功  (path='{path}' -> '{outputFilename}')");
                     }
                 }
 
@@ -125,29 +117,29 @@ namespace MicroSign.Core.ViewModels
                     {
                         //無効の場合は修了
                         string msg = $"ディレクトリの取得に失敗しました (path='{path}')";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return LoadGifAnimationResult.Failed(msg);
                     }
                     else
                     {
                         //取得できた場合は処理続行
-                        CommonLogger.Debug($"ディレクトリの取得成功  (path='{path}' -> '{dir}')");
+                        LOGGER.Debug($"ディレクトリの取得成功  (path='{path}' -> '{dir}')");
                     }
                 }
 
                 //出力フォルダ名を生成
-                outputFolder = System.IO.Path.Combine(dir!, fname!);
-                CommonLogger.Debug($"出力先フォルダ ('{dir}' + '{fname}' -> '{outputFolder}')");
+                outputFolder = System.IO.Path.Combine(dir!, outputFilename!);
+                LOGGER.Debug($"出力先フォルダ ('{dir}' + '{outputFilename}' -> '{outputFolder}')");
 
                 //出力フォルダを作成
-                CommonLogger.Debug($"出力先フォルダの生成  ('{outputFolder}')");
+                LOGGER.Debug($"出力先フォルダの生成  ('{outputFolder}')");
                 System.IO.Directory.CreateDirectory(outputFolder);
             }
             catch (Exception ex)
             {
                 //例外は握りつぶす
                 string msg = $"出力フォルダの作成で例外が発生しました (path='{path}' / outputFolder='{outputFolder}') ({ex})";
-                CommonLogger.Warn(msg, ex);
+                LOGGER.WarnEx(msg, ex);
                 return LoadGifAnimationResult.Failed(msg);
             }
 
@@ -166,7 +158,7 @@ namespace MicroSign.Core.ViewModels
                     {
                         //無効の場合は終了
                         string msg = "フレームの表示時間プロパティ取得失敗";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return LoadGifAnimationResult.Failed(msg);
                     }
                     else
@@ -180,7 +172,7 @@ namespace MicroSign.Core.ViewModels
                     {
                         //無効の場合は修了
                         string msg = "フレームの表示時間プロパティのValue取得失敗";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return LoadGifAnimationResult.Failed(msg);
                     }
                     else
@@ -198,7 +190,7 @@ namespace MicroSign.Core.ViewModels
                     {
                         //フレームがない場合は修了
                         string msg = "アニメーションがサポートされていません";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return LoadGifAnimationResult.Failed(msg);
                     }
 
@@ -231,7 +223,7 @@ namespace MicroSign.Core.ViewModels
                     {
                         //フレーム数が無い場合は終了
                         string msg = "アニメーション画像ではありません";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return LoadGifAnimationResult.Failed(msg);
                     }
 
@@ -251,12 +243,16 @@ namespace MicroSign.Core.ViewModels
                         if (isFit)
                         {
                             //適合した場合は処理続行
+                            LOGGER.Debug($"パネルサイズに適合 (panel=[{panelWidth},{panelHeight}] == pixel=[{pixelWidth}, {pixelHeight}])");
                         }
                         else
                         {
+#warning GIFで画像サイズが異なる場合はクリップする
+
+
                             //適合しない場合は失敗にする
-                            string msg = $"パネルサイズに適合しない画像です (path='{path}')";
-                            CommonLogger.Warn(msg);
+                            string msg = $"パネルサイズに適合しない画像です (path='{path}') (panel=[{panelWidth},{panelHeight}] == pixel=[{pixelWidth}, {pixelHeight}])";
+                            LOGGER.Warn(msg);
                             return LoadGifAnimationResult.Failed(msg);
                         }
                     }
@@ -281,8 +277,12 @@ namespace MicroSign.Core.ViewModels
                         gif.SelectActiveFrame(fd, i);
 
                         //PNGで保存
-                        string fileNumberText = i.ToString(fileNumberFormat);
-                        string saveName = string.Format(CommonConsts.File.PngFileFormat, fileNumberText);
+                        //ファイル名をMP4と同じとなるようにする >>>>> ここから
+                        //string fileNumberText = i.ToString(fileNumberFormat);
+                        //string saveName = string.Format(CommonConsts.File.PngFileFormat, fileNumberText);
+                        //----------
+                        string saveName = string.Format(CommonConsts.File.PngFileFormat, outputFilename, i);
+                        //ファイル名をMP4と同じとなるようにする <<<<< ここまで
                         string savePath = System.IO.Path.Combine(outputFolder, saveName);
                         gif.Save(savePath, System.Drawing.Imaging.ImageFormat.Png);
 
@@ -308,13 +308,13 @@ namespace MicroSign.Core.ViewModels
                         {
                             //取得出来なかった場合は終了
                             string msg = $"画像ファイルの読込に失敗しました (path='{savePath}')";
-                            CommonLogger.Warn(msg);
+                            LOGGER.Warn(msg);
                             return LoadGifAnimationResult.Failed(msg);
                         }
                         else
                         {
                             //有効の場合は処理続行
-                            CommonLogger.Debug($"画像ファイル読込成功  (path='{savePath}')");
+                            LOGGER.Debug($"画像ファイル読込成功  (path='{savePath}')");
                         }
 
                         //2025.08.12:CS)杉原:パレット処理の流れを変更 >>>>> ここから
@@ -364,7 +364,7 @@ namespace MicroSign.Core.ViewModels
             catch (Exception ex)
             {
                 string msg = $"GIFファイルの解析に失敗しました ({ex})";
-                CommonLogger.Warn(msg, ex);
+                LOGGER.WarnEx(msg, ex);
                 return LoadGifAnimationResult.Failed(msg);
             }
 
@@ -382,7 +382,12 @@ namespace MicroSign.Core.ViewModels
                 else
                 {
                     //要素が無い場合は何もしない
-                    this.SetSelectAnimationImage(MainWindowViewModel.InitializeValues.SelectedAnimationImageItem);
+                    //2026.06.05:CS)杉原:複数選択対応 >>>>> ここから
+                    //this.SetSelectAnimationImage(MainWindowViewModel.InitializeValues.SelectedAnimationImageItem);
+                    //----------
+                    // >> 選択解除する
+                    this.UnselectAnimationImages();
+                    //2026.06.05:CS)杉原:複数選択対応 <<<<< ここまで
                 }
             }
 

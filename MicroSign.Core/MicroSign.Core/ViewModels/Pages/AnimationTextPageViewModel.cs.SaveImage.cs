@@ -90,7 +90,7 @@ namespace MicroSign.Core.ViewModels.Pages
             {
                 //例外は握りつぶす
                 string msg = $"PNG保存で例外が発生しました (path='{savePath}') ({ex})";
-                CommonLogger.Warn(msg, ex);
+                LOGGER.WarnEx(msg, ex);
                 return SaveImageResult.Failed(msg);
             }
 
@@ -132,12 +132,12 @@ namespace MicroSign.Core.ViewModels.Pages
             if (ret.IsSuccess)
             {
                 //成功の場合は続行
-                CommonLogger.Debug("スクロール用テキスト画像を生成に成功");
+                LOGGER.Debug("スクロール用テキスト画像を生成に成功");
             }
             else
             {
                 //失敗の場合は終了
-                CommonLogger.Warn($"スクロール用テキスト画像に失敗 ({ret.Message})");
+                LOGGER.Warn($"スクロール用テキスト画像に失敗 ({ret.Message})");
                 return null;
             }
 
