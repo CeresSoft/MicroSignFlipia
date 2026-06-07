@@ -1,13 +1,20 @@
-# MicroSign アニメーション作成アプリ
+# MicroSign Flipia (マイクロサイン フリピア)
 
-デジタルネイサージ「MicroSign」向けのアニメーション作成アプリケーションです
+マトリクスLEDを使ったデジタルネイサージの「MicroSign」向けの
+アニメーション作成アプリケーションです
+
+表示する画像を用意し、表示する時間を設定することで
+パラパラ漫画方式でアニメーションを作成します
+
+作成したアニメーションはMicroSign向けバイナリに変換します
+- MicroSignImage.bin というファイル名になります
 
 
 ## プロジェクト
 
-MicroSignシリーズの表示パネル用のアニメーションを作成するアプリケーションです
+MicroSignシリーズ向けのアニメーションを作成するアプリケーションです
 
-[MicroSign/MicroSign.sln](MicroSign/MicroSign.sln)
+[MicroSignFlipia/MicroSignFlipia.sln](MicroSignFlipia/MicroSignFlipia.sln)
 
 
 ~~実行するのに.NET8 が必要になります~~
@@ -23,7 +30,7 @@ MicroSignシリーズの表示パネル用のアニメーションを作成す�
 
 - v1.3.3.2から自己完結型のアプリとしたので.NET8のインストールは不要となりました
 
-- 動作ログは `<ユーザーフォルダ>\MicroSign\Log\` フォルダに出力されます
+- 動作ログは `<ユーザーフォルダ>\MicroSignFlipia\Log\` フォルダに出力されます
 
 
 ## サンプルアニメーション一覧
@@ -65,6 +72,12 @@ Clip Studio PAINTのアニメーション機能を使ってアニメーション
 
 
 # 更新履歴
+
+## v 1.5.2.2
+2026.06.07:CS)杉原
+
+- アプリケーションの名前をMicroSign Flipiaに決定
+- ログ出力方法を調整
 
 ## v 1.5.2.1
 2026.06.07:CS)杉原
