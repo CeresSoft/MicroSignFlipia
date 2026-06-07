@@ -836,7 +836,7 @@ namespace MicroSign.Core.ViewModels
             /// <summary>
             /// 選択フラグ初期値
             /// </summary>
-            public const bool IsSelect = false;
+            public const bool IsSelected = false;
         }
 
         /// <summary>
@@ -847,13 +847,13 @@ namespace MicroSign.Core.ViewModels
             /// <summary>
             /// 選択フラグプロパティ名
             /// </summary>
-            public const string IsSelect = "IsSelect";
+            public const string IsSelected = "IsSelected";
         }
 
         /// <summary>
         /// 選択フラグ保持変数
         /// </summary>
-        protected bool _IsSelect = InitializeValues.IsSelect;
+        protected bool _IsSelected = InitializeValues.IsSelected;
 
         /// <summary>
         /// 選択フラグ
@@ -861,20 +861,20 @@ namespace MicroSign.Core.ViewModels
         /// <remarks>
         /// 2026.06.05:CS)杉原:複数選択できるようにした
         /// </remarks>
-        public bool IsSelect
+        public bool IsSelected
         {
             get
             {
-                return this._IsSelect;
+                return this._IsSelected;
             }
             set
             {
-                bool now = this._IsSelect;
+                bool now = this._IsSelected;
                 if (now == value)
                 {
                     return;
                 }
-                this._IsSelect = value;
+                this._IsSelected = value;
                 this.RaisePropertyChanged();
             }
         }

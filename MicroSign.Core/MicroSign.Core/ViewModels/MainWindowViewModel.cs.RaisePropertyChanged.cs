@@ -14,21 +14,24 @@
             //追加処理
             switch(propertyName)
             {
-                case MainWindowViewModel.PropertyNames.SelectedAnimationImageItem:
-                    //アニメーション画像の選択が変化したら画面に反映
-                    {
-                        AnimationImageItem? item = this.SelectedAnimationImageItem;
-                        if (item == null)
-                        {
-                            //無効の場合は何もしない
-                        }
-                        else
-                        {
-                            //読込画像に設定し表示する
-                            this.LoadImage = item.Image;
-                        }
-                    }
-                    break;
+                //2026.06.05:CS)杉原:複数選択対応 >>>>> ここから
+                //case MainWindowViewModel.PropertyNames.SelectedAnimationImageItem:
+                //    //アニメーション画像の選択が変化したら画面に反映
+                //    {
+                //        AnimationImageItem? item = this.SelectedAnimationImageItem;
+                //        if (item == null)
+                //        {
+                //            //無効の場合は何もしない
+                //        }
+                //        else
+                //        {
+                //            //読込画像に設定し表示する
+                //            this.LoadImage = item.Image;
+                //        }
+                //    }
+                //    break;
+                //----------
+                //2026.06.05:CS)杉原:複数選択対応 <<<<< ここまで
 
                 case MainWindowViewModel.PropertyNames.SoundFilePath:
                     //サウンドファイル」パス変更の場合

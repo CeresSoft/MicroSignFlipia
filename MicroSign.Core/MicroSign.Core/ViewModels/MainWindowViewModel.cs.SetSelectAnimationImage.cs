@@ -23,18 +23,19 @@
                 else
                 {
                     //有効の場合は選択解除(=初期値にする)
-                    if(item == selectAnimationImageItem)
+                    if (item == selectAnimationImageItem)
                     {
                         //指定された項目の場合は選択にする
-                        item.IsSelect = CommonUtils.Not(AnimationImageItem.InitializeValues.IsSelect);
+                        item.IsSelected = CommonUtils.Not(AnimationImageItem.InitializeValues.IsSelected);
                     }
                     else
                     {
                         //それ以外は未選択(=初期値)にする
-                        item.IsSelect = AnimationImageItem.InitializeValues.IsSelect;
+                        item.IsSelected = AnimationImageItem.InitializeValues.IsSelected;
                     }
                 }
             }
         }
+
     }
 }

@@ -4,6 +4,7 @@ namespace MicroSign.Core.ViewModels
 {
     public partial class MainWindowViewModel : NotifyPropertyChangedObject
     {
+
         /// <summary>
         /// モデル
         /// </summary>

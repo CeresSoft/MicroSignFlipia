@@ -385,7 +385,7 @@
                         </Button>
                     </Grid>
 
-                    <ListView x:Name="TimeLineView" Style="{StaticResource ImageListViewStyle}" d:ItemsSource="{d:SampleData ItemCount=8}" ItemsSource="{Binding AnimationImages}"  SelectedItem="{Binding SelectedAnimationImageItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Grid.Row="4" SelectionMode="Extended" AllowDrop="True" PreviewDrop="ListView_PreviewDrop" PreviewDragOver="ListView_PreviewDragOver">
+                    <ListView x:Name="TimeLineView" Style="{StaticResource ImageListViewStyle}" d:ItemsSource="{d:SampleData ItemCount=8}" ItemsSource="{Binding AnimationImages}" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Grid.Row="4" SelectionMode="Extended" AllowDrop="True" PreviewDrop="ListView_PreviewDrop" PreviewDragOver="ListView_PreviewDragOver" SelectionChanged="ListView_SelectionChanged">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="BorderThickness" Value="1"/>
@@ -501,11 +501,14 @@
                             <RowDefinition Height="5"/>
                         </Grid.RowDefinitions>
 
-                        <!--<Image x:Name="LoadImage" Grid.Row="1" Source="{Binding LoadImage}" Grid.Column="1"/>-->
+                        <Image x:Name="LoadImage" Grid.Row="1" Source="{Binding LoadImage}" Grid.Column="1"/>
+                        <!--2026.06.05:CS)杉原:複数選択対応 ここから
                         <Image x:Name="SelectedOriginalImage" Source="{Binding SelectedAnimationImageItem.Image}" Grid.Row="1" Grid.Column="1" Visibility="{Binding IsChecked, Converter={StaticResource TrueVisibleValueConverter}, ElementName=OriginalTabButton}"/>
+                        ここまで -->
+
                         <!--2025.08.12:CS)杉原:変換結果削除 ここから
-                    <Image x:Name="SelectedPreviewImage" Source="{Binding SelectedAnimationImageItem.PreviewImage}" Grid.Row="1" Grid.Column="1" Visibility="{Binding IsChecked, Converter={StaticResource TrueVisibleValueConverter}, ElementName=PreviewTabButton}"/>
-                    ここまで -->
+                        <Image x:Name="SelectedPreviewImage" Source="{Binding SelectedAnimationImageItem.PreviewImage}" Grid.Row="1" Grid.Column="1" Visibility="{Binding IsChecked, Converter={StaticResource TrueVisibleValueConverter}, ElementName=PreviewTabButton}"/>
+                        ここまで -->
                     </Grid>
                 </Grid>
 

@@ -23,7 +23,7 @@
                 else
                 {
                     //有効の場合は選択判定
-                    bool isSelect = item.IsSelect;
+                    bool isSelect = item.IsSelected;
                     if(isSelect)
                     {
                         //選択していたらリストに追加

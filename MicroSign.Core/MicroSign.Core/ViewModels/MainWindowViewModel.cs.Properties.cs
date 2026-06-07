@@ -151,55 +151,7 @@ namespace MicroSign.Core.ViewModels
             }
         }
         #endregion
-        #region 選択アニメーション画像
-        /// <summary>
-        /// 初期値
-        /// </summary>
-        public static new partial class InitializeValues
-        {
-            /// <summary>
-            /// 選択アニメーション画像初期値
-            /// </summary>
-            public const AnimationImageItem? SelectedAnimationImageItem = null;
-        }
 
-        /// <summary>
-        /// プロパティ名
-        /// </summary>
-        public static new partial class PropertyNames
-        {
-            /// <summary>
-            /// 選択アニメーション画像プロパティ名
-            /// </summary>
-            public const string SelectedAnimationImageItem = "SelectedAnimationImageItem";
-        }
-
-        /// <summary>
-        /// 選択アニメーション画像保持変数
-        /// </summary>
-        protected AnimationImageItem? _SelectedAnimationImageItem = InitializeValues.SelectedAnimationImageItem;
-
-        /// <summary>
-        /// 選択アニメーション画像
-        /// </summary>
-        public AnimationImageItem? SelectedAnimationImageItem
-        {
-            get
-            {
-                return this._SelectedAnimationImageItem;
-            }
-            set
-            {
-                AnimationImageItem? now = this._SelectedAnimationImageItem;
-                if (now == value)
-                {
-                    return;
-                }
-                this._SelectedAnimationImageItem = value;
-                this.RaisePropertyChanged();
-            }
-        }
-        #endregion
         #region マトリクスLED横幅
         /// <summary>
         /// 初期値

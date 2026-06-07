@@ -5,7 +5,6 @@ using MicroSign.Core.ViewModels;
 using MicroSign.Core.Views.Pages;
 using System;
 using System.Collections.Generic;
-using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -25,11 +24,6 @@ namespace MicroSign
         /// </summary>
         private static readonly log4net.ILog LOGGER = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
 
-        /// <summary>
-        /// アニメーション用タイマー
-        /// </summary>
-        /// <remarks>タイマーの精度は求めないのでDispatcherTimerを使います</remarks>
-        private DispatcherTimer _AnimationTimer = new DispatcherTimer();
 
         public MainWindow()
         {
@@ -38,8 +32,11 @@ namespace MicroSign
             //ビットマップを拡大表示したときにグラデーションにならないようにする
             RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.NearestNeighbor);
 
-            //アニメーションタイマーのイベント設定
-            this._AnimationTimer.Tick += this._AnimationTimer_Tick;
+            //2026.06.07:CS)杉原:アニメーションタイマー処理変更 >>>>> ここから
+            ////アニメーションタイマーのイベント設定
+            //this._AnimationTimer.Tick += this._AnimationTimer_Tick;
+            //----------
+            //2026.06.07:CS)杉原:アニメーションタイマー処理変更 <<<<< ここまで
 
             //ファイルバージョンをタイトルに設定
             {
@@ -1140,53 +1137,83 @@ namespace MicroSign
         {
             try
             {
-                //再生中判定
+                //2026.06.07:CS)杉原:アニメーションタイマー処理変更 >>>>> ここから
+                ////再生中判定
+                //{
+                //    bool isPlay = this.ViewModel.IsPlayingAnimation;
+                //    if (isPlay)
+                //    {
+                //        //再生中は無視する
+                //        this.ShowWarning(CommonLogger.Warn("アニメーション再生中です"));
+                //        return;
+                //    }
+                //    else
+                //    {
+                //        //再生していない場合は処理続行
+                //    }
+                //}
+                //
+                ////選択しているアニメーションを取得
+                //AnimationImageItem? selectAnimationItem = this.ViewModel.GetSelectAnimationImage();
+                //if (selectAnimationItem == null)
+                //{
+                //    //無効の場合は終了
+                //    return;
+                //}
+                //else
+                //{
+                //    //有効の場合は処理続行
+                //}
+                //
+                ////選択アニメーション画像のインデックスを取得
+                //int selectAnimationItemIndex = this.ViewModel.GetAnimationImageIndex(selectAnimationItem);
+                //if (selectAnimationItemIndex < CommonConsts.Index.First)
+                //{
+                //    //無効の場合は再生終了
+                //    return;
+                //}
+                //else
+                //{
+                //    //有効の場合は処理続行
+                //}
+                //
+                ////アニメーションタイマー開始
+                //{
+                //    //表示期間取得
+                //    double displayPeriod = selectAnimationItem.DisplayPeriod;
+                //    if (CommonConsts.Intervals.Zero < displayPeriod)
+                //    {
+                //        //有効の場合タイマー開始
+                //        this._AnimationTimer.Interval = TimeSpan.FromSeconds(displayPeriod);
+                //        this._AnimationTimer.Start();
+                //    }
+                //    else
+                //    {
+                //        //0以下の場合は停止の意味なのでメッセージ表示して終了
+                //        this.ShowWarning(CommonLogger.Warn("再生を開始できません\n選択されているフレームの表示期間が無効です"));
+                //        return;
+                //    }
+                //}
+                //
+                ////アニメーション再生中に設定
+                //this.ViewModel.IsPlayingAnimation = true;
+                //----------
+                MainWindowViewModel.StartAnimationResult ret = this.ViewModel.StartAnimation();
+                bool isSuccess = ret.IsSuccess;
+                if(isSuccess)
                 {
-                    bool isPlay = this.ViewModel.IsPlayingAnimation;
-                    if (isPlay)
-                    {
-                        //再生中は無視する
-                        this.ShowWarning(CommonLogger.Warn("アニメーション再生中です"));
-                        return;
-                    }
-                    else
-                    {
-                        //再生していない場合は処理続行
-                    }
-                }
-
-                //選択しているアニメーションを取得
-                AnimationImageItem? selectAnimationItem = this.ViewModel.GetSelectAnimationImage();
-                if (selectAnimationItem == null)
-                {
-                    //無効の場合は終了
-                    return;
+                    //成功した場合は処理続行
+                    LOGGER.Info("アニメーション開始 - 成功");
                 }
                 else
                 {
-                    //有効の場合は処理続行
+                    //失敗した場合
+                    string msg = $"アニメーション開始 - 失敗\n{ret.Message}";
+                    LOGGER.Warn(msg);
+                    this.ShowWarning(msg);
                 }
+                //2026.06.07:CS)杉原:アニメーションタイマー処理変更 <<<<< ここまで
 
-                //アニメーションタイマー開始
-                {
-                    //表示期間取得
-                    double displayPeriod = selectAnimationItem.DisplayPeriod;
-                    if (CommonConsts.Intervals.Zero < displayPeriod)
-                    {
-                        //有効の場合タイマー開始
-                        this._AnimationTimer.Interval = TimeSpan.FromSeconds(displayPeriod);
-                        this._AnimationTimer.Start();
-                    }
-                    else
-                    {
-                        //0以下の場合は停止の意味なのでメッセージ表示して終了
-                        this.ShowWarning(CommonLogger.Warn("再生を開始できません\n選択されているフレームの表示期間が無効です"));
-                        return;
-                    }
-                }
-
-                //アニメーション再生中に設定
-                this.ViewModel.IsPlayingAnimation = true;
             }
             catch (Exception ex)
             {
@@ -1203,11 +1230,15 @@ namespace MicroSign
         {
             try
             {
-                //無条件にアニメーションを停止します
-                this.ViewModel.IsPlayingAnimation = false;
-
-                //タイマー停止
-                this._AnimationTimer.Stop();
+                //2026.06.07:CS)杉原:アニメーションタイマー処理変更 >>>>> ここから
+                ////無条件にアニメーションを停止します
+                //this.ViewModel.IsPlayingAnimation = false;
+                //
+                ////タイマー停止
+                //this._AnimationTimer.Stop();
+                //----------
+                this.ViewModel.StopAnimation();
+                //2026.06.07:CS)杉原:アニメーションタイマー処理変更 <<<<< ここまで
             }
             catch (Exception ex)
             {
@@ -1215,121 +1246,112 @@ namespace MicroSign
             }
         }
 
-        /// <summary>
-        /// アニメーションタイマー処理
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _AnimationTimer_Tick(object? sender, EventArgs e)
-        {
-            try
-            {
-                //タイマーを無条件に止める
-                this._AnimationTimer.Stop();
-
-                //アニメーション再生中か判定
-                {
-                    bool isPlay = this.ViewModel.IsPlayingAnimation;
-                    if (isPlay)
-                    {
-                        //再生中なら処理続行
-                    }
-                    else
-                    {
-                        //停止中なら終了
-                        return;
-                    }
-                }
-
-                //★★★ 再生状態は最後に設定します (デフォルトは停止にします)
-                bool isPlaying = false;
-                try
-                {
-                    //選択アニメーション画像を取得
-                    AnimationImageItem? selectAnimationItem = this.ViewModel.GetSelectAnimationImage();
-                    if (selectAnimationItem == null)
-                    {
-                        //無効の場合は再生終了
-                        return;
-                    }
-                    else
-                    {
-                        //有効の場合は処理続行
-                    }
-
-                    //選択アニメーション画像のインデックスを取得
-                    int selectAnimationItemIndex = this.ViewModel.GetAnimationImageIndex(selectAnimationItem);
-                    if (selectAnimationItemIndex < CommonConsts.Index.First)
-                    {
-                        //無効の場合は再生終了
-                        return;
-                    }
-                    else
-                    {
-                        //有効の場合は処理続行
-                    }
-
-                    //アニメーション画像数を取得
-                    int animationItemCount = this.ViewModel.GetAnimationImagesCount();
-
-                    //次のアニメーション画像を取得するためにインデックスを+1する
-                    int nextAnimationItemIndex = selectAnimationItemIndex + CommonConsts.Index.Step;
-                    if (nextAnimationItemIndex < animationItemCount)
-                    {
-                        //インデックスが有効の場合はそのまま
-                    }
-                    else
-                    {
-                        //インデックスが無効の場合は先頭にする
-                        nextAnimationItemIndex = CommonConsts.Index.First;
-                    }
-
-                    //次のアニメーション画像を取得
-                    AnimationImageItem? nextAnimationItem = this.ViewModel.GetAnimationImage(nextAnimationItemIndex);
-                    if (nextAnimationItem == null)
-                    {
-                        //無効の場合は再生終了
-                        return;
-                    }
-                    else
-                    {
-                        //有効の場合は処理続行
-                    }
-
-                    //次のアニメーションを選択にする
-                    this.ViewModel.SetSelectAnimationImage(nextAnimationItem);
-
-                    //アニメーションタイマー開始
-                    {
-                        //表示期間取得
-                        double displayPeriod = nextAnimationItem.DisplayPeriod;
-                        if (CommonConsts.Intervals.Zero < displayPeriod)
-                        {
-                            //有効の場合タイマー開始
-                            this._AnimationTimer.Interval = TimeSpan.FromSeconds(displayPeriod);
-                            this._AnimationTimer.Start();
-
-                            //★★★再生状態にします
-                            isPlaying = true;
-                        }
-                        else
-                        {
-                            //0以下の場合は停止の意味なので再生終了
-                            return;
-                        }
-                    }
-                }
-                finally
-                {
-                    //再生状態を設定
-                    this.ViewModel.IsPlayingAnimation = isPlaying;
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowError(CommonLogger.Error("アニメーション停止で例外発生"), ex);
-            }
-        }
+        //2026.06.07:CS)杉原:アニメーションタイマー処理変更 >>>>> ここから
+        ///// <summary>
+        ///// アニメーションタイマー処理
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void _AnimationTimer_Tick(object? sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        //タイマーを無条件に止める
+        //        this._AnimationTimer.Stop();
+        //
+        //        //アニメーション再生中か判定
+        //        {
+        //            bool isPlay = this.ViewModel.IsPlayingAnimation;
+        //            if (isPlay)
+        //            {
+        //                //再生中なら処理続行
+        //            }
+        //            else
+        //            {
+        //                //停止中なら終了
+        //                return;
+        //            }
+        //        }
+        //
+        //        //★★★ 再生状態は最後に設定します (デフォルトは停止にします)
+        //        bool isPlaying = false;
+        //        try
+        //        {
+        //            //再生中アニメーション画像のインデックスを取得
+        //            int selectAnimationItemIndex = this._PlayAnimationImageIndex;
+        //            if (selectAnimationItemIndex < CommonConsts.Index.First)
+        //            {
+        //                //無効の場合は再生終了
+        //                return;
+        //            }
+        //            else
+        //            {
+        //                //有効の場合は処理続行
+        //            }
+        //
+        //            //アニメーション画像数を取得
+        //            int animationItemCount = this.ViewModel.GetAnimationImagesCount();
+        //
+        //            //次のアニメーション画像を取得するためにインデックスを+1する
+        //            int nextAnimationItemIndex = selectAnimationItemIndex + CommonConsts.Index.Step;
+        //            if (nextAnimationItemIndex < animationItemCount)
+        //            {
+        //                //インデックスが有効の場合はそのまま
+        //            }
+        //            else
+        //            {
+        //                //インデックスが無効の場合は先頭にする
+        //                nextAnimationItemIndex = CommonConsts.Index.First;
+        //            }
+        //
+        //            //次のアニメーション画像を取得
+        //            AnimationImageItem? nextAnimationItem = this.ViewModel.GetAnimationImage(nextAnimationItemIndex);
+        //            if (nextAnimationItem == null)
+        //            {
+        //                //無効の場合は再生終了
+        //                return;
+        //            }
+        //            else
+        //            {
+        //                //有効の場合は処理続行
+        //            }
+        //
+        //            //次のアニメーションを選択にする
+        //            this.ViewModel.SetSelectAnimationImage(nextAnimationItem);
+        //
+        //            //アニメーションタイマー開始
+        //            {
+        //                //表示期間取得
+        //                double displayPeriod = nextAnimationItem.DisplayPeriod;
+        //                if (CommonConsts.Intervals.Zero < displayPeriod)
+        //                {
+        //                    //有効の場合タイマー開始
+        //                    this._AnimationTimer.Interval = TimeSpan.FromSeconds(displayPeriod);
+        //                    this._AnimationTimer.Start();
+        //
+        //                    //★★★再生状態にします
+        //                    isPlaying = true;
+        //                }
+        //                else
+        //                {
+        //                    //0以下の場合は停止の意味なので再生終了
+        //                    return;
+        //                }
+        //            }
+        //        }
+        //        finally
+        //        {
+        //            //再生状態を設定
+        //            this.ViewModel.IsPlayingAnimation = isPlaying;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        this.ShowError(CommonLogger.Error("アニメーションタイマー処理で例外発生"), ex);
+        //    }
+        //}
+        //----------
+        //2026.06.07:CS)杉原:アニメーションタイマー処理変更 <<<<< ここまで
 
         /// <summary>
         /// アニメーション画像アイテムダブルクリック
@@ -1852,5 +1874,25 @@ namespace MicroSign
                 LOGGER.Warn("MP4クリップ要求で例外発生", ex);
             }
         }
+
+        /// <summary>
+        /// アニメーション画像ITEM選択変更
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                this.ViewModel.UpdateAnimationImageInfoSelectChanged();
+            }
+            catch (Exception ex)
+            {
+                //例外は握りつぶして終了
+                LOGGER.Warn("MP4クリップ要求で例外発生", ex);
+            }
+        }
+
+
     }
 }

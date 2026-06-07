@@ -11,6 +11,7 @@
             //2026.06.05:CS)杉原:複数選択対応 >>>>> ここから
             //return this.SelectedAnimationImageItem;
             //----------
+            //選択している項目の一番上を取得する
             AnimationImageItemCollection? selectedAnimationImages = this.GetSelectAnimationImages();
             int n = CommonUtils.GetCount(selectedAnimationImages);
             if (CommonConsts.Collection.Empty < n)
