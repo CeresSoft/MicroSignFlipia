@@ -29,7 +29,7 @@ namespace MicroSign.Core.ViewModels
             }
             catch (Exception ex)
             {
-                CommonLogger.Warn("デリゲートコマンドCanExecuteChangedイベント発行で例外発生", ex);
+                LOGGER.WarnEx("デリゲートコマンドCanExecuteChangedイベント発行で例外発生", ex);
             }
         }
     }

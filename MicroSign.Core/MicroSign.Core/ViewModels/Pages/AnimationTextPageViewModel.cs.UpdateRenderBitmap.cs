@@ -38,7 +38,7 @@ namespace MicroSign.Core.ViewModels.Pages
 
                     default:
                         //それ以外の場合は処理できないので終了
-                        CommonLogger.Warn($"初期化されていないか、初期化失敗 (Status={status})");
+                        LOGGER.Warn($"初期化されていないか、初期化失敗 (Status={status})");
                         return;
                 }
             }
@@ -94,7 +94,9 @@ namespace MicroSign.Core.ViewModels.Pages
                 else
                 {
                     //失敗の場合
-                    this.SetStatus(AnimationTextPageStateKind.Failed, CommonLogger.Warn($"レンダリングターゲットビットマップの生成に失敗しました (理由={ret.Message})"));
+                    string msg = $"レンダリングターゲットビットマップの生成に失敗しました (理由={ret.Message})";
+                    LOGGER.Warn(msg);
+                    this.SetStatus(AnimationTextPageStateKind.Failed, msg);
                     return;
                 }
             }
@@ -103,7 +105,9 @@ namespace MicroSign.Core.ViewModels.Pages
             if (textBitmap == null)
             {
                 //無効の場合は処理できないので終了
-                this.SetStatus(AnimationTextPageStateKind.Failed, CommonLogger.Warn($"文字ビットマップが無効です"));
+                string msg = "文字ビットマップが無効です";
+                LOGGER.Warn(msg);
+                this.SetStatus(AnimationTextPageStateKind.Failed, msg);
                 return;
             }
             else
@@ -148,7 +152,9 @@ namespace MicroSign.Core.ViewModels.Pages
                 else
                 {
                     //失敗の場合
-                    this.SetStatus(AnimationTextPageStateKind.Failed, CommonLogger.Warn($"レンダリングターゲットビットマップの生成に失敗しました (理由={ret.Message})"));
+                    string msg = $"レンダリングターゲットビットマップの生成に失敗しました (理由={ret.Message})";
+                    LOGGER.Warn(msg);
+                    this.SetStatus(AnimationTextPageStateKind.Failed, msg);
                     return;
                 }
             }
@@ -164,7 +170,9 @@ namespace MicroSign.Core.ViewModels.Pages
                 else
                 {
                     //失敗の場合は終了
-                    this.SetStatus(AnimationTextPageStateKind.Failed, CommonLogger.Warn($"文字描写の生成に失敗しました (理由={ret.Message})"));
+                    string msg = $"文字描写の生成に失敗しました (理由={ret.Message})";
+                    LOGGER.Warn(msg);
+                    this.SetStatus(AnimationTextPageStateKind.Failed, msg);
                     return;
                 }
             }

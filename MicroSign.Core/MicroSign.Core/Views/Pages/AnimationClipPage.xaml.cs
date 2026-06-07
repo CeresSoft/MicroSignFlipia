@@ -16,6 +16,18 @@ namespace MicroSign.Core.Views.Pages
     /// </summary>
     public partial class AnimationClipPage : UserControl
     {
+        //2026.06.07:CS)杉原:LOGGERを修正 >>>>> ここから
+        ///// <summary>
+        ///// LOG4NETのロガー
+        ///// </summary>
+        //private static readonly log4net.ILog LOGGER = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //----------
+        /// <summary>
+        /// LOG4NETのロガー
+        /// </summary>
+        private static readonly MicroSignLogger LOGGER = MicroSignLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //2026.06.07:CS)杉原:LOGGERを修正 <<<<< ここまで
+
         /// <summary>
         /// AnimationClipPage結果
         /// </summary>
@@ -206,7 +218,9 @@ namespace MicroSign.Core.Views.Pages
             }
             catch (Exception ex)
             {
-                this.ViewModel.SetStatus(AnimationClipPageStateKind.Failed, CommonLogger.Warn("Loadedで例外が発生しました", ex));
+                string msg = "Loadedで例外が発生しました";
+                LOGGER.WarnEx(msg, ex);
+                this.ViewModel.SetStatus(AnimationClipPageStateKind.Failed, msg);
             }
         }
     }

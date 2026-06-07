@@ -1,19 +1,77 @@
-﻿using MicroSign.Core.Models.PanelConfigs;
+﻿using MediaFoundation.Misc;
+using MicroSign.Core.Models.PanelConfigs;
+using System;
 using System.ComponentModel;
 using System.IO;
-using System;
 using System.Linq;
+using System.Windows.Interop;
 
 namespace MicroSign.Core.Models
 {
     partial class Model
     {
         /// <summary>
+        /// パネル設定変換結果
+        /// </summary>
+        public struct ConvertPanelConfigResult
+        {
+            /// <summary>
+            /// 成功フラグ
+            /// </summary>
+            public readonly bool IsSuccess;
+
+            /// <summary>
+            /// エラーメッセージ
+            /// </summary>
+            public readonly string? ErrorMessage;
+
+            /// <summary>
+            /// パネル設定
+            /// </summary>
+            public readonly PanelConfig? Config;
+            
+            /// <summary>
+            /// コンストラクタ
+            /// </summary>
+            /// <param name="isSuccess"></param>
+            /// <param name="errorMessage"></param>
+            /// <param name="config"></param>
+            private ConvertPanelConfigResult(bool isSuccess, string? errorMessage, PanelConfig? config)
+            {
+                this.IsSuccess = isSuccess;
+                this.ErrorMessage = errorMessage;
+                this.Config = config;
+            }
+            
+            /// <summary>
+            /// 失敗
+            /// </summary>
+            /// <param name="msg"></param>
+            /// <returns></returns>
+            public static ConvertPanelConfigResult Failed(string msg)
+            {
+                ConvertPanelConfigResult result = new ConvertPanelConfigResult(false , msg, null);
+                return result;
+            }
+
+            /// <summary>
+            /// 成功
+            /// </summary>
+            /// <param name="config"></param>
+            /// <returns></returns>
+            public static ConvertPanelConfigResult Success(PanelConfig config)
+            {
+                ConvertPanelConfigResult result = new ConvertPanelConfigResult(true, null, config);
+                return result;
+            }
+        }
+
+        /// <summary>
         /// パネル設定変換
         /// </summary>
         /// <param name="path">パネル設定ファイルパス</param>
         /// <returns></returns>
-        public (bool IsSuccess, string ErrorMessage, PanelConfig? Config) ConvertPanelConfig(string path)
+        public ConvertPanelConfigResult ConvertPanelConfig(string path)
         {
             //パネル設定パス有効判定
             {
@@ -21,12 +79,14 @@ namespace MicroSign.Core.Models
                 if (isNull)
                 {
                     //無効の場合は終了
-                    return (false, CommonLogger.Warn("パネル設定パスが無効です"), null);
+                    string msg = "パネル設定パスが無効です";
+                    LOGGER.Warn(msg);
+                    return ConvertPanelConfigResult.Failed(msg);
                 }
                 else
                 {
                     //有効の場合は処理続行
-                    CommonLogger.Debug($"パネル設定パス有効 (path='{path}')");
+                    LOGGER.Debug($"パネル設定パス有効 (path='{path}')");
                 }
             }
 
@@ -35,12 +95,14 @@ namespace MicroSign.Core.Models
             if (config == null)
             {
                 //読込できなかった場合は終了
-                return (false, CommonLogger.Warn($"パネル設定の読込に失敗しました (path='{path}')"), null);
+                string msg = $"パネル設定の読込に失敗しました (path='{path}')";
+                LOGGER.Warn(msg);
+                return ConvertPanelConfigResult.Failed(msg);
             }
             else
             {
                 //読込できた場合は処理続行
-                CommonLogger.Debug($"パネル設定読込成功 (path='{path}')");
+                LOGGER.Debug($"パネル設定読込成功 (path='{path}')");
             }
 
             //パネルの横ドット数取得
@@ -51,12 +113,14 @@ namespace MicroSign.Core.Models
                 if (ret)
                 {
                     //取得できた場合は有効なので処理続行
-                    CommonLogger.Debug($"パネル横ドット数有効 (width={panelWidth})");
+                    LOGGER.Debug($"パネル横ドット数有効 (width={panelWidth})");
                 }
                 else
                 {
                     //取得出来なかった場合は異常
-                    return (false, CommonLogger.Warn($"パネル横ドット数が無効です (width={panelWidth})"), null);
+                    string msg = $"パネル横ドット数が無効です (width={panelWidth})";
+                    LOGGER.Warn(msg);
+                    return ConvertPanelConfigResult.Failed(msg);
                 }
             }
 
@@ -68,31 +132,35 @@ namespace MicroSign.Core.Models
                 if (ret)
                 {
                     //取得できた場合は有効なので処理続行
-                    CommonLogger.Debug($"パネル縦ドット数有効 (width={panelHeight})");
+                    LOGGER.Debug($"パネル縦ドット数有効 (width={panelHeight})");
                 }
                 else
                 {
                     //取得出来なかった場合は異常
-                    return (false, CommonLogger.Warn($"パネル縦ドット数が無効です (width={panelHeight})"), null);
+                    string msg = $"パネル縦ドット数が無効です (width={panelHeight})";
+                    LOGGER.Warn(msg);
+                    return ConvertPanelConfigResult.Failed(msg);
                 }
             }
 
             //パネルの制御タイプを取得
             // >> 現状エラーなし
             PanelControlTypes controlType = config.ControlType;
-            CommonLogger.Debug($"パネル制御タイプ (control type={controlType})");
+            LOGGER.Debug($"パネル制御タイプ (control type={controlType})");
 
             //マップデータコレクション取得
             MapDataCollection? mapDatas = config.MapDatas;
             if (mapDatas == null)
             {
                 //マップデータコレクションが無効の場合終了
-                return (false, CommonLogger.Warn("マップデータコレクション無効"), null);
+                string msg = "マップデータコレクション無効";
+                LOGGER.Warn(msg);
+                return ConvertPanelConfigResult.Failed(msg);
             }
             else
             {
                 //読込できた場合は処理続行
-                CommonLogger.Debug("マップデータコレクション有効");
+                LOGGER.Debug("マップデータコレクション有効");
             }
 
             //必要なマップデータ数を計算
@@ -108,12 +176,15 @@ namespace MicroSign.Core.Models
                 if (totalCount == madDataCount)
                 {
                     //一致している場合は正常
-                    CommonLogger.Debug($"必要マップデータ数有効 (必要数={totalCount}, 定義数={madDataCount})");
+                    LOGGER.Debug($"必要マップデータ数有効 (必要数={totalCount}, 定義数={madDataCount})");
                 }
                 else
                 {
                     //不一致の場合は終了
-                    return (false, CommonLogger.Warn($"必要マップデータ数無効 (必要数={totalCount}, 定義数={madDataCount})"), null);
+                    string msg = $"必要マップデータ数無効 (必要数={totalCount}, 定義数={madDataCount})";
+                    LOGGER.Warn(msg);
+                    return ConvertPanelConfigResult.Failed(msg);
+
                 }
             }
 
@@ -132,12 +203,14 @@ namespace MicroSign.Core.Models
                 if (totalCount == mapSize)
                 {
                     //一致している場合は正常
-                    CommonLogger.Debug($"定義マップサイズ有効 (行={mapRowCount}, 列={mapRowCount}, 全数={mapSize}, 必要数={totalCount})");
+                    LOGGER.Debug($"定義マップサイズ有効 (行={mapRowCount}, 列={mapRowCount}, 全数={mapSize}, 必要数={totalCount})");
                 }
                 else
                 {
                     //不一致の場合は終了
-                    return (false, CommonLogger.Warn($"定義マップサイズ無効 (行={mapRowCount}, 列={mapRowCount}, 全数={mapSize}, 必要数={totalCount})"), null);
+                    string msg = $"定義マップサイズ無効 (行={mapRowCount}, 列={mapRowCount}, 全数={mapSize}, 必要数={totalCount})";
+                    LOGGER.Warn(msg);
+                    return ConvertPanelConfigResult.Failed(msg);
                 }
             }
 
@@ -190,7 +263,9 @@ namespace MicroSign.Core.Models
                         if (mapData == null)
                         {
                             //マップデータが存在しない場合は終了
-                            return (false, CommonLogger.Debug($"マップデータなし (パネル行={r}, パネル列={c})"), null);
+                            string msg = $"マップデータなし (パネル行={r}, パネル列={c})";
+                            LOGGER.Warn(msg);
+                            return ConvertPanelConfigResult.Failed(msg);
                         }
                         else
                         {
@@ -221,14 +296,14 @@ namespace MicroSign.Core.Models
                     //ESP32側のファイル名は固定なので、あえて名前は変更しない
                     string fname = MicroSignConsts.Path.MatrixLedPanelConfigPath;
                     string writePath = CommonUtils.GetFullPath(fname);
-                    CommonLogger.Debug($"パネル設定書込パス='{writePath}'");
+                    LOGGER.Debug($"パネル設定書込パス='{writePath}'");
 
                     //ディレクトリ取得
                     string? dir = System.IO.Path.GetDirectoryName(writePath);
                     if (dir == null)
                     {
                         //ディレクトリがnullの場合は何もしない
-                        CommonLogger.Debug("パネル設定書込ディレクトリ無し");
+                        LOGGER.Debug("パネル設定書込ディレクトリ無し");
                     }
                     else
                     {
@@ -237,23 +312,23 @@ namespace MicroSign.Core.Models
                         if (isNull)
                         {
                             //無効の場合は何もしない
-                            CommonLogger.Debug("パネル設定書込ディレクトリ無効");
+                            LOGGER.Debug("パネル設定書込ディレクトリ無効");
                         }
                         else
                         {
                             //有効の場合はディレクトリを作成
-                            CommonLogger.Debug($"パネル設定書込ディレクトリ有効='{dir}'");
+                            LOGGER.Debug($"パネル設定書込ディレクトリ有効='{dir}'");
                             System.IO.Directory.CreateDirectory(dir);
                         }
                     }
 
                     //ファイルを出力
-                    CommonLogger.Debug($"パネル設定書込 - 開始 (path='{writePath}')");
+                    LOGGER.Debug($"パネル設定書込 - 開始 (path='{writePath}')");
                     using (System.IO.FileStream fs = new System.IO.FileStream(writePath, FileMode.Create))
                     {
                         ms.WriteTo(fs);
                     }
-                    CommonLogger.Debug($"パネル設定書込 - 完了 (path='{writePath}')");
+                    LOGGER.Debug($"パネル設定書込 - 完了 (path='{writePath}')");
 
                     //出力先のフォルダをエクスプローラーで表示
                     if (dir == null)
@@ -278,12 +353,14 @@ namespace MicroSign.Core.Models
                 catch (Exception ex)
                 {
                     //例外発生時は終了
-                    return (false, CommonLogger.Warn($"パネル設定書込失敗", ex), null);
+                    string msg = $"パネル設定書込失敗";
+                    LOGGER.WarnEx(msg, ex);
+                    return ConvertPanelConfigResult.Failed(msg);
                 }
             }
 
             //ここまで来たら成功を返す
-            return (true, string.Empty, config);
+            return ConvertPanelConfigResult.Success(config);
         }
     }
 }

@@ -77,7 +77,9 @@ namespace MicroSign.Core.ViewModels
             if (saveSetting == null)
             {
                 //無効の場合は終了
-                return LoadAnimationResult.Failed(CommonLogger.Warn("読込したアニメーション設定が無効です"));
+                string msg = "読込したアニメーション設定が無効です";
+                LOGGER.Warn(msg);
+                return LoadAnimationResult.Failed(msg);
             }
             else
             {
@@ -90,7 +92,9 @@ namespace MicroSign.Core.ViewModels
             if (baseDir == null)
             {
                 //ベースディレクトリが無効の場合は終了
-                return LoadAnimationResult.Failed(CommonLogger.Warn($"読込パスのディレクトリが取得出来ません"));
+                string msg = "読込パスのディレクトリが取得出来ません";
+                LOGGER.Warn(msg);
+                return LoadAnimationResult.Failed(msg);
             }
             else
             {
@@ -102,7 +106,9 @@ namespace MicroSign.Core.ViewModels
             if (newList == null)
             {
                 //無効の場合は終了
-                return LoadAnimationResult.Failed(CommonLogger.Warn("読込したアニメーションが無効です"));
+                string msg = "読込したアニメーションが無効です";
+                LOGGER.Warn(msg);
+                return LoadAnimationResult.Failed(msg);
             }
             else
             {
@@ -113,7 +119,7 @@ namespace MicroSign.Core.ViewModels
             int matrixLedWidth = saveSetting.MatrixLedWidth;
             int matrixLedHeight = saveSetting.MatrixLedHeight;
             int matrixLedBrightness = saveSetting.MatrixLedBrightness;
-            CommonLogger.Debug($"マトリクスLED (Width={matrixLedWidth}, height={matrixLedHeight}, brightness={matrixLedBrightness})");
+            LOGGER.Debug($"マトリクスLED (Width={matrixLedWidth}, height={matrixLedHeight}, brightness={matrixLedBrightness})");
 
             //マトリクスLEDの有効判定
             {
@@ -122,12 +128,14 @@ namespace MicroSign.Core.ViewModels
                 if(retSize.IsValid)
                 {
                     //有効の場合は処理続行
-                    CommonLogger.Debug($"マトリクスLEDサイズ有効 (Width={matrixLedWidth}, height={matrixLedHeight})");
+                    LOGGER.Debug($"マトリクスLEDサイズ有効 (Width={matrixLedWidth}, height={matrixLedHeight})");
                 }
                 else
                 {
                     //サイズが無効の場合は終了
-                    return LoadAnimationResult.Failed(CommonLogger.Warn($"マトリクスLEDサイズ有効 (Width={matrixLedWidth}, height={matrixLedHeight})"));
+                    string msg = $"マトリクスLEDサイズ有効 (Width={matrixLedWidth}, height={matrixLedHeight})";
+                    LOGGER.Warn(msg);
+                    return LoadAnimationResult.Failed(msg);
                 }
             }
 
@@ -155,7 +163,7 @@ namespace MicroSign.Core.ViewModels
                 else
                 {
                     //サウンドファイルが指定されている場合設定する
-                    CommonLogger.Debug($"サウンドファイル有効 (path={soundFilePath})");
+                    LOGGER.Debug($"サウンドファイル有効 (path={soundFilePath})");
                     this.SetSoundFilePath(soundFilePath);
                 }
             }

@@ -700,14 +700,14 @@ namespace MicroSign.Core.Models
                     //----------
                     //2025.10.03:CS)土田:変換結果の保存先を選択できるように引数追加 <<<<< ここまで
                     string path = CommonUtils.GetFullPath(fname);
-                    CommonLogger.Debug($"アニメーションファイルパス='{path}'");
+                    LOGGER.Debug($"アニメーションファイルパス='{path}'");
 
                     //ディレクトリ取得
                     string? dir = System.IO.Path.GetDirectoryName(path);
                     if (dir == null)
                     {
                         //ディレクトリがnullの場合は何もしない
-                        CommonLogger.Debug("アニメーションファイルディレクトリ無し");
+                        LOGGER.Debug("アニメーションファイルディレクトリ無し");
                     }
                     else
                     {
@@ -716,23 +716,23 @@ namespace MicroSign.Core.Models
                         if (isNull)
                         {
                             //無効の場合は何もしない
-                            CommonLogger.Debug("アニメーションファイルディレクトリ無効");
+                            LOGGER.Debug("アニメーションファイルディレクトリ無効");
                         }
                         else
                         {
                             //有効の場合はディレクトリを作成
-                            CommonLogger.Debug($"アニメーションファイルディレクトリ='{dir}'");
+                            LOGGER.Debug($"アニメーションファイルディレクトリ='{dir}'");
                             System.IO.Directory.CreateDirectory(dir);
                         }
                     }
 
                     //ファイルを出力
-                    CommonLogger.Debug("アニメーションファイル書込み - 開始");
+                    LOGGER.Debug("アニメーションファイル書込み - 開始");
                     using (System.IO.FileStream fs = new System.IO.FileStream(path, FileMode.Create))
                     {
                         ms.WriteTo(fs);
                     }
-                    CommonLogger.Debug("アニメーションファイル書込み - 完了");
+                    LOGGER.Debug("アニメーションファイル書込み - 完了");
 
                     //出力先のフォルダをエクスプローラーで表示
                     if (dir == null)
@@ -757,7 +757,9 @@ namespace MicroSign.Core.Models
                 catch (Exception ex)
                 {
                     //例外発生時は終了
-                    return ConvertAnimationIndexColor_SaveToFileResult.Failed(CommonLogger.Warn($"アニメーションファイル書込み失敗", ex));
+                    string msg = $"アニメーションファイル書込み失敗";
+                    LOGGER.WarnEx(msg, ex);
+                    return ConvertAnimationIndexColor_SaveToFileResult.Failed(msg);
                 }
             }
 
@@ -1091,7 +1093,9 @@ namespace MicroSign.Core.Models
             catch (Exception ex)
             {
                 //例外は握りつぶす
-                return ConvertAnimationIndexColor_GetColorDataResult.Failed(ConvertAnimationIndexColor_GetColorDataResultCodes.CatchException, CommonLogger.Warn("色インデックス作成で例外発生", ex));
+                string msg = "色インデックス作成で例外発生";
+                LOGGER.WarnEx(msg, ex);
+                return ConvertAnimationIndexColor_GetColorDataResult.Failed(ConvertAnimationIndexColor_GetColorDataResultCodes.CatchException, msg);
             }
         }
     }

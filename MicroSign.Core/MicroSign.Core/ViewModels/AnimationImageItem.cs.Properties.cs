@@ -827,6 +827,59 @@ namespace MicroSign.Core.ViewModels
         }
         #endregion
 
+        #region 選択フラグ
+        /// <summary>
+        /// 初期値
+        /// </summary>
+        public static new partial class InitializeValues
+        {
+            /// <summary>
+            /// 選択フラグ初期値
+            /// </summary>
+            public const bool IsSelected = false;
+        }
+
+        /// <summary>
+        /// プロパティ名
+        /// </summary>
+        public static new partial class PropertyNames
+        {
+            /// <summary>
+            /// 選択フラグプロパティ名
+            /// </summary>
+            public const string IsSelected = "IsSelected";
+        }
+
+        /// <summary>
+        /// 選択フラグ保持変数
+        /// </summary>
+        protected bool _IsSelected = InitializeValues.IsSelected;
+
+        /// <summary>
+        /// 選択フラグ
+        /// </summary>
+        /// <remarks>
+        /// 2026.06.05:CS)杉原:複数選択できるようにした
+        /// </remarks>
+        public bool IsSelected
+        {
+            get
+            {
+                return this._IsSelected;
+            }
+            set
+            {
+                bool now = this._IsSelected;
+                if (now == value)
+                {
+                    return;
+                }
+                this._IsSelected = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        #endregion
+
         //「Documents\ViewModelプロパティ作成テンプレート.xlsx」の「AnimationImageItem」をコピー <<<<< ここまで
     }
 }

@@ -1,0 +1,521 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MicroSignFlipia"
+        xmlns:core="clr-namespace:MicroSign.Core;assembly=MicroSign.Core"
+        xmlns:vms="clr-namespace:MicroSign.Core.ViewModels;assembly=MicroSign.Core"
+        xmlns:navi="clr-namespace:MicroSign.Core.Navigations;assembly=MicroSign.Core"
+        x:Class="MicroSignFlipia.MainWindow"
+        mc:Ignorable="d"
+        Title="MicroSign Flipia" Height="480" Width="800" Icon="/MicroSignFlipia;component/MicroSign.ico">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MicroSign.Core;component/CommonResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.Style>
+        <Style TargetType="{x:Type Window}" BasedOn="{StaticResource StandardWindowStyle}"/>
+    </Window.Style>
+    <!--画面全体をナビゲーション対象にする-->
+    <Grid x:Name="MsgGrid" navi:WpfNavigationController.Enabled="True">
+        <Grid x:Name="NaviPanel" navi:WpfNavigationController.Enabled="True">
+            <Grid>
+                <Grid.DataContext>
+                    <vms:MainWindowViewModel x:Name="ViewModel" Mp4ClipRequest="ViewModel_Mp4ClipRequest"/>
+                </Grid.DataContext>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="20"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="400" MinWidth="440" MaxWidth="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Converter={StaticResource GripSplitterValueConverter}, ConverterParameter=310}"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="20"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid x:Name="SettingGrid" Grid.ColumnSpan="5" Background="{StaticResource Group.Background}">
+                    <Grid.Effect>
+                        <DropShadowEffect Direction="270" Opacity="0.3" BlurRadius="15" ShadowDepth="0"/>
+                    </Grid.Effect>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="10"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="10"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+                        <Grid Style="{StaticResource InputGridStyle}" Width="180">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="{StaticResource InputLineSpaceGridLength}"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="{StaticResource InputLineSpaceGridLength}"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="AnimationLoadButton" Click="AnimationLoadButton_Click" ToolTip="保存したアニメーション画像を読込ます" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Style="{StaticResource OperationButtonStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="&#xE8E5;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
+                                    <TextBlock Text="開く" Grid.Column="1"/>
+                                </Grid>
+                            </Button>
+
+                            <Button x:Name="AnimationSaveButton" Click="AnimationSaveButton_Click" ToolTip="登録されているアニメーション画像を保存します" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Style="{StaticResource OperationButtonStyle}" Grid.Row="2">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="&#xE74E;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
+                                    <TextBlock Text="保存" Grid.Column="1"/>
+                                </Grid>
+                            </Button>
+
+                            <Button Grid.Column="2" Grid.RowSpan="3" x:Name="GifLoadButton" Click="GifLoadButton_Click" ToolTip="GIFアニメーションを読込します" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Style="{StaticResource OperationButtonStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="&#xE8E5;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
+                                    <TextBlock Text="GIF読込" Grid.Column="1"/>
+                                </Grid>
+                            </Button>
+
+                        </Grid>
+
+                        <Border Style="{StaticResource VerticalSplitStyle}"/>
+
+                        <Grid Style="{StaticResource InputGridStyle}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="{StaticResource InputHeaderSpaceGridLength}"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="{StaticResource InputLineSpaceGridLength}"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="{StaticResource InputLineSpaceGridLength}"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="{StaticResource InputLineSpaceGridLength}"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Style="{StaticResource InputHeaderTextBlockStyle}" Text="パネル設定" Grid.ColumnSpan="7"/>
+                            <TextBlock Text="ドット数" Grid.ColumnSpan="3" Grid.Row="2"/>
+                            <TextBlock Text="横" Grid.Row="4"/>
+                            <ComboBox Template="{DynamicResource StandardComboBoxTemplate}" SelectedValue="{Binding MatrixLedWidth, Mode=TwoWay}" DisplayMemberPath="Name" SelectedValuePath="Value" Grid.Column="2" Grid.Row="4">
+                                <ComboBox.ItemsSource>
+                                    <x:Array Type="{x:Type core:SelectValueItem}">
+                                        <core:SelectValueItem Name="4 dot" Value="4"/>
+                                        <core:SelectValueItem Name="8 dot" Value="8"/>
+                                        <core:SelectValueItem Name="16 dot" Value="16"/>
+                                        <core:SelectValueItem Name="32 dot" Value="32"/>
+                                        <core:SelectValueItem Name="64 dot" Value="64"/>
+                                        <core:SelectValueItem Name="128 dot" Value="128"/>
+                                    </x:Array>
+                                </ComboBox.ItemsSource>
+                            </ComboBox>
+                            <TextBlock Text="縦" Grid.Row="6"/>
+                            <ComboBox SelectedValue="{Binding MatrixLedHeight, Mode=TwoWay}" DisplayMemberPath="Name" SelectedValuePath="Value" Grid.Column="2" Grid.Row="6">
+                                <ComboBox.ItemsSource>
+                                    <x:Array Type="{x:Type core:SelectValueItem}">
+                                        <core:SelectValueItem Name="4 dot" Value="4"/>
+                                        <core:SelectValueItem Name="8 dot" Value="8"/>
+                                        <core:SelectValueItem Name="16 dot" Value="16"/>
+                                        <core:SelectValueItem Name="32 dot" Value="32"/>
+                                        <core:SelectValueItem Name="64 dot" Value="64"/>
+                                    </x:Array>
+                                </ComboBox.ItemsSource>
+                            </ComboBox>
+                            <TextBlock Text="明るさ" Grid.Column="4" Grid.Row="2"/>
+                            <!-- 2024.04.17:CS)土田:コンボボックスからスライダーに変更 -->
+                            <!--<ComboBox SelectedValue="{Binding MatrixLedBrightness, Mode=TwoWay}" DisplayMemberPath="Name" SelectedValuePath="Value" Grid.Row="3" Grid.Column="4">
+                            <ComboBox.ItemsSource>
+                                <x:Array Type="{x:Type core:SelectValueItem}">
+                                    <core:SelectValueItem Name="7:眩しい" Value="7"/>
+                                    <core:SelectValueItem Name="6:かなり明るい" Value="6"/>
+                                    <core:SelectValueItem Name="5:やや明るい" Value="5"/>
+                                    <core:SelectValueItem Name="4:普通" Value="4"/>
+                                    <core:SelectValueItem Name="3:標準" Value="3"/>
+                                    <core:SelectValueItem Name="2:やや薄暗い" Value="2"/>
+                                    <core:SelectValueItem Name="1:薄暗い" Value="1"/>
+                                    <core:SelectValueItem Name="0:暗い" Value="0"/>
+                                </x:Array>
+                            </ComboBox.ItemsSource>
+                        </ComboBox>-->
+                            <Grid Grid.Column="4" Grid.Row="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="2"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="2"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="暗"/>
+                                <TextBlock Grid.Column="4" Text="明"/>
+                                <Slider Value="{Binding MatrixLedBrightness, Mode=TwoWay}" Maximum="255" LargeChange="32" SmallChange="1" Grid.Column="2"/>
+                            </Grid>
+
+                            <TextBlock Text="階調補正" Grid.Column="6" Grid.Row="2"/>
+                            <ComboBox SelectedValue="{Binding MotionBlurReduction, Mode=TwoWay}" DisplayMemberPath="Name" SelectedValuePath="Value" Grid.Column="6" Grid.Row="4">
+                                <ComboBox.ItemsSource>
+                                    <x:Array Type="{x:Type core:SelectValueItem}">
+                                        <core:SelectValueItem Name="なし" Value="0"/>
+                                        <core:SelectValueItem Name="弱" Value="1"/>
+                                        <core:SelectValueItem Name="中" Value="2"/>
+                                        <core:SelectValueItem Name="強" Value="3"/>
+                                        <!--<core:SelectValueItem Name="モード4" Value="4"/>-->
+                                    </x:Array>
+                                </ComboBox.ItemsSource>
+                            </ComboBox>
+                        </Grid>
+                        <Border Style="{StaticResource VerticalSplitStyle}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="{StaticResource InputLineSpaceGridLength}"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="{StaticResource InputLineSpaceGridLength}"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="{StaticResource InputLineSpaceGridLength}"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Style="{StaticResource InputHeaderTextBlockStyle}" Text="アニメーション名"/>
+                            <TextBox x:Name="AnimationNameText" Text="{Binding AnimationName, Mode=TwoWay}" ToolTip="アニメーションの名前を設定してください" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Grid.Row="2" Grid.Column="0"/>
+
+                            <TextBlock Style="{StaticResource InputHeaderTextBlockStyle}" Text="ガンマ補正" Grid.Row="4"/>
+                            <ComboBox SelectedValue="{Binding GammaCorrection, Mode=TwoWay}" DisplayMemberPath="Name" SelectedValuePath="Value" Grid.Row="6">
+                                <ComboBox.ItemsSource>
+                                    <x:Array Type="{x:Type core:SelectValueItem}">
+                                        <core:SelectValueItem Name="補正なし" Value="100"/>
+                                        <core:SelectValueItem Name="弱(1.4)" Value="140"/>
+                                        <core:SelectValueItem Name="中(1.8)" Value="180"/>
+                                        <core:SelectValueItem Name="標準(2.2)" Value="220"/>
+                                    </x:Array>
+                                </ComboBox.ItemsSource>
+                            </ComboBox>
+                        </Grid>
+                        <Border Style="{StaticResource VerticalSplitStyle}"/>
+                        <Button x:Name="ConvertExecuteButton" Click="ConvertExecuteButton_Click" ToolTip="設定されているアニメーションを表示パネルで再生できるアニメーションデータに変換します" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Style="{StaticResource OperationEmphasisButtonStyle}" Width="80">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="&#xEDE1;" Style="{StaticResource IconButtonIconTextBlockStyle}" FontSize="18"/>
+                                <TextBlock Text="変換" Grid.Row="1" FontSize="14"/>
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                
+                <!--サウンド-->
+                <Grid x:Name="SoundGrid" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Background="{StaticResource Group.Background}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Style="{StaticResource InputHeaderTextBlockStyle}" Text="サウンド設定" Grid.ColumnSpan="7"/>
+
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="サウンドファイル" Grid.Row="0" Grid.Column="0"/>
+                        <TextBox x:Name="SoundFile" Grid.Row="0"  Grid.Column="2" Text="{Binding SoundFilePath, Mode=TwoWay}" ToolTip="サウンドファイルを設定してください" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}"/>
+                        <Button  Grid.Row="0"  Grid.Column="4" Grid.RowSpan="3" x:Name="SelectSoundFileButton" ToolTip="サウンドファイルを選択します" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Style="{StaticResource OperationButtonStyle}" Click="SelectSoundFileButton_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="&#xE8E5;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
+                            </Grid>
+                        </Button>
+                        <Button  Grid.Row="0"  Grid.Column="6" Grid.RowSpan="3" x:Name="ClearSoundFileButton" ToolTip="サウンドファイルの選択を解除します" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Style="{StaticResource OperationButtonStyle}" Click="ClearSoundFileButton_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="&#xED61;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
+                            </Grid>
+                        </Button>
+
+                        <!--ステータス-->
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding SoundFileStatus}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="MMM" Visibility="Hidden"/>
+                    </Grid>
+
+                </Grid>
+
+                <!--アニメーション設定-->
+                <Grid x:Name="SourceImageGrid" Grid.Row="4" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="0"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="6"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="6"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="入力画像" Style="{StaticResource HeaderTextBlockStyle}" Visibility="Collapsed"/>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="2"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Button x:Name="AddAnimationImageButton" Grid.Row="0" Grid.Column="0" Click="AddAnimationImageButton_Click" ToolTip="アニメーション画像を登録します" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Style="{StaticResource AnimationEditButtonStyle}" Background="{StaticResource Accent.Foreground}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="&#xE710;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
+                                <TextBlock Text="画像追加" Grid.Column="1"/>
+                            </Grid>
+                        </Button>
+
+                        <Button x:Name="AddAnimationTextButton" Grid.Row="2" Grid.Column="0"  Click="AddAnimationTextButton_Click" ToolTip="アニメーションに文字を登録します" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Style="{StaticResource AnimationEditButtonStyle}" Background="{StaticResource Accent.Foreground}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="&#xE710;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
+                                <TextBlock Text="文字追加" Grid.Column="1"/>
+                            </Grid>
+                        </Button>
+
+                        <Button x:Name="RemoveAnimationImageButton" Grid.Row="0" Grid.Column="2" Click="RemoveAnimationImageButton_Click" ToolTip="選択しているアニメーション画像を削除します" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Style="{StaticResource AnimationEditButtonStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="&#xE738;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
+                                <TextBlock Text="削除" Grid.Column="1"/>
+                            </Grid>
+                        </Button>
+
+                        <Button x:Name="RemoveAllAnimationImageButton" Grid.Row="2" Grid.Column="2" Click="RemoveAllAnimationImageButton_Click" ToolTip="選択しているアニメーション画像を削除します" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Style="{StaticResource AnimationEditButtonStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="&#xE738;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
+                                <TextBlock Text="全削除" Grid.Column="1"/>
+                            </Grid>
+                        </Button>
+
+                        <Button x:Name="UpAnimationImageButton" Grid.Row="0" Grid.Column="4" Click="UpAnimationImageButton_Click" ToolTip="選択しているアニメーション画像を上(前)に移動します" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Style="{StaticResource AnimationEditButtonStyle}">
+                            <TextBlock Text="&#xE74A;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
+                        </Button>
+
+                        <Button x:Name="DownAnimationImageButton" Grid.Row="2" Grid.Column="4" Click="DownAnimationImageButton_Click" ToolTip="選択しているアニメーション画像を下(後)に移動します" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Style="{StaticResource AnimationEditButtonStyle}">
+                            <TextBlock Text="&#xE74B;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
+                        </Button>
+
+                        <Button x:Name="RefreshButton" Grid.Row="0" Grid.Column="6" Click="RefreshButton_Click" ToolTip="登録されているアニメーション画像の画像を再取得します" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Style="{StaticResource AnimationEditButtonStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="&#xE72C;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
+                                <TextBlock Text="画像更新" Grid.Column="1"/>
+                            </Grid>
+                        </Button>
+                    </Grid>
+
+                    <ListView x:Name="TimeLineView" Style="{StaticResource ImageListViewStyle}" d:ItemsSource="{d:SampleData ItemCount=8}" ItemsSource="{Binding AnimationImages}" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Grid.Row="4" SelectionMode="Extended" AllowDrop="True" PreviewDrop="ListView_PreviewDrop" PreviewDragOver="ListView_PreviewDragOver" SelectionChanged="ListView_SelectionChanged">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <EventSetter Event="MouseDoubleClick" Handler="AnimationImageItem_MouseDoubleClick"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+
+                    <Grid Grid.Row="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="InputNames"/>
+                            <ColumnDefinition Width="{StaticResource InputHeaderSpaceGridLength}"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="{StaticResource InputUnitSpaceGridLength}"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="64"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="64"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Style="{StaticResource InputHeaderTextBlockStyle}" Text="アニメーション設定" TextAlignment="Left"/>
+                        <TextBlock Text="標準表示期間" Grid.Column="1"/>
+                        <TextBox x:Name="DefaultDisplayPeriodText1" Grid.Column="3" Text="{Binding DefaultDisplayPeriod, Mode=TwoWay, StringFormat=#0.000, UpdateSourceTrigger=LostFocus}" ToolTip="デフォルトの表示秒数を設定してください" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}"/>
+                        <TextBlock Text="秒" Grid.Column="5" />
+
+                        <ComboBox SelectedValue="{Binding DefaultDisplayPeriod, Mode=TwoWay}" DisplayMemberPath="Name" SelectedValuePath="Value" Grid.Column="7">
+                            <ComboBox.ItemsSource>
+                                <x:Array Type="{x:Type core:SelectFpsItem}">
+                                    <core:SelectFpsItem Name="5fps" Value="0.200"/>
+                                    <core:SelectFpsItem Name="10fps" Value="0.100"/>
+                                    <core:SelectFpsItem Name="15fps" Value="0.066"/>
+                                    <core:SelectFpsItem Name="20fps" Value="0.050"/>
+                                    <core:SelectFpsItem Name="30fps" Value="0.033"/>
+                                </x:Array>
+                            </ComboBox.ItemsSource>
+                        </ComboBox>
+
+                        <Button x:Name="ApplyAllDisplayPeriodButton" Content="一括反映" Style="{StaticResource OperationButtonStyle}" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Grid.Column="9" Click="ApplyAllDisplayPeriodButton_Click"/>
+                    </Grid>
+                </Grid>
+                
+                <!--プレビュー-->
+                <Grid x:Name="PreviewGrid" Grid.Column="3" Grid.Row="4" UseLayoutRounding="True">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="6"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="6"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="プレビュー" Style="{StaticResource HeaderTextBlockStyle}"/>
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="64"/>
+                            <ColumnDefinition Width="2"/>
+                            <ColumnDefinition Width="64"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="簡易アニメーション確認" Style="{StaticResource InputHeaderTextBlockStyle}" FontSize="{StaticResource StandardFontSize}" VerticalAlignment="Center"/>
+
+                        <Button x:Name="PlayAnimationButton" Grid.Column="2" Click="PlayAnimationButton_Click" IsEnabled="{Binding IsPlayingAnimation, Converter={StaticResource NotValueConverter}}" Style="{StaticResource OperationButtonStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="&#xE768;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
+                                <TextBlock Text="再生" Grid.Column="1"/>
+                            </Grid>
+                        </Button>
+                        <Button x:Name="StopAnimationButton" Grid.Column="4" Click="StopAnimationButton_Click" Style="{StaticResource OperationButtonStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="&#xE71A;" Style="{StaticResource IconButtonIconTextBlockStyle}"/>
+                                <TextBlock Text="停止" Grid.Column="1"/>
+                            </Grid>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.RowSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="2"/>
+                            <ColumnDefinition Width="80"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--2025.08.12:CS)杉原:変換結果削除 ここから
+                    <RadioButton x:Name="OriginalTabButton" Style="{StaticResource TabRadioButtonStyle}" Content="オリジナル" Grid.Column="1" IsChecked="True"/>
+                    <RadioButton x:Name="PreviewTabButton" Style="{StaticResource TabRadioButtonStyle}" Content="変換結果" Grid.Column="3"/>
+                    ここまで -->
+                    </Grid>
+                    <Grid Background="{StaticResource Group.Background}" Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="5"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="5"/>
+                        </Grid.RowDefinitions>
+
+                        <Image x:Name="LoadImage" Grid.Row="1" Source="{Binding LoadImage}" Grid.Column="1"/>
+                        <!--2026.06.05:CS)杉原:複数選択対応 ここから
+                        <Image x:Name="SelectedOriginalImage" Source="{Binding SelectedAnimationImageItem.Image}" Grid.Row="1" Grid.Column="1" Visibility="{Binding IsChecked, Converter={StaticResource TrueVisibleValueConverter}, ElementName=OriginalTabButton}"/>
+                        ここまで -->
+
+                        <!--2025.08.12:CS)杉原:変換結果削除 ここから
+                        <Image x:Name="SelectedPreviewImage" Source="{Binding SelectedAnimationImageItem.PreviewImage}" Grid.Row="1" Grid.Column="1" Visibility="{Binding IsChecked, Converter={StaticResource TrueVisibleValueConverter}, ElementName=PreviewTabButton}"/>
+                        ここまで -->
+                    </Grid>
+                </Grid>
+
+                <!--スライダー-->
+                <GridSplitter Grid.Row="4" Grid.Column="2" HorizontalAlignment="Center" ShowsPreview="True" Width="10" />
+                <TextBlock FontFamily="{StaticResource IconFontFamily}" Text="&#xE784;" Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" IsHitTestVisible="False"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,14 +1,60 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MicroSign.Core.Models
 {
     partial class Model
     {
+        /// <summary>
+        /// パネル設定をアップロードする結果
+        /// </summary>
+        public struct UploadPanelConfigResult
+        {
+            /// <summary>
+            /// 成功フラグ
+            /// </summary>
+            public readonly bool IsSuccess;
+
+            /// <summary>
+            /// メッセージ
+            /// </summary>
+            public readonly string? Message;
+
+            /// <summary>
+            /// コンストラクタ
+            /// </summary>
+            /// <param name="isSuccess">成功フラグ</param>
+            /// <param name="message">メッセージ</param>
+            private UploadPanelConfigResult(bool isSuccess, string? message)
+            {
+                this.IsSuccess = isSuccess;
+                this.Message = message;
+            }
+
+            /// <summary>
+            /// 失敗
+            /// </summary>
+            /// <param name="message">メッセージ</param>
+            /// <returns></returns>
+            public static UploadPanelConfigResult Failed(string message)
+            {
+                UploadPanelConfigResult result = new UploadPanelConfigResult(false, message);
+                return result;
+            }
+
+            /// <summary>
+            /// 成功
+            /// </summary>
+            /// <returns></returns>
+            public static UploadPanelConfigResult Success()
+            {
+                UploadPanelConfigResult result = new UploadPanelConfigResult(true, null);
+                return result;
+            }
+        }
+
+
         /// <summary>
         /// パネル設定をアップロードする
         /// </summary>
@@ -21,7 +67,7 @@ namespace MicroSign.Core.Models
         /// <param name="size">SPIFFSサイズ</param>
         /// <param name="offset">SPIFFSオフセット</param>
         /// <returns></returns>
-        public (bool IsSuccess, string Message) UploadPanelConfig(string mkspiffsPath, string esptoolPath, string com, int bardrate, string frequency, string mode, string size, string offset)
+        public UploadPanelConfigResult UploadPanelConfig(string mkspiffsPath, string esptoolPath, string com, int bardrate, string frequency, string mode, string size, string offset)
         {
             //パネル設定のあるディレクトリを取得
             string targetDir = string.Empty;
@@ -31,7 +77,7 @@ namespace MicroSign.Core.Models
 
                 //フルパスに変換
                 string fullPath = CommonUtils.GetFullPath(filename);
-                CommonLogger.Debug($"パネル設定パス='{fullPath}'");
+                LOGGER.Debug($"パネル設定パス='{fullPath}'");
 
                 //ファイルが存在するか判定
                 {
@@ -39,12 +85,14 @@ namespace MicroSign.Core.Models
                     if(isExists)
                     {
                         //存在する場合は処理続行
-                        CommonLogger.Debug($"パネル設定存在 (path='{fullPath}')");
+                        LOGGER.Debug($"パネル設定存在 (path='{fullPath}')");
                     }
                     else
                     {
                         //存在しない場合は終了
-                        return (false, CommonLogger.Warn($"パネル設定がありません (path='{fullPath}')"));
+                        string msg = $"パネル設定がありません (path='{fullPath}')";
+                        LOGGER.Warn(msg);
+                        return UploadPanelConfigResult.Failed(msg);
                     }
                 }
 
@@ -52,7 +100,9 @@ namespace MicroSign.Core.Models
                 string? dir = System.IO.Path.GetDirectoryName(fullPath);
                 if(dir == null)
                 {
-                    return (false, CommonLogger.Warn($"ディレクトリが取得できませんでした (path='{fullPath}')"));
+                    string msg = $"ディレクトリが取得できませんでした (path='{fullPath}')";
+                    LOGGER.Warn(msg);
+                    return UploadPanelConfigResult.Failed(msg);
                 }
                 else
                 {
@@ -60,13 +110,15 @@ namespace MicroSign.Core.Models
                     if (isNull)
                     {
                         //無効の場合はエラーで終了
-                        return (false, CommonLogger.Warn($"ディレクトリが空です (path='{fullPath}')"));
+                        string msg = $"ディレクトリが空です (path='{fullPath}')";
+                        LOGGER.Warn(msg);
+                        return UploadPanelConfigResult.Failed(msg);
                     }
                     else
                     {
                         //有効の場合はターゲットディレクトリにする
                         targetDir = dir;
-                        CommonLogger.Debug($"処理ターゲットディレクトリ (dir='{dir}')");
+                        LOGGER.Debug($"処理ターゲットディレクトリ (dir='{dir}')");
                     }
                 }
             }
@@ -84,12 +136,14 @@ namespace MicroSign.Core.Models
                 if (ret.IsSuccess)
                 {
                     //成功の場合処理続行
-                    CommonLogger.Debug("SPIFFS生成成功");
+                    LOGGER.Debug("SPIFFS生成成功");
                 }
                 else
                 {
                     //失敗の場合は終了
-                    return (false, CommonLogger.Warn($"SPIFFS生成失敗 (理由={ret.Message})"));
+                    string msg = $"SPIFFS生成失敗 (理由={ret.Message})";
+                    LOGGER.Warn(msg);
+                    return UploadPanelConfigResult.Failed(msg);
                 }
             }
 
@@ -103,117 +157,25 @@ namespace MicroSign.Core.Models
                 if(ret.IsSuccess)
                 {
                     //成功の場合処理続行
-                    CommonLogger.Debug("SPIFFS書込成功");
+                    LOGGER.Debug("SPIFFS書込成功");
                 }
                 else
                 {
                     //失敗の場合は終了
-                    return (false, CommonLogger.Warn($"SPIFFS書込失敗 (理由={ret.Message})"));
+                    string msg = $"SPIFFS書込失敗 (理由={ret.Message})";
+                    LOGGER.Warn(msg);
+                    return UploadPanelConfigResult.Failed(msg);
                 }
             }
 
             //ここまで来たら成功で終了
-            return (true, CommonLogger.Info("パネル設定アップロード成功"));
-        }
-
-        /// <summary>
-        /// 外部プロセスを実行
-        /// </summary>
-        /// <param name="name">処理名</param>
-        /// <param name="path">実行パス</param>
-        /// <param name="args">引数</param>
-        /// <param name="timeout">タイムアウト値</param>
-        /// <returns></returns>
-        private (bool IsSuccess, string Message) ExecuteProcess(string name, string path, string args, TimeSpan timeout)
-        {
-            try
             {
-                ProcessStartInfo psInfo = new ProcessStartInfo();
-                psInfo.FileName = path;
-                psInfo.Arguments = args;
-                psInfo.CreateNoWindow = true;
-                psInfo.RedirectStandardOutput = true;
-                psInfo.RedirectStandardError = true;
-
-                CommonLogger.Info($"{name} - 開始 (file='{path}' arg='{args}')");
-                using (Process? p = Process.Start(psInfo))
-                {
-                    if (p == null)
-                    {
-                        //プロセスの起動に失敗した場合
-                        return (false, CommonLogger.Warn($"{name} プロセスの起動に失敗しました"));
-                    }
-                    else
-                    {
-                        try
-                        {
-                            //プロセスの起動に成功した場合終わるまで待つ
-                            // >> 標準出力都標準エラーをマージして取得する
-                            StringBuilder sb = new StringBuilder(MicroSign.Core.CommonConsts.Text.STRING_BUILDER_CAPACITY);
-                            object lockObj = new object();
-                            p.ErrorDataReceived += (s, e) => { lock (lockObj) { sb.AppendLine(e.Data); } };
-                            p.OutputDataReceived += (s, e) => { lock (lockObj) { sb.AppendLine(e.Data); } };
-                            p.BeginOutputReadLine();
-                            p.BeginErrorReadLine();
-
-                            // >> プロセス終了待ち
-                            int waitTime = (int)timeout.TotalMilliseconds;
-                            CommonLogger.Info($"{name} - プロセス終了待ち開始 ({waitTime}ms) (file='{path}' arg='{args}')");
-                            p.WaitForExit(waitTime);
-                            CommonLogger.Info($"{name} - プロセス終了待ち完了 ({waitTime}ms) (file='{path}' arg='{args}')");
-
-                            // >>  標準出力の読み取り(エラーでも読込する)
-                            string outputText = string.Empty;
-                            lock (lockObj)
-                            {
-                                outputText = sb.ToString();
-                            }
-                            //ログに出力
-                            CommonLogger.Info($"{name} >>>{outputText}<<<");
-
-                            // >> 終了したか判定
-                            if (p.HasExited)
-                            {
-                                //終了したので処理続行
-                                CommonLogger.Debug($"{name} - プロセス終了しました (file='{path}' arg='{args}')");
-                            }
-                            else
-                            {
-                                //終了しなかったのでエラーで終了
-                                return (false, CommonLogger.Warn($"{name} - 時間内に終了しませんでした (file='{path}' arg='{args}')"));
-                            }
-
-                            //終了コード判定
-                            {
-                                int n = p.ExitCode;
-                                if(n == MicroSignConsts.ExitCodes.Success)
-                                {
-                                    //成功の場合処理続行
-                                    CommonLogger.Debug($"{name} - プロセス終了コード正常 Exit={n} (file='{path}' arg='{args}')");
-                                }
-                                else
-                                {
-                                    //それ以外はエラーとみなす
-                                    return (false, CommonLogger.Warn($"{name} - プロセス終了コード異常 Exit={n} (file='{path}' arg='{args}')"));
-                                }
-                            }
-
-                            //ここまで来たら成功
-                            // >> メッセージに出力された内容を出力する
-                            return (true, CommonLogger.Info($"{name} - 成功 (file='{path}' arg='{args}')"));
-                        }
-                        finally
-                        {
-                            p.Close();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                //例外が発生したら終了
-                return (false, CommonLogger.Warn($"{name}で例外発生", ex));
+                string msg = "パネル設定アップロード成功";
+                LOGGER.Info(msg);
+                return UploadPanelConfigResult.Success();
             }
         }
+
+
     }
 }

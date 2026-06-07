@@ -679,7 +679,9 @@ namespace MicroSign.Core.Models
             catch (Exception ex)
             {
                 //例外は握りつぶす
-                return CreateAnimationMergedBitmapResult.Failed(CommonLogger.Warn("マージ画像生成で例外発生", ex));
+                string msg = "マージ画像生成で例外発生";
+                LOGGER.WarnEx(msg, ex);
+                return CreateAnimationMergedBitmapResult.Failed(msg);
             }
         }
 
