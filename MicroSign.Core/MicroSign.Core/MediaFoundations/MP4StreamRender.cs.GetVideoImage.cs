@@ -103,13 +103,13 @@ namespace MicroSign.Core.MediaFoundations
             if (CommonConsts.Collection.Empty < rgb32bufferLength)
             {
                 //有効の場合は処理続行
-                CommonLogger.Debug("ビデオ画像取得 - rgb32buffer有効");
+                LOGGER.Debug("ビデオ画像取得 - rgb32buffer有効");
             }
             else
             {
                 //無効の場合は空で終了
                 string msg = "ビデオ画像取得 - rgb32buffer無効";
-                CommonLogger.Warn(msg);
+                LOGGER.Warn(msg);
                 return GetVideoImageResult.Failed(msg);
             }
 
@@ -119,13 +119,13 @@ namespace MicroSign.Core.MediaFoundations
             {
                 //無効の場合は空で終了
                 string msg = "ビデオ画像取得 - SourceReader無効";
-                CommonLogger.Warn(msg);
+                LOGGER.Warn(msg);
                 return GetVideoImageResult.Failed(msg);
             }
             else
             {
                 //有効の場合は処理続行
-                CommonLogger.Debug("ビデオ画像取得 - SourceReader有効");
+                LOGGER.Debug("ビデオ画像取得 - SourceReader有効");
             }
 
             //ビデオストリームインデックス取得
@@ -146,13 +146,13 @@ namespace MicroSign.Core.MediaFoundations
                     if (hr == MediaFoundation.HResult.S_OK)
                     {
                         //成功の場合は処理続行
-                        CommonLogger.Debug("ビデオ画像取得 - サンプル取得成功");
+                        LOGGER.Debug("ビデオ画像取得 - サンプル取得成功");
                     }
                     else
                     {
                         //失敗の場合は終了
                         string msg = $"ビデオ画像取得 - サンプル取得失敗 ({hr})";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return GetVideoImageResult.Failed(msg);
                     }
 
@@ -163,13 +163,13 @@ namespace MicroSign.Core.MediaFoundations
                         if (f == MediaFoundation.ReadWrite.MF_SOURCE_READER_FLAG.None)
                         {
                             //終了していない場合は処理続行
-                            CommonLogger.Debug("ビデオ画像取得 - ビデオ有効");
+                            LOGGER.Debug("ビデオ画像取得 - ビデオ有効");
                         }
                         else
                         {
                             //終了している場合は終了
                             string msg = $"ビデオ画像取得 - ビデオ終了";
-                            CommonLogger.Info(msg);
+                            LOGGER.Info(msg);
                             return GetVideoImageResult.EndOfStream();
                         }
                     }
@@ -179,13 +179,13 @@ namespace MicroSign.Core.MediaFoundations
                     {
                         //無効の場合は処理できないので終了
                         string msg = $"ビデオ画像取得 - サンプル無効";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return GetVideoImageResult.Failed(msg);
                     }
                     else
                     {
                         //有効の場合は処理続行
-                        CommonLogger.Debug("ビデオ画像取得 - サンプル有効有効");
+                        LOGGER.Debug("ビデオ画像取得 - サンプル有効有効");
                     }
 
                     //バッファを取得
@@ -193,42 +193,42 @@ namespace MicroSign.Core.MediaFoundations
                     try
                     {
                         //バッファロック
-                        CommonLogger.Debug("ビデオ画像取得 - バッファロック");
+                        LOGGER.Debug("ビデオ画像取得 - バッファロック");
                         buffer.Lock(out IntPtr pBufferData, out int maxLength, out int currentLength);
                         try
                         {
                             //IntPtrをbyte配列にコピー
-                            CommonLogger.Debug("ビデオ画像取得 - バッファコピー");
+                            LOGGER.Debug("ビデオ画像取得 - バッファコピー");
                             System.Runtime.InteropServices.Marshal.Copy(pBufferData, rgb32buffer!, CommonConsts.Index.First, rgb32bufferLength);
                         }
                         finally
                         {
-                            CommonLogger.Debug("ビデオ画像取得 - バッファアンロック");
+                            LOGGER.Debug("ビデオ画像取得 - バッファアンロック");
                             buffer.Unlock();
                         }
                     }
                     finally
                     {
                         //バッファを解放
-                        CommonLogger.Debug("ビデオ画像取得 - バッファ解放");
+                        LOGGER.Debug("ビデオ画像取得 - バッファ解放");
                         CommonUtils.SafeComRelease(buffer);
                     }
                 }
                 finally
                 {
-                    CommonLogger.Debug("ビデオ画像取得 - サンプル解放");
+                    LOGGER.Debug("ビデオ画像取得 - サンプル解放");
                     CommonUtils.SafeComRelease(sample);
                 }
 
                 //ここまで来たら成功で終了
-                CommonLogger.Debug("ビデオ画像取得 - 成功");
+                LOGGER.Debug("ビデオ画像取得 - 成功");
                 return GetVideoImageResult.Success(timestamp);
 
             }
             catch (Exception ex)
             {
                 string msg = $"ビデオ画像取得で例外発生";
-                CommonLogger.Warn(msg, ex);
+                LOGGER.WarnEx(msg, ex);
                 return GetVideoImageResult.Failed(msg);
             }
 

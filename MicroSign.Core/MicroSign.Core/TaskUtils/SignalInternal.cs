@@ -8,6 +8,18 @@ namespace MicroSign.Core.TaskUtils
     /// </summary>
     public partial class SignalInternal
     {
+        //2026.06.07:CS)杉原:LOGGERを修正 >>>>> ここから
+        ///// <summary>
+        ///// LOG4NETのロガー
+        ///// </summary>
+        //private static readonly log4net.ILog LOGGER = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //----------
+        /// <summary>
+        /// LOG4NETのロガー
+        /// </summary>
+        private static readonly MicroSignLogger LOGGER = MicroSignLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //2026.06.07:CS)杉原:LOGGERを修正 <<<<< ここまで
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -60,7 +72,7 @@ namespace MicroSign.Core.TaskUtils
             }
             catch (Exception ex)
             {
-                CommonLogger.Warn("シグナル設定で例外発生", ex);
+                LOGGER.WarnEx("シグナル設定で例外発生", ex);
             }
         }
 
@@ -75,7 +87,7 @@ namespace MicroSign.Core.TaskUtils
             }
             catch (Exception ex)
             {
-                CommonLogger.Warn("シグナル解除で例外発生", ex);
+                LOGGER.WarnEx("シグナル解除で例外発生", ex);
             }
         }
 
@@ -93,7 +105,7 @@ namespace MicroSign.Core.TaskUtils
             catch (Exception ex)
             {
                 //例外が発生した場合はシグナルで終了する
-                CommonLogger.Warn("シグナル待ちで例外発生", ex);
+                LOGGER.WarnEx("シグナル待ちで例外発生", ex);
                 return true;
             }
         }
@@ -113,7 +125,7 @@ namespace MicroSign.Core.TaskUtils
             catch (Exception ex)
             {
                 //例外が発生した場合はシグナルで終了する
-                CommonLogger.Warn($"シグナル待ちで例外発生 (timeout={timeout})", ex);
+                LOGGER.WarnEx($"シグナル待ちで例外発生 (timeout={timeout})", ex);
                 return true;
             }
         }

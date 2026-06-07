@@ -1,6 +1,6 @@
 ﻿using MicroSign.Core.Navigations;
 
-namespace MicroSign
+namespace MicroSignFlipia
 {
     partial class MainWindow
     {

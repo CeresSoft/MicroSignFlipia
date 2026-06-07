@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace MicroSign
+namespace MicroSignFlipia
 {
     partial class App
     {

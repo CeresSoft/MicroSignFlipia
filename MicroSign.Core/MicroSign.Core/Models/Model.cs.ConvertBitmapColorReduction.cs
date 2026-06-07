@@ -462,7 +462,9 @@ namespace MicroSign.Core.Models
             catch (Exception ex)
             {
                 //例外は握りつぶす
-                return ConvertBitmapColorReductionResult.Failed(CommonLogger.Warn("減色処理で例外発生", ex));
+                string msg = "減色処理で例外発生";
+                LOGGER.WarnEx(msg, ex);
+                return ConvertBitmapColorReductionResult.Failed(msg);
             }
 
         }

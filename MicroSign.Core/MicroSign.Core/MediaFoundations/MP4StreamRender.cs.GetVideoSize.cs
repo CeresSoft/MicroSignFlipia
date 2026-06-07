@@ -83,13 +83,13 @@ namespace MicroSign.Core.MediaFoundations
             {
                 //無効の場合は空で終了
                 string msg = "ビデオサイズ取得 - SourceReader無効";
-                CommonLogger.Warn(msg);
+                LOGGER.Warn(msg);
                 return GetVideoSizeResult.Failed(msg);
             }
             else
             {
                 //有効の場合は処理続行
-                CommonLogger.Debug("ビデオサイズ取得 - SourceReader有効");
+                LOGGER.Debug("ビデオサイズ取得 - SourceReader有効");
             }
 
             //ビデオストリームインデックス取得
@@ -102,7 +102,7 @@ namespace MicroSign.Core.MediaFoundations
                 //メディアタイプ取得
                 try
                 {
-                    CommonLogger.Debug("ビデオサイズ取得 - MediaType取得");
+                    LOGGER.Debug("ビデオサイズ取得 - MediaType取得");
                     sourceReader.GetCurrentMediaType(videoStreamIndex, out mediaType);
 
                     //メディアタイプ有効判定
@@ -110,19 +110,19 @@ namespace MicroSign.Core.MediaFoundations
                     {
                         //無効の場合は終了
                         string msg = "ビデオサイズ取得 - MediaType無効";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return GetVideoSizeResult.Failed(msg);
                     }
                     else
                     {
                         //有効の場合は処理続行
-                        CommonLogger.Debug("ビデオサイズ取得 - MediaType有効");
+                        LOGGER.Debug("ビデオサイズ取得 - MediaType有効");
                     }
                 }
                 catch (Exception ex)
                 {
                     string msg = $"ビデオサイズ取得 - MediaType取得で例外発生";
-                    CommonLogger.Warn(msg, ex);
+                    LOGGER.WarnEx(msg, ex);
                     return GetVideoSizeResult.Failed(msg);
                 }
 
@@ -133,24 +133,24 @@ namespace MicroSign.Core.MediaFoundations
                 //ビデオの縦横サイズ取得
                 try
                 {
-                    CommonLogger.Debug("ビデオサイズ取得 - サイズ取得 - 開始");
+                    LOGGER.Debug("ビデオサイズ取得 - サイズ取得 - 開始");
                     mediaType.GetSize(MediaFoundation.MFAttributesClsid.MF_MT_FRAME_SIZE, out videoWidth, out videoHeight);
-                    CommonLogger.Debug($"ビデオサイズ取得 - サイズ取得 - 完了 (width={videoWidth}, height={videoHeight}");
+                    LOGGER.Debug($"ビデオサイズ取得 - サイズ取得 - 完了 (width={videoWidth}, height={videoHeight}");
                 }
                 catch (Exception ex)
                 {
                     string msg = $"ビデオサイズ取得 - サイズ取得で例外発生";
-                    CommonLogger.Warn(msg, ex);
+                    LOGGER.WarnEx(msg, ex);
                     return GetVideoSizeResult.Failed(msg);
                 }
 
                 //成功で終了
-                CommonLogger.Info($"ビデオサイズ取得 - 完了 (width={videoWidth}, height={videoHeight})");
+                LOGGER.Info($"ビデオサイズ取得 - 完了 (width={videoWidth}, height={videoHeight})");
                 return GetVideoSizeResult.Success((int)videoWidth, (int)videoHeight);
             }
             finally
             {
-                CommonLogger.Debug($"ビデオサイズ取得 - MediaType破棄");
+                LOGGER.Debug($"ビデオサイズ取得 - MediaType破棄");
                 CommonUtils.SafeComRelease(mediaType);
             }
         }

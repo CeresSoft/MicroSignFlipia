@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using System;
-using LOGGER = MicroSign.Core.CommonLogger;
+using LOGGER = MicroSign.Core.MicroSignLogger;
 
 namespace MicroSign.Core.WaitableTimes
 {

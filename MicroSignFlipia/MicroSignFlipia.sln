@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.5.33424.131
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroSign", "MicroSign\MicroSign.csproj", "{563A1A35-AFD2-41B2-A60F-A0E57D31902C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroSignFlipia", "MicroSignFlipia\MicroSignFlipia.csproj", "{563A1A35-AFD2-41B2-A60F-A0E57D31902C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroSign.Core", "..\MicroSign.Core\MicroSign.Core\MicroSign.Core.csproj", "{CD2AE0B4-551E-4E94-B319-E273693F3293}"
 EndProject

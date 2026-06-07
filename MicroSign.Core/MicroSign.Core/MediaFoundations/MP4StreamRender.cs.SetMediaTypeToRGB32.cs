@@ -1,10 +1,5 @@
 ﻿using MediaFoundation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Interop;
 
 namespace MicroSign.Core.MediaFoundations
 {
@@ -73,13 +68,13 @@ namespace MicroSign.Core.MediaFoundations
             {
                 //無効の場合は空で終了
                 string msg = "メディアタイプをRGB32に設定 - SourceReader無効";
-                CommonLogger.Warn(msg);
+                LOGGER.Warn(msg);
                 return SetMediaTypeRGB32Result.Failed(msg);
             }
             else
             {
                 //有効の場合は処理続行
-                CommonLogger.Debug("メディアタイプをRGB32に設定 - SourceReader有効");
+                LOGGER.Debug("メディアタイプをRGB32に設定 - SourceReader有効");
             }
 
             //ビデオストリームインデックス取得
@@ -105,13 +100,13 @@ namespace MicroSign.Core.MediaFoundations
                     if (hr == MediaFoundation.HResult.S_OK)
                     {
                         //成功の場合は処理続行
-                        CommonLogger.Info($"メディアタイプをRGB32に設定 - 成功");
+                        LOGGER.Info($"メディアタイプをRGB32に設定 - 成功");
                     }
                     else
                     {
                         //失敗した場合は終了
                         string msg = $"メディアタイプをRGB32に設定 - 失敗 ({hr})";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return SetMediaTypeRGB32Result.Failed(msg);
                     }
 
@@ -126,12 +121,12 @@ namespace MicroSign.Core.MediaFoundations
             catch (Exception ex)
             {
                 string msg = $"メディアタイプをRGB32に設定 - 例外発生";
-                CommonLogger.Warn(msg, ex);
+                LOGGER.WarnEx(msg, ex);
                 return SetMediaTypeRGB32Result.Failed(msg);
             }
 
             //ここまで来たら成功で終了
-            CommonLogger.Debug($"メディアタイプをRGB32に設定 - 完了");
+            LOGGER.Debug($"メディアタイプをRGB32に設定 - 完了");
             return SetMediaTypeRGB32Result.Success();
         }
 

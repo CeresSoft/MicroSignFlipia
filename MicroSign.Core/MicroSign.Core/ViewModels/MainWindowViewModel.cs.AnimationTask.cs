@@ -16,19 +16,19 @@ namespace MicroSign.Core.ViewModels
         {
             try
             {
-                CommonLogger.Debug("アニメーションタスク開始");
+                LOGGER.Debug("アニメーションタスク開始");
 
                 //アニメーション画像コレクション有効判定
                 if (animationImageItems == null)
                 {
                     //無効の場合は即終了
-                    CommonLogger.Warn("アニメーション画像コレクションが無効");
+                    LOGGER.Warn("アニメーション画像コレクションが無効");
                     return;
                 }
                 else
                 {
                     //有効の場合は処理続行
-                    CommonLogger.Debug("アニメーション画像コレクション有効");
+                    LOGGER.Debug("アニメーション画像コレクション有効");
                 }
 
                 //アニメーション画像コレクション数取得
@@ -36,12 +36,12 @@ namespace MicroSign.Core.ViewModels
                 if (CommonConsts.Collection.Empty < animationCount)
                 {
                     //有効の場合は処理続行
-                    CommonLogger.Debug($"アニメーション画像数={animationCount}");
+                    LOGGER.Debug($"アニメーション画像数={animationCount}");
                 }
                 else
                 {
                     //無効の場合は終了
-                    CommonLogger.Warn($"アニメーション画像無し={animationCount}");
+                    LOGGER.Warn($"アニメーション画像無し={animationCount}");
                     return;
                 }
 
@@ -49,13 +49,13 @@ namespace MicroSign.Core.ViewModels
                 if (startAnimationItem == null)
                 {
                     //無効の場合は即終了
-                    CommonLogger.Warn("開始アニメーション画像が無効");
+                    LOGGER.Warn("開始アニメーション画像が無効");
                     return;
                 }
                 else
                 {
                     //有効の場合は処理続行
-                    CommonLogger.Debug("開始アニメーション画像有効");
+                    LOGGER.Debug("開始アニメーション画像有効");
                 }
 
                 //インデックスを取得
@@ -63,13 +63,13 @@ namespace MicroSign.Core.ViewModels
                 if (index < CommonConsts.Index.First)
                 {
                     //無効の場合は即終了
-                    CommonLogger.Warn("開始アニメーション画像インデックス無効");
+                    LOGGER.Warn("開始アニメーション画像インデックス無効");
                     return;
                 }
                 else
                 {
                     //有効の場合は処理続行
-                    CommonLogger.Debug($"開始アニメーション画像インデックス有効={index}");
+                    LOGGER.Debug($"開始アニメーション画像インデックス有効={index}");
                 }
 
                 //アニメーションを選択
@@ -112,7 +112,7 @@ namespace MicroSign.Core.ViewModels
                         {
                             case CommonConsts.Index.First:
                                 //キャンセルの場合
-                                CommonLogger.Debug("アニメーションタスクキャンセル検出");
+                                LOGGER.Debug("アニメーションタスクキャンセル検出");
                                 isLoop = false;
                                 break;
 
@@ -179,11 +179,11 @@ namespace MicroSign.Core.ViewModels
             catch (Exception ex)
             {
                 //例外は握りつぶす
-                CommonLogger.Warn("アニメーションタスクで例外発生", ex);
+                LOGGER.WarnEx("アニメーションタスクで例外発生", ex);
             }
             finally
             {
-                CommonLogger.Debug("アニメーションタスク終了");
+                LOGGER.Debug("アニメーションタスク終了");
             }
         }
 

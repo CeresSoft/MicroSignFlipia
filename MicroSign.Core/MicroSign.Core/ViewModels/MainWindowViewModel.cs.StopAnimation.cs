@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using LOGGER = MicroSign.Core.CommonLogger;
 
 namespace MicroSign.Core.ViewModels
 {
@@ -29,7 +28,7 @@ namespace MicroSign.Core.ViewModels
             }
             catch(Exception ex)
             {
-                LOGGER.Warn("アニメーションタスク終了で例外発生", ex);
+                LOGGER.WarnEx("アニメーションタスク終了で例外発生", ex);
             }
 
         }

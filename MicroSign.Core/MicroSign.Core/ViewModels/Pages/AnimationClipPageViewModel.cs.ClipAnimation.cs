@@ -134,7 +134,7 @@ namespace MicroSign.Core.ViewModels.Pages
             catch (Exception ex)
             {
                 //例外は握りつぶす
-                CommonLogger.Warn("アニメーション切り抜きで例外発生", ex);
+                LOGGER.WarnEx("アニメーション切り抜きで例外発生", ex);
 
                 //終了処理を呼ぶ
                 this.OnClipAnimationTaskFinish(null);
@@ -165,13 +165,13 @@ namespace MicroSign.Core.ViewModels.Pages
                     {
                         //無効の場合は修了
                         string msg = $"ファイル名の取得に失敗しました (path='{path}')";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return ClipAnimationResult.Failed(msg);
                     }
                     else
                     {
                         //取得できた場合は処理続行
-                        CommonLogger.Debug($"ファイル名の取得成功  (path='{path}' -> '{fname}')");
+                        LOGGER.Debug($"ファイル名の取得成功  (path='{path}' -> '{fname}')");
                     }
                 }
 
@@ -183,25 +183,25 @@ namespace MicroSign.Core.ViewModels.Pages
                     {
                         //無効の場合は修了
                         string msg = $"ディレクトリの取得に失敗しました (path='{path}')";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return ClipAnimationResult.Failed(msg);
                     }
                     else
                     {
                         //取得できた場合は処理続行
-                        CommonLogger.Debug($"ディレクトリの取得成功  (path='{path}' -> '{dir}')");
+                        LOGGER.Debug($"ディレクトリの取得成功  (path='{path}' -> '{dir}')");
                     }
                 }
 
                 //出力フォルダ名を生成
                 outputFolder = System.IO.Path.Combine(dir!, fname!);
-                CommonLogger.Debug($"出力先フォルダ ('{dir}' + '{fname}' -> '{outputFolder}')");
+                LOGGER.Debug($"出力先フォルダ ('{dir}' + '{fname}' -> '{outputFolder}')");
             }
             catch (Exception ex)
             {
                 //例外は握りつぶす
                 string msg = $"出力フォルダの作成で例外が発生しました (path='{path}' / outputFolder='{outputFolder}') ({ex})";
-                CommonLogger.Warn(msg, ex);
+                LOGGER.WarnEx(msg, ex);
                 return ClipAnimationResult.Failed(msg);
             }
 
@@ -215,7 +215,7 @@ namespace MicroSign.Core.ViewModels.Pages
             {
                 //失敗の場合は終了
                 string msg = ret.ErrorMessage!;
-                CommonLogger.Warn(msg);
+                LOGGER.Warn(msg);
                 return ClipAnimationResult.Failed(msg);
             }
 
@@ -237,13 +237,13 @@ namespace MicroSign.Core.ViewModels.Pages
             if (callback == null)
             {
                 //コールバック無効の場合は何もできないので終了
-                CommonLogger.Warn("アニメーション切り抜き完了コールバックが無効です");
+                LOGGER.Warn("アニメーション切り抜き完了コールバックが無効です");
                 return;
             }
             else
             {
                 //有効の場合は続行
-                CommonLogger.Debug("アニメーション切り抜き完了コールバックが有効");
+                LOGGER.Debug("アニメーション切り抜き完了コールバックが有効");
             }
 
             //タスク有効判定

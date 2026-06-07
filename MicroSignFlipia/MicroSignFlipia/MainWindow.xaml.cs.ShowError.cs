@@ -1,7 +1,7 @@
 ﻿using MicroSign.Core.Navigations;
 using System;
 
-namespace MicroSign
+namespace MicroSignFlipia
 {
     partial class MainWindow
     {

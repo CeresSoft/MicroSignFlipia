@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>MicroSign.ico</ApplicationIcon>
-    <AssemblyTitle>MicroSignアニメーション作成</AssemblyTitle>
+    <AssemblyTitle>MicroSignFlipia</AssemblyTitle>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <SelfContained>true</SelfContained>

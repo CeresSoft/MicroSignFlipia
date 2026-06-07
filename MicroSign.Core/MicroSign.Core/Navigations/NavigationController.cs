@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using LOGGER = MicroSign.Core.CommonLogger;
 
 #nullable disable //Variousから移植したコードなので、Null非許容警告を無効化します
 
@@ -38,10 +37,17 @@ namespace MicroSign.Core.Navigations
     /// </remarks>
     public partial class NavigationController : DependencyObject
     {
+        //2026.06.07:CS)杉原:LOGGERを修正 >>>>> ここから
         ///// <summary>
         ///// LOG4NETのロガー
         ///// </summary>
         //private static readonly log4net.ILog LOGGER = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //----------
+        /// <summary>
+        /// LOG4NETのロガー
+        /// </summary>
+        private static readonly MicroSignLogger LOGGER = MicroSignLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //2026.06.07:CS)杉原:LOGGERを修正 <<<<< ここまで
 
         /// <summary>
         /// ナビゲーションで使うパネル

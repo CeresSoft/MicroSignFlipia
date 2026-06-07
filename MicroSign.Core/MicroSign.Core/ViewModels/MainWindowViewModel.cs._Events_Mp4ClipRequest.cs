@@ -26,7 +26,7 @@ namespace MicroSign.Core.ViewModels
             if(handler == null)
             {
                 //無効の場合は何もせずに終了
-                CommonLogger.Warn("MP4クリップ要求イベントハンドラーなし");
+                LOGGER.Warn("MP4クリップ要求イベントハンドラーなし");
                 return args;
             }
             else
@@ -42,7 +42,7 @@ namespace MicroSign.Core.ViewModels
             catch (Exception ex)
             {
                 //例外は握りつぶす
-                CommonLogger.Warn("MP4クリップ要求イベント発行で例外発生", ex);
+                LOGGER.WarnEx("MP4クリップ要求イベント発行で例外発生", ex);
             }
 
             //そのまま終了

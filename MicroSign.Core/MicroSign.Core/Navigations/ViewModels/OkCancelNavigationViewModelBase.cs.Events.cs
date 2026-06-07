@@ -91,27 +91,27 @@ namespace MicroSign.Core.Navigations.ViewModels
             {
                 //ハンドラ無効
                 string msg = "OKクリックイベントハンドラ無効";
-                CommonLogger.Warn(msg);
+                LOGGER.Warn(msg);
                 return RaiseOkClickResult.Failed(msg, null);
             }
             else
             {
                 //ハンドラ有効
-                CommonLogger.Debug("OKクリックイベントハンドラ有効");
+                LOGGER.Debug("OKクリックイベントハンドラ有効");
             }
 
             //イベント発行
             OkClickEventArgs arg = new OkClickEventArgs();
             try
             {
-                CommonLogger.Debug("OKクリックイベントハンドラ発行開始");
+                LOGGER.Debug("OKクリックイベントハンドラ発行開始");
                 handler(this, arg);
-                CommonLogger.Debug("OKクリックイベントハンドラ発行完了");
+                LOGGER.Debug("OKクリックイベントハンドラ発行完了");
             }
             catch (Exception ex)
             {
                 string msg = "OKクリックイベントハンドラ発行で例外発生";
-                CommonLogger.Warn(msg, ex);
+                LOGGER.WarnEx(msg, ex);
                 return RaiseOkClickResult.Failed(msg, ex);
             }
 
@@ -120,15 +120,15 @@ namespace MicroSign.Core.Navigations.ViewModels
             {
                 case NavigationResultKind.Success:
                     //成功の場合
-                    CommonLogger.Debug("OKクリックイベント成功");
+                    LOGGER.Debug("OKクリックイベント成功");
                     return RaiseOkClickResult.Success();
                 case NavigationResultKind.Cancel:
                     //キャンセルの場合
-                    CommonLogger.Debug("OKクリックイベントキャンセル");
+                    LOGGER.Debug("OKクリックイベントキャンセル");
                     return RaiseOkClickResult.Cancel();
                 default:
                     //それ以外は失敗
-                    CommonLogger.Debug("OKクリックイベント失敗");
+                    LOGGER.Debug("OKクリックイベント失敗");
                     return RaiseOkClickResult.Failed(arg.Message, arg.Error);
             }
         }
@@ -148,27 +148,27 @@ namespace MicroSign.Core.Navigations.ViewModels
             if (handler == null)
             {
                 //ハンドラ無効
-                CommonLogger.Warn("キャンセルクリックイベントハンドラ無効");
+                LOGGER.Warn("キャンセルクリックイベントハンドラ無効");
                 return;
             }
             else
             {
                 //ハンドラ有効
-                CommonLogger.Debug("キャンセルクリックイベントハンドラ有効");
+                LOGGER.Debug("キャンセルクリックイベントハンドラ有効");
             }
 
             //イベント発行
             CancelClickEventArgs arg = new CancelClickEventArgs();
             try
             {
-                CommonLogger.Debug("キャンセルクリックイベントハンドラ発行開始");
+                LOGGER.Debug("キャンセルクリックイベントハンドラ発行開始");
                 handler(this, arg);
-                CommonLogger.Debug("キャンセルクリックイベントハンドラ発行完了");
+                LOGGER.Debug("キャンセルクリックイベントハンドラ発行完了");
             }
             catch (Exception ex)
             {
                 string msg = "キャンセルクリックイベントハンドラ発行で例外発生";
-                CommonLogger.Warn(msg, ex);
+                LOGGER.WarnEx(msg, ex);
             }
         }
     }

@@ -17,14 +17,14 @@ namespace MicroSign.Core.ViewModels.Pages
             {
                 //無効の場合は終了
                 string msg = "MP4クリップ要求引数が無効";
-                CommonLogger.Warn(msg);
+                LOGGER.Warn(msg);
                 this.SetWarnMessage(msg);
                 return;
             }
             else
             {
                 //有効の場合は処理続行
-                CommonLogger.Debug("MP4クリップ要求引数有効");
+                LOGGER.Debug("MP4クリップ要求引数有効");
             }
 
             //MP4取得
@@ -33,14 +33,14 @@ namespace MicroSign.Core.ViewModels.Pages
             {
                 //無効の場合は終了
                 string msg = "MP4が無効";
-                CommonLogger.Warn(msg);
+                LOGGER.Warn(msg);
                 this.SetWarnMessage(msg);
                 return;
             }
             else
             {
                 //有効の場合は処理続行
-                CommonLogger.Debug("MP4有効");
+                LOGGER.Debug("MP4有効");
             }
 
             //ビデオ長さ取得
@@ -48,13 +48,13 @@ namespace MicroSign.Core.ViewModels.Pages
             if (TimeSpan.Zero.Ticks < maxDurationTicks)
             {
                 //有効の場合は処理続行
-                CommonLogger.Debug($"ビデオ長さ有効 ({maxDurationTicks}ticks)");
+                LOGGER.Debug($"ビデオ長さ有効 ({maxDurationTicks}ticks)");
             }
             else
             {
                 //無効の場合は終了
                 string? msg = $"ビデオ長さ無効 ({maxDurationTicks}ticks)";
-                CommonLogger.Warn(msg);
+                LOGGER.Warn(msg);
                 this.SetWarnMessage(msg);
                 return;
             }
@@ -64,7 +64,7 @@ namespace MicroSign.Core.ViewModels.Pages
             if (selectVideoPosition < TimeSpan.Zero.Ticks)
             {
                 //範囲外の場合は範囲内にする
-                CommonLogger.Debug($"再生位置が小さすぎる ({selectVideoPosition} < {TimeSpan.Zero.Ticks})");
+                LOGGER.Debug($"再生位置が小さすぎる ({selectVideoPosition} < {TimeSpan.Zero.Ticks})");
                 selectVideoPosition = TimeSpan.Zero.Ticks;
             }
             else
@@ -73,13 +73,13 @@ namespace MicroSign.Core.ViewModels.Pages
                 if (maxDurationTicks < selectVideoPosition)
                 {
                     //範囲外の場合は範囲内にする
-                    CommonLogger.Debug($"再生位置が大きすぎる ({maxDurationTicks} < {selectVideoPosition})");
+                    LOGGER.Debug($"再生位置が大きすぎる ({maxDurationTicks} < {selectVideoPosition})");
                     selectVideoPosition = maxDurationTicks;
                 }
                 else
                 {
                     //範囲内の場合は処理続行
-                    CommonLogger.Debug($"再生位置有効 ({TimeSpan.Zero.Ticks} <= {selectVideoPosition} <= {maxDurationTicks})");
+                    LOGGER.Debug($"再生位置有効 ({TimeSpan.Zero.Ticks} <= {selectVideoPosition} <= {maxDurationTicks})");
                 }
             }
 
@@ -90,13 +90,13 @@ namespace MicroSign.Core.ViewModels.Pages
                 if(isSuccess)
                 {
                     //成功の場合は処理続行
-                    CommonLogger.Debug($"再生位置設定成功 ({selectVideoPosition}ticks)");
+                    LOGGER.Debug($"再生位置設定成功 ({selectVideoPosition}ticks)");
                 }
                 else
                 {
                     //失敗の場合は終了
                     string? msg = $"再生位置設定失敗 ({maxDurationTicks}ticks) {ret.ErrorMessage}";
-                    CommonLogger.Warn(msg);
+                    LOGGER.Warn(msg);
                     this.SetWarnMessage(msg);
                     return;
                 }
@@ -113,18 +113,18 @@ namespace MicroSign.Core.ViewModels.Pages
                 {
                     case MicroSign.Core.MediaFoundations.MP4StreamRender.GetVideoImageState.Success:
                         //成功した場合は処理続行
-                        CommonLogger.Debug($"ビデオ映像取得成功");
+                        LOGGER.Debug($"ビデオ映像取得成功");
                         break;
 
                     case MicroSign.Core.MediaFoundations.MP4StreamRender.GetVideoImageState.EndOfStream:
                         //動画終了時は終了
-                        CommonLogger.Debug($"ビデオ映像終了");
+                        LOGGER.Debug($"ビデオ映像終了");
                         return;
 
                     default:
                         //それ以外は失敗で終了
                         string? msg = $"ビデオ映像取得失敗 ({maxDurationTicks}ticks) {ret.ErrorMessage}";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         this.SetWarnMessage(msg);
                         return;
                 }
@@ -136,14 +136,14 @@ namespace MicroSign.Core.ViewModels.Pages
             {
                 //ビットマップが無効の場合は何もしない
                 string? msg = $"ビットマップ無効";
-                CommonLogger.Warn(msg);
+                LOGGER.Warn(msg);
                 this.SetWarnMessage(msg);
                 return;
             }
             else
             {
                 //ビットマップが有効の場合は処理続行
-                CommonLogger.Debug($"ビットマップ有効");
+                LOGGER.Debug($"ビットマップ有効");
             }
 
             //WriteableBitmapに書込
@@ -173,7 +173,7 @@ namespace MicroSign.Core.ViewModels.Pages
             catch (Exception ex)
             {
                 string? msg = $"ビデオ映像取得で例外発生";
-                CommonLogger.Warn(msg, ex);
+                LOGGER.WarnEx(msg, ex);
                 this.SetWarnMessage(msg);
                 return;
             }

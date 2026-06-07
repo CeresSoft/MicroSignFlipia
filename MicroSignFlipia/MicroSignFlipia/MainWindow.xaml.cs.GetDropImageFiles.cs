@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
-using static MicroSign.App.Consts;
 
-namespace MicroSign
+namespace MicroSignFlipia
 {
     partial class MainWindow
     {
+
         /// <summary>
         /// ドロップされたファイルの一覧を取得結果
         /// </summary>
@@ -170,7 +170,7 @@ namespace MicroSign
                 catch (Exception ex)
                 {
                     //例外は握りつぶす
-                    CommonLogger.Warn($"ドロップされたファイルの拡張子判定で例外発生 path='{file}'", ex);
+                    LOGGER.Warn($"ドロップされたファイルの拡張子判定で例外発生 path='{file}'", ex);
                 }
 
                 //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
@@ -192,7 +192,7 @@ namespace MicroSign
                 catch (Exception ex)
                 {
                     //例外は握りつぶす
-                    CommonLogger.Warn($"ドロップされたサウンドファイルの拡張子判定で例外発生 path='{file}'", ex);
+                    LOGGER.Warn($"ドロップされたサウンドファイルの拡張子判定で例外発生 path='{file}'", ex);
                 }
                 //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
             }
@@ -239,7 +239,7 @@ namespace MicroSign
             if (CommonConsts.Collection.Empty < n)
             {
                 //有効の場合は処理続行
-                CommonLogger.Debug($"ドロップファイル数={n}");
+                LOGGER.Debug($"ドロップファイル数={n}");
             }
             else
             {
@@ -278,7 +278,7 @@ namespace MicroSign
                 catch (Exception ex)
                 {
                     //例外は握りつぶす
-                    CommonLogger.Warn($"ドロップされたファイルの拡張子判定で例外発生 path='{file}'", ex);
+                    LOGGER.Warn($"ドロップされたファイルの拡張子判定で例外発生 path='{file}'", ex);
                 }
 
                 //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
@@ -299,7 +299,7 @@ namespace MicroSign
                 catch (Exception ex)
                 {
                     //例外は握りつぶす
-                    CommonLogger.Warn($"ドロップされたサウンドファイルの拡張子判定で例外発生 path='{file}'", ex);
+                    LOGGER.Warn($"ドロップされたサウンドファイルの拡張子判定で例外発生 path='{file}'", ex);
                 }
                 //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
             }
@@ -318,7 +318,7 @@ namespace MicroSign
                     //2026.05.22:CS)杉原:サウンド機能追加 >>>>> ここから
                     //CommonLogger.Debug($"画像ファイル数={m}");
                     //-----
-                    CommonLogger.Debug($"画像ファイル数={m}, サウンドファイル={isSound}");
+                    LOGGER.Debug($"画像ファイル数={m}, サウンドファイル={isSound}");
                     //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
                 }
                 else
@@ -336,7 +336,7 @@ namespace MicroSign
                     else
                     {
                         //存在する場合は処理続行
-                        CommonLogger.Debug($"画像ファイル数=None, サウンドファイル={isSound}");
+                        LOGGER.Debug($"画像ファイル数=None, サウンドファイル={isSound}");
                     }
                     //2026.05.22:CS)杉原:サウンド機能追加 <<<<< ここまで
                 }

@@ -1,9 +1,5 @@
 ﻿using MediaFoundation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MicroSign.Core.MediaFoundations
 {
@@ -71,13 +67,13 @@ namespace MicroSign.Core.MediaFoundations
             {
                 //無効の場合は空で終了
                 string msg = "再生位置設定 - SourceReader無効";
-                CommonLogger.Warn(msg);
+                LOGGER.Warn(msg);
                 return SetCurrentPositionResult.Failed(msg);
             }
             else
             {
                 //有効の場合は処理続行
-                CommonLogger.Debug("再生位置設定 - SourceReader有効");
+                LOGGER.Debug("再生位置設定 - SourceReader有効");
             }
 
             //再生位置設定
@@ -85,18 +81,18 @@ namespace MicroSign.Core.MediaFoundations
             {
                 using (MediaFoundation.Misc.PropVariant pv = new MediaFoundation.Misc.PropVariant((long)selectVideoPosition))
                 {
-                    CommonLogger.Debug("再生位置設定 - 開始");
+                    LOGGER.Debug("再生位置設定 - 開始");
                     HResult hr = sourceReader.SetCurrentPosition(Guid.Empty, pv);
                     if(hr == HResult.S_OK)
                     {
                         //成功の場合
-                        CommonLogger.Debug($"再生位置設定 - 完了");
+                        LOGGER.Debug($"再生位置設定 - 完了");
                     }
                     else
                     {
                         //失敗の場合
                         string msg = $"再生位置設定 - 失敗 ({hr})";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return SetCurrentPositionResult.Failed(msg);
                     }
                 }
@@ -104,7 +100,7 @@ namespace MicroSign.Core.MediaFoundations
             catch (Exception ex)
             {
                 string msg = $"再生位置設定で例外発生";
-                CommonLogger.Warn(msg, ex);
+                LOGGER.WarnEx(msg, ex);
                 return SetCurrentPositionResult.Failed(msg);
             }
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using System;
 using System.Runtime.InteropServices;
-using LOGGER = MicroSign.Core.CommonLogger;
+using LOGGER = MicroSign.Core.MicroSignLogger;
 
 namespace MicroSign.Core.WaitableTimes
 {

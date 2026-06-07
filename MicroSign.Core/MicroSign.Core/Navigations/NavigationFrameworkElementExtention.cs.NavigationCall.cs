@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using LOGGER = MicroSign.Core.CommonLogger;
 
 #nullable disable //Variousから移植したコードなので、Null非許容警告を無効化します
 

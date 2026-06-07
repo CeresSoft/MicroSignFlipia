@@ -76,13 +76,13 @@ namespace MicroSign.Core.MediaFoundations
             {
                 //無効の場合は空で終了
                 string msg = "ビデオの長さ取得 - SourceReader無効";
-                CommonLogger.Warn(msg);
+                LOGGER.Warn(msg);
                 return GetDurationResult.Failed(msg);
             }
             else
             {
                 //有効の場合は処理続行
-                CommonLogger.Debug("ビデオの長さ取得 - SourceReader有効");
+                LOGGER.Debug("ビデオの長さ取得 - SourceReader有効");
             }
 
             try
@@ -102,7 +102,7 @@ namespace MicroSign.Core.MediaFoundations
                             //Int64 型だった場合
                             {
                                 durationTicks = pv.GetLong();
-                                CommonLogger.Debug($"ビデオの長さ取得 - long({durationTicks})");
+                                LOGGER.Debug($"ビデオの長さ取得 - long({durationTicks})");
                             }
                             break;
 
@@ -110,7 +110,7 @@ namespace MicroSign.Core.MediaFoundations
                             //符号なし64ビット整数型（UInt64）として格納されている場合
                             {
                                 durationTicks = (long)pv.GetULong();
-                                CommonLogger.Debug($"ビデオの長さ取得 - ulong({durationTicks})");
+                                LOGGER.Debug($"ビデオの長さ取得 - ulong({durationTicks})");
                             }
                             break;
 
@@ -118,7 +118,7 @@ namespace MicroSign.Core.MediaFoundations
                             //無効の場合
                             {
                                 string msg = "ビデオの長さ取得 - 長さ無し(ライブ配信などの可能性)";
-                                CommonLogger.Warn(msg);
+                                LOGGER.Warn(msg);
                                 return GetDurationResult.Failed(msg);
                             }
 
@@ -127,7 +127,7 @@ namespace MicroSign.Core.MediaFoundations
                             //無効の場合
                             {
                                 string msg = $"ビデオの長さ取得 - 長さが想定外の型です (type={vt})";
-                                CommonLogger.Warn(msg);
+                                LOGGER.Warn(msg);
                                 return GetDurationResult.Failed(msg);
                             }
                     }
@@ -140,7 +140,7 @@ namespace MicroSign.Core.MediaFoundations
             catch (Exception ex)
             {
                 string msg = $"ビデオの長さ取得で例外発生";
-                CommonLogger.Warn(msg, ex);
+                LOGGER.WarnEx(msg, ex);
                 return GetDurationResult.Failed(msg);
             }
 

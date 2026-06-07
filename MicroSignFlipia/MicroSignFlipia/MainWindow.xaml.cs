@@ -10,9 +10,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 
-namespace MicroSign
+namespace MicroSignFlipia
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -118,7 +117,9 @@ namespace MicroSign
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("読込で例外発生"), ex);
+                string msg = "読込で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -205,7 +206,9 @@ namespace MicroSign
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("アニメーション画像追加で例外発生"), ex);
+                string msg = "アニメーション画像追加で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -236,7 +239,7 @@ namespace MicroSign
                     //戻り値がnullの場合、成功でも失敗でもないので何もしない
                     // >> 通常の動作では必ず戻り値を設定するが、アプリ終了などで呼び出しが中断するとnullになる
                     // >> nullはアプリ終了とみなして何もせず終了する
-                    CommonLogger.Debug("アニメーション文字ページの戻り値なし");
+                    LOGGER.Debug("アニメーション文字ページの戻り値なし");
                     return;
                 }
                 else
@@ -253,17 +256,21 @@ namespace MicroSign
                     {
                         case NavigationResultKind.Success:
                             //成功の場合は処理続行
-                            CommonLogger.Debug("アニメーション文字追加成功");
+                            LOGGER.Debug("アニメーション文字追加成功");
                             break;
 
                         case NavigationResultKind.Cancel:
                             //キャンセルの場合は何もせずに終了
-                            CommonLogger.Info("アニメーション文字追加キャンセル");
+                            LOGGER.Info("アニメーション文字追加キャンセル");
                             return;
 
                         default:
                             //それ以外は失敗
-                            this.ShowWarning(CommonLogger.Warn($"文字追加に失敗しました (理由={resultKind}')"));
+                            {
+                                string msg = $"文字追加に失敗しました (理由={resultKind}')";
+                                LOGGER.Warn(msg);
+                                this.ShowWarning(msg);
+                            }
                             return;
                     }
                     //出力結果を取得
@@ -277,13 +284,17 @@ namespace MicroSign
                 else
                 {
                     //結果が取得できない場合は何もしない
-                    this.ShowWarning(CommonLogger.Warn("アニメーション文字追加結果が確認出来ません"));
+                    string msg = "アニメーション文字追加結果が確認出来ません";
+                    LOGGER.Warn(msg);
+                    this.ShowWarning(msg);
                 }
                 //2025.10.01:CS)土田:Variousから移植したNavigationの引数にあわせて修正 <<<<< ここまで
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("アニメーション文字追加で例外発生"), ex);
+                string msg = "アニメーション文字追加で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -307,18 +318,18 @@ namespace MicroSign
         //                    //成功の場合は処理続行
         //                    CommonLogger.Debug("アニメーション文字追加成功");
         //                    break;
-
+        //
         //                case NavigationResultKind.Cancel:
         //                    //キャンセルの場合は何もせずに終了
         //                    CommonLogger.Info("アニメーション文字追加キャンセル");
         //                    return;
-
+        //
         //                default:
         //                    //それ以外は失敗
         //                    this.ShowWarning(CommonLogger.Warn($"文字追加に失敗しました (理由={resultKind}')"));
         //                    return;
         //            }
-
+        //
         //            //ビットマップ取得
         //            BitmapSource? image = ret.RenderBitmap;
         //            if (image == null)
@@ -332,22 +343,22 @@ namespace MicroSign
         //                //有効の場合は処理続行
         //                CommonLogger.Info("文字画像有効");
         //            }
-
+        //
         //            //フォントサイズ取得
         //            // >> サイズはいくつでもよい。再編集時にAnimationTextPageへ渡すだけ
         //            int selectFontSize = ret.SelectFontSize;
-
+        //
         //            //フォント色取得
         //            // >> 色はいくつでもよい。再編集時にAnimationTextPageへ渡すだけ
         //            int selectFontColor = ret.SelectFontColor;
-
+        //
         //            //表示文字取得
         //            // >> 表示文字はなんでもよい。再編集時にAnimationTextPageへ渡すだけ
         //            string? displayText = ret.DisplayText;
-
+        //
         //            //デフォルトの表示期間を取得
         //            double defaultDisplayPeriod = this.ViewModel.DefaultDisplayPeriod;
-
+        //
         //            //2025.08.12:CS)杉原:パレット処理の流れを変更 >>>>> ここから
         //            ////画像変換
         //            //MicroSign.Core.Models.Model.ConvertImageResult convertImageResult = this.ViewModel.ConvertAnimationImage(image);
@@ -384,7 +395,7 @@ namespace MicroSign
         //                image
         //                );
         //            //2025.08.12:CS)杉原:パレット処理の流れを変更 <<<<< ここまで
-
+        //
         //            //リストに追加
         //            this.ViewModel.AddAnimationImage(animationImageItem);
         //        }
@@ -442,7 +453,8 @@ namespace MicroSign
                 else
                 {
                     //選択されているアニメーション画像が無い場合はメッセージを表示して終了
-                    this.ShowWarning(CommonLogger.Warn("アニメーション画像が選択されていません"));
+                    string msg = "アニメーション画像が選択されていません";
+                    this.ShowWarning(msg);
                     return;
                 }
 
@@ -471,14 +483,16 @@ namespace MicroSign
                 else
                 {
                     //無効の場合は何もせずに終了
-                    CommonLogger.Warn($"アニメーション画像削除確認の結果が判定できませんでした (ret={result})");
+                    LOGGER.Warn($"アニメーション画像削除確認の結果が判定できませんでした (ret={result})");
                 }
                 //2026.06.05:CS)杉原:複数選択対応 <<<<< ここまで
 
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("アニメーション画像削除で例外発生"), ex);
+                string msg = "アニメーション画像削除で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -557,14 +571,16 @@ namespace MicroSign
                 else
                 {
                     //無効の場合は何もせずに終了
-                    CommonLogger.Warn($"全アニメーション画像削除確認の結果が判定できませんでした (ret={ret})");
+                    LOGGER.Warn($"全アニメーション画像削除確認の結果が判定できませんでした (ret={ret})");
                 }
                 //2026.06.05:CS)杉原:複数選択対応 <<<<< ここまで
                 //2025.10.01:CS)土田:Variousから移植したNavigationの引数にあわせて修正 <<<<< ここまで
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("アニメーション画像削除で例外発生"), ex);
+                string msg = "アニメーション画像削除で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -639,7 +655,8 @@ namespace MicroSign
                 else
                 {
                     //選択されているアニメーション画像が無い場合はメッセージを表示して終了
-                    this.ShowWarning(CommonLogger.Warn("アニメーション画像が選択されていません"));
+                    string msg = "アニメーション画像が選択されていません";
+                    this.ShowWarning(msg);
                     return;
                 }
 
@@ -651,7 +668,11 @@ namespace MicroSign
                     {
                         case MainWindowViewModel.TestFirstAnimationImageResult.First:
                             //先頭の場合は上に移動できないので終了
-                            this.ShowWarning(CommonLogger.Warn("先頭アニメーション画像は上に移動できません"));
+                            {
+                                string msg = "先頭アニメーション画像は上に移動できません";
+                                LOGGER.Warn(msg);
+                                this.ShowWarning(msg);
+                            }
                             return;
 
                         case MainWindowViewModel.TestFirstAnimationImageResult.NoFirst:
@@ -660,7 +681,11 @@ namespace MicroSign
 
                         default:
                             //それ以外はエラー
-                            this.ShowWarning(CommonLogger.Warn($"アニメーション画像を上に移動できません({ret})"));
+                            {
+                                string msg = $"アニメーション画像を上に移動できません({ret})";
+                                LOGGER.Warn(msg);
+                                this.ShowWarning(msg);
+                            }
                             return;
                     }
                 }
@@ -680,7 +705,9 @@ namespace MicroSign
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("アニメーション画像上移動で例外発生"), ex);
+                string msg = "アニメーション画像上移動で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -719,7 +746,9 @@ namespace MicroSign
                 else
                 {
                     //選択されているアニメーション画像が無い場合はメッセージを表示して終了
-                    this.ShowWarning(CommonLogger.Warn("アニメーション画像が選択されていません"));
+                    string msg = "アニメーション画像が選択されていません";
+                    LOGGER.Warn(msg);
+                    this.ShowWarning(msg);
                     return;
                 }
 
@@ -732,7 +761,11 @@ namespace MicroSign
                     {
                         case MainWindowViewModel.TestLastAnimationImageResult.Last:
                             //先頭の場合は上に移動できないので終了
-                            this.ShowWarning(CommonLogger.Warn("最終アニメーション画像は下に移動できません"));
+                            {
+                                string msg = "最終アニメーション画像は下に移動できません";
+                                LOGGER.Warn(msg);
+                                this.ShowWarning(msg);
+                            }
                             return;
 
                         case MainWindowViewModel.TestLastAnimationImageResult.NoLast:
@@ -741,7 +774,11 @@ namespace MicroSign
 
                         default:
                             //それ以外はエラー
-                            this.ShowWarning(CommonLogger.Warn($"アニメーション画像を下に移動できません({ret})"));
+                            {
+                                string msg = $"アニメーション画像を下に移動できません({ret})";
+                                LOGGER.Warn(msg);
+                                this.ShowWarning(msg);
+                            }
                             return;
                     }
                 }
@@ -762,7 +799,9 @@ namespace MicroSign
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("アニメーション画像下移動で例外発生"), ex);
+                string msg = "アニメーション画像下移動で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -784,7 +823,9 @@ namespace MicroSign
                 else
                 {
                     //アニメーション画像が空の場合はメッセージボックスを表示して終了
-                    this.ShowWarning(CommonLogger.Warn("フレームが存在しません"));
+                    string msg = "フレームが存在しません";
+                    LOGGER.Warn(msg);
+                    this.ShowWarning(msg);
                     return;
                 }
 
@@ -817,7 +858,9 @@ namespace MicroSign
                             else
                             {
                                 //適合しない場合は失敗にする
-                                this.ShowWarning(CommonLogger.Warn($"アニメーションの変換に失敗しました。\n理由=パネルサイズに適合しない画像が存在します ({CommonConsts.Index.ToCount(i)}行目)"));
+                                string msg = $"アニメーションの変換に失敗しました。\n理由=パネルサイズに適合しない画像が存在します ({CommonConsts.Index.ToCount(i)}行目)";
+                                LOGGER.Warn(msg);
+                                this.ShowWarning(msg);
                                 return;
                             }
                         }
@@ -835,7 +878,8 @@ namespace MicroSign
                     if (item == null)
                     {
                         //取得できない場合は失敗にする
-                        this.ShowWarning(CommonLogger.Warn($"先頭フレームの取得に失敗しました"));
+                        string msg = "先頭フレームの取得に失敗しました";
+                        this.ShowWarning(msg);
                         return;
                     }
                     else
@@ -896,7 +940,9 @@ namespace MicroSign
                     if (ret.IsSuccess)
                     {
                         //成功の場合
-                        this.ShowInfo(CommonLogger.Info("アニメーションデータを変換しました"));
+                        string msg = "アニメーションデータを変換しました";
+                        LOGGER.Info(msg);
+                        this.ShowInfo(msg);
                     }
                     else
                     {
@@ -904,14 +950,18 @@ namespace MicroSign
                         //2025.08.12:CS)杉原:パレット処理の流れを変更 >>>>> ここから
                         //this.ShowWarning(CommonLogger.Warn($"アニメーション画像の変換に失敗しました。\n理由={ret.Code}"));
                         //----------
-                        this.ShowWarning(CommonLogger.Warn($"アニメーションデータへの変換に失敗しました。\n理由={ret.Message}"));
+                        string msg = $"アニメーションデータへの変換に失敗しました。\n理由={ret.Message}";
+                        LOGGER.Warn(msg);
+                        this.ShowWarning(msg);
                         //2025.08.12:CS)杉原:パレット処理の流れを変更 <<<<< ここまで
                     }
                 }
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("アニメーションデータ変換で例外発生"), ex);
+                string msg = "アニメーションデータ変換で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -934,7 +984,9 @@ namespace MicroSign
                     else
                     {
                         //アニメーション画像が空の場合はメッセージボックスを表示して終了
-                        this.ShowWarning(CommonLogger.Warn("フレームが存在しません"));
+                        string msg = "フレームが存在しません";
+                        LOGGER.Warn(msg);
+                        this.ShowWarning(msg);
                         return;
                     }
                 }
@@ -969,18 +1021,24 @@ namespace MicroSign
                     if (ret.IsSuccess)
                     {
                         //成功の場合
-                        this.ShowInfo(CommonLogger.Info("アニメーション設定を保存しました"));
+                        string msg = "アニメーション設定を保存しました";
+                        LOGGER.Info(msg);
+                        this.ShowInfo(msg);
                     }
                     else
                     {
                         //失敗した場合
-                        this.ShowWarning(CommonLogger.Warn($"アニメーション設定の保存に失敗しました\n{ret.Message}"));
+                        string msg = $"アニメーション設定の保存に失敗しました\n{ret.Message}";
+                        LOGGER.Warn(msg);
+                        this.ShowWarning(msg);
                     }
                 }
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("アニメーション設定の保存で例外発生"), ex);
+                string msg = "アニメーション設定の保存で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -1027,13 +1085,17 @@ namespace MicroSign
                     else
                     {
                         //失敗した場合はメッセージボックス表示
-                        this.ShowWarning(CommonLogger.Warn($"アニメーション設定の読込に失敗しました\n失敗理由：{ret.ErrorMessage}"));
+                        string msg = $"アニメーション設定の読込に失敗しました\n失敗理由：{ret.ErrorMessage}";
+                        LOGGER.Warn(msg);
+                        this.ShowWarning(msg);
                     }
                 }
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("アニメーション設定の読込で例外発生"), ex);
+                string msg = "アニメーション設定の読込で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -1056,7 +1118,9 @@ namespace MicroSign
                     else
                     {
                         //アニメーション画像が空の場合はメッセージボックスを表示して終了
-                        this.ShowWarning(CommonLogger.Warn("フレームが存在しません"));
+                        string msg = "フレームが存在しません";
+                        LOGGER.Warn(msg);
+                        this.ShowWarning(msg);
                         return;
                     }
                 }
@@ -1071,7 +1135,9 @@ namespace MicroSign
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("全フレームの画像の更新で例外発生"), ex);
+                string msg = "全フレームの画像の更新で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -1100,18 +1166,24 @@ namespace MicroSign
                                 if (isNull)
                                 {
                                     //エラーメッセージが無い場合は成功
-                                    this.ShowInfo(CommonLogger.Info("全フレームの画像の更新に成功しました"));
+                                    string msg = "全フレームの画像の更新に成功しました";
+                                    LOGGER.Info(msg);
+                                    this.ShowInfo(msg);
                                 }
                                 else
                                 {
                                     //エラーメッセージがある場合は警告表示
-                                    this.ShowWarning(CommonLogger.Warn($"全フレームの画像の更新でエラーが発生しました\n{message}"));
+                                    string msg = $"全フレームの画像の更新でエラーが発生しました\n{message}";
+                                    LOGGER.Warn(msg);
+                                    this.ShowWarning(msg);
                                 }
                             }
                             else
                             {
                                 //エラーの場合はエラー表示
-                                this.ShowWarning(CommonLogger.Warn($"全フレームの画像の更新に失敗しました\n{ret.ErrorMessage}"));
+                                string msg = $"全フレームの画像の更新に失敗しました\n{ret.ErrorMessage}";
+                                LOGGER.Warn(msg);
+                                this.ShowWarning(msg);
                             }
                         }
                         break;
@@ -1124,7 +1196,9 @@ namespace MicroSign
             else
             {
                 //無効の場合は何もせずに終了
-                CommonLogger.Warn($"全フレームの画像の更新確認の結果が判定できませんでした (ret={result})");
+                string msg = $"全フレームの画像の更新確認の結果が判定できませんでした (ret={result})";
+                LOGGER.Warn(msg);
+                this.ShowWarning(msg);
             }
         }
 
@@ -1217,7 +1291,9 @@ namespace MicroSign
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("アニメーション再生で例外発生"), ex);
+                string msg = "アニメーション再生で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -1242,7 +1318,9 @@ namespace MicroSign
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("アニメーション停止で例外発生"), ex);
+                string msg = "アニメーション停止で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -1366,26 +1444,30 @@ namespace MicroSign
                 ListViewItem? item = sender as ListViewItem;
                 if (item == null)
                 {
-                    this.ShowWarning(CommonLogger.Warn("ダブルクリックされたListViewItemが取得できませんでした"));
+                    string msg = "ダブルクリックされたListViewItemが取得できませんでした";
+                    LOGGER.Warn(msg);
+                    this.ShowWarning(msg);
                     return;
                 }
                 else
                 {
                     //有効なら処理続行
-                    CommonLogger.Debug("ダブルクリックされたListViewItem取得");
+                    LOGGER.Debug("ダブルクリックされたListViewItem取得");
                 }
 
                 //アニメーション画像アイテムを取得
                 AnimationImageItem? animationItem = item.DataContext as AnimationImageItem;
                 if (animationItem == null)
                 {
-                    this.ShowWarning(CommonLogger.Warn("ダブルクリックされたフレームの画像が取得できませんでした"));
+                    string msg = "ダブルクリックされたフレームの画像が取得できませんでした";
+                    LOGGER.Warn(msg);
+                    this.ShowWarning(msg);
                     return;
                 }
                 else
                 {
                     //有効なら処理続行
-                    CommonLogger.Debug("ダブルクリックされたフレームの画像取得");
+                    LOGGER.Debug("ダブルクリックされたフレームの画像取得");
                 }
 
                 //アニメーション画像アイテムが文字か判定
@@ -1395,12 +1477,16 @@ namespace MicroSign
                     {
                         case AnimationImageType.Text:
                             //テキストの場合は処理続行
-                            CommonLogger.Debug("ダブルクリックされたフレームの画像はテキスト");
+                            LOGGER.Debug("ダブルクリックされたフレームの画像はテキスト");
                             break;
 
                         default:
                             //それ以外の場合はダブルクリックできない
-                            this.ShowWarning(CommonLogger.Warn($"ダブルクリックされたフレームの画像は編集できません (type={t})"));
+                            {
+                                string msg = $"ダブルクリックされたフレームの画像は編集できません (type={t})";
+                                LOGGER.Warn(msg);
+                                this.ShowWarning(msg);
+                            }
                             return;
                     }
                 }
@@ -1428,7 +1514,7 @@ namespace MicroSign
                     if (result == null)
                     {
                         //戻り値がnullの場合、成功でも失敗でもないので何もしない
-                        CommonLogger.Debug("アニメーション文字ページの戻り値なし");
+                        LOGGER.Debug("アニメーション文字ページの戻り値なし");
                         return;
                     }
                     else
@@ -1445,17 +1531,21 @@ namespace MicroSign
                         {
                             case NavigationResultKind.Success:
                                 //成功の場合は処理続行
-                                CommonLogger.Debug("アニメーション文字追加成功");
+                                LOGGER.Debug("アニメーション文字追加成功");
                                 break;
 
                             case NavigationResultKind.Cancel:
                                 //キャンセルの場合は何もせずに終了
-                                CommonLogger.Info("アニメーション文字追加キャンセル");
+                                LOGGER.Info("アニメーション文字追加キャンセル");
                                 return;
 
                             default:
                                 //それ以外は失敗
-                                this.ShowWarning(CommonLogger.Warn($"アニメーション文字追加に失敗しました (理由={resultKind}')"));
+                                {
+                                    string msg = $"アニメーション文字追加に失敗しました (理由={resultKind}')";
+                                    LOGGER.Warn(msg);
+                                    this.ShowWarning(msg);
+                                }
                                 return;
                         }
 
@@ -1464,14 +1554,18 @@ namespace MicroSign
                     else
                     {
                         //結果が取得できない場合は何もしない
-                        this.ShowWarning(CommonLogger.Warn("アニメーション文字編集結果が確認出来ません"));
+                        string msg = "アニメーション文字編集結果が確認出来ません";
+                        LOGGER.Warn(msg);
+                        this.ShowWarning(msg);
                     }
                     //2025.10.01:CS)土田:Variousから移植したNavigationの引数にあわせて修正 <<<<< ここまで
                 }
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("フレーム画像アイテムダブルクリックで例外発生"), ex);
+                string msg = "フレーム画像アイテムダブルクリックで例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -1625,7 +1719,9 @@ namespace MicroSign
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("表示期間一括反映ボタンクリックで例外発生"), ex);
+                string msg = "表示期間一括反映ボタンクリックで例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -1653,7 +1749,9 @@ namespace MicroSign
                 else
                 {
                     //失敗の場合は画像ファイルが存在しないので終了
-                    this.ShowError(CommonLogger.Error(ret.Message));
+                    string msg = ret.Message;
+                    LOGGER.Error(msg);
+                    this.ShowError(msg);
                     return;
                 }
 
@@ -1672,13 +1770,13 @@ namespace MicroSign
                     if(CommonConsts.Collection.Empty < n)
                     {
                         //要素がある場合は追加
-                        CommonLogger.Debug($"ドロップ画像あり ({n}件)");
+                        LOGGER.Debug($"ドロップ画像あり ({n}件)");
                         this.AddAnimationImages(imagePaths);
                     }
                     else
                     {
                         //画像がない場合は何もしない
-                        CommonLogger.Debug($"ドロップ画像なし");
+                        LOGGER.Debug($"ドロップ画像なし");
                     }
                 }
                 // >> サウンドファイル
@@ -1688,12 +1786,12 @@ namespace MicroSign
                     if (isNull)
                     {
                         //サウンドファイルがない場合は何もしない
-                        CommonLogger.Debug($"ドロップサウンドなし");
+                        LOGGER.Debug($"ドロップサウンドなし");
                     }
                     else
                     {
                         //存在する場合は設定する
-                        CommonLogger.Debug($"ドロップサウンドあり");
+                        LOGGER.Debug($"ドロップサウンドあり");
                         this.ViewModel.SetSoundFilePath(soundPath);
                     }
                 }
@@ -1701,7 +1799,9 @@ namespace MicroSign
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("ドロップ処理で例外発生"), ex);
+                string msg = "ドロップ処理で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
             finally
             {
@@ -1738,7 +1838,9 @@ namespace MicroSign
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("ドラッグオーバー処理で例外発生"), ex);
+                string msg = "ドラッグオーバー処理で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
             finally
             {
@@ -1787,13 +1889,17 @@ namespace MicroSign
                     else
                     {
                         //失敗した場合はメッセージボックス表示
-                        this.ShowWarning(CommonLogger.Warn($"GIFアニメーション設定の読込に失敗しました\n失敗理由：{ret.ErrorMessage}"));
+                        string msg = $"GIFアニメーション設定の読込に失敗しました\n失敗理由：{ret.ErrorMessage}";
+                        LOGGER.Warn(msg);
+                        this.ShowWarning(msg);
                     }
                 }
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("読込で例外発生"), ex);
+                string msg = "読込で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -1839,7 +1945,9 @@ namespace MicroSign
             }
             catch (Exception ex)
             {
-                this.ShowError(CommonLogger.Error("サウンドファイル選択で例外発生"), ex);
+                string msg = "サウンドファイル選択で例外発生";
+                LOGGER.Error(msg, ex);
+                this.ShowError(msg, ex);
             }
         }
 
@@ -1889,7 +1997,7 @@ namespace MicroSign
             catch (Exception ex)
             {
                 //例外は握りつぶして終了
-                LOGGER.Warn("MP4クリップ要求で例外発生", ex);
+                LOGGER.Warn("アニメーション画像ITEM選択変更で例外発生", ex);
             }
         }
 

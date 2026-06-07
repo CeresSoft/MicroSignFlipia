@@ -9,6 +9,19 @@ namespace MicroSign.Core.TaskUtils
     /// <remarks>複数の実行中タスク制御を管理します</remarks>
     public partial class RunningTaskControllerManager : MicroSign.Core.Disposables.ManageDisposable
     {
+        //2026.06.07:CS)杉原:LOGGERを修正 >>>>> ここから
+        ///// <summary>
+        ///// LOG4NETのロガー
+        ///// </summary>
+        //private static readonly log4net.ILog LOGGER = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //----------
+        /// <summary>
+        /// LOG4NETのロガー
+        /// </summary>
+        private static readonly MicroSignLogger LOGGER = MicroSignLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //2026.06.07:CS)杉原:LOGGERを修正 <<<<< ここまで
+
+
         /// <summary>
         /// 指定したタスクを実行する
         /// </summary>
@@ -60,7 +73,7 @@ namespace MicroSign.Core.TaskUtils
         {
             lock (this._RunningTaskCollectionLockObject)
             {
-                CommonLogger.Info($"[RunnningTask:ADD]Task={task}, ID={task.RunningTask?.Id}");
+                LOGGER.Info($"[RunnningTask:ADD]Task={task}, ID={task.RunningTask?.Id}");
                 this._RunningTaskCollection.Add(task);
             }
         }
@@ -73,7 +86,7 @@ namespace MicroSign.Core.TaskUtils
         {
             lock (this._RunningTaskCollectionLockObject)
             {
-                CommonLogger.Info($"[RunnningTask:DEL]Task={task}, ID={task.RunningTask?.Id}");
+                LOGGER.Info($"[RunnningTask:DEL]Task={task}, ID={task.RunningTask?.Id}");
                 this._RunningTaskCollection.Remove(task);
             }
         }

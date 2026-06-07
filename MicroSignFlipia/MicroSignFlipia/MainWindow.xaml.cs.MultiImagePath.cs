@@ -1,34 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MicroSign
+﻿namespace MicroSignFlipia
 {
     partial class MainWindow
     {
         /// <summary>
-        /// 画像読込
+        /// 画像複数読込
         /// </summary>
         /// <param name="title">タイトル</param>
         /// <returns></returns>
-        private string? SelectImagePath(string title)
-        {
-            return this.SelectImagePath(title, App.Consts.Files.DefaultExt ,App.Consts.Files.Filter);
-        }
-
-        /// <summary>
-        /// 画像読込
-        /// </summary>
-        /// <param name="title">タイトル</param>
-        /// <param name="defaultExt">デフォルト拡張子</param>
-        /// <param name="filter">フィルター</param>
-        /// <returns></returns>
-        private string? SelectImagePath(string title, string defaultExt, string filter)
+        private string[]? MultiSelectImagePath(string title)
         {
             //読込イメージ選択
-            string imagePath;
+            string[]? imagePath = null;
             {
                 Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
 
@@ -39,10 +21,13 @@ namespace MicroSign
                 dialog.FileName = "";
 
                 // Default file extension
-                dialog.DefaultExt = defaultExt;
+                dialog.DefaultExt = ".png";
 
                 // Filter files by extension
-                dialog.Filter = filter;
+                dialog.Filter = "Image(*.png,*.jpg,*.jpeg,*.bmp)|*.png;*.jpg;*.jpeg;*.bmp|すべてのファイル (*.*)|*.*";
+
+                //複数選択
+                dialog.Multiselect = true;
 
                 //表示
                 bool ret = dialog.ShowDialog(this) ?? false;
@@ -57,7 +42,7 @@ namespace MicroSign
                 }
 
                 //画像パス取得
-                imagePath = dialog.FileName;
+                imagePath = dialog.FileNames;
             }
 
             //終了

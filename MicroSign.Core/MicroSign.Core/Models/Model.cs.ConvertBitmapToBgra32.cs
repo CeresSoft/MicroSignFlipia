@@ -132,7 +132,9 @@ namespace MicroSign.Core.Models
             catch(Exception ex)
             {
                 //例外は握りつぶす
-                return ConvertBitmapToBgra32Result.Failed(CommonLogger.Warn("BGRA32取得で例外発生", ex));
+                string msg = "BGRA32取得で例外発生";
+                LOGGER.WarnEx(msg, ex);
+                return ConvertBitmapToBgra32Result.Failed(msg);
             }
         }
     }

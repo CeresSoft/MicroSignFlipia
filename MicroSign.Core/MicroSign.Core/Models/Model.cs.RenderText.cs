@@ -16,6 +16,55 @@ namespace MicroSign.Core.Models
     partial class Model
     {
         /// <summary>
+        /// テキストレンダリング結果
+        /// </summary>
+        public struct RenderTextResult
+        {
+            /// <summary>
+            /// 成功フラグ
+            /// </summary>
+            public readonly bool IsSuccess;
+
+            /// <summary>
+            /// メッセージ
+            /// </summary>
+            public readonly string? Message;
+
+            /// <summary>
+            /// コンストラクタ
+            /// </summary>
+            /// <param name="isSuccess">成功フラグ</param>
+            /// <param name="message">メッセージ</param>
+            private RenderTextResult(bool isSuccess, string? message)
+            {
+                this.IsSuccess = isSuccess;
+                this.Message = message;
+            }
+
+            /// <summary>
+            /// 失敗
+            /// </summary>
+            /// <param name="message">メッセージ</param>
+            /// <returns></returns>
+            public static RenderTextResult Failed(string message)
+            {
+                RenderTextResult result = new RenderTextResult(false, message);
+                return result;
+            }
+
+            /// <summary>
+            /// 成功
+            /// </summary>
+            /// <returns></returns>
+            public static RenderTextResult Success()
+            {
+                RenderTextResult result = new RenderTextResult(true, null);
+                return result;
+            }
+        }
+
+
+        /// <summary>
         /// テキストをレンダリング
         /// </summary>
         /// <param name="bmp">レンダリング先のビットマップ</param>
@@ -23,13 +72,15 @@ namespace MicroSign.Core.Models
         /// <param name="fontColor">フォント色</param>
         /// <param name="displayText">表示文字</param>
         /// <returns></returns>
-        public (bool IsSuccess, string Message) RenderText(RenderTargetBitmap? bmp, int fontSize, int fontColor, string? displayText)
+        public RenderTextResult RenderText(RenderTargetBitmap? bmp, int fontSize, int fontColor, string? displayText)
         {
             //ビットマップ有効判定
             if (bmp == null)
             {
                 //レンダリングターゲットビットマップが無効の場合は処理できないので終了
-                return (false, CommonLogger.Warn("レンダリングターゲットビットマップが無効です"));
+                string msg = "レンダリングターゲットビットマップが無効です";
+                LOGGER.Warn(msg);
+                return RenderTextResult.Failed(msg);
             }
             else
             {
@@ -47,7 +98,9 @@ namespace MicroSign.Core.Models
             else
             {
                 //無効の場合は処理できないので終了
-                return (false, CommonLogger.Warn($"レンダリングターゲットビットマップの横幅が無効です ({width})"));
+                string msg = $"レンダリングターゲットビットマップの横幅が無効です ({width})";
+                LOGGER.Warn(msg);
+                return RenderTextResult.Failed(msg);
             }
 
             //縦幅取得
@@ -60,7 +113,9 @@ namespace MicroSign.Core.Models
             else
             {
                 //無効の場合は処理できないので終了
-                return (false, CommonLogger.Warn($"レンダリングターゲットビットマップの縦幅が無効です ({height})"));
+                string msg = $"レンダリングターゲットビットマップの縦幅が無効です ({height})";
+                LOGGER.Warn(msg);
+                return RenderTextResult.Failed(msg);
             }
 
             //表示文字色取得
@@ -120,11 +175,13 @@ namespace MicroSign.Core.Models
             }
             catch(Exception ex)
             {
-                return (false, CommonLogger.Warn($"レンダリングターゲットビットマップの描写に失敗しました (Width={width}, Height={height}, FontSize={fontSize}, FontColor={fontColor}, DisplayText='{displayText}')", ex));
+                string msg = $"レンダリングターゲットビットマップの描写に失敗しました (Width={width}, Height={height}, FontSize={fontSize}, FontColor={fontColor}, DisplayText='{displayText}')";
+                LOGGER.WarnEx(msg, ex);
+                return RenderTextResult.Failed(msg);
             }
 
             //ここまで来たら成功で終了
-            return (true, string.Empty);
+            return RenderTextResult.Success();
         }
     }
 }

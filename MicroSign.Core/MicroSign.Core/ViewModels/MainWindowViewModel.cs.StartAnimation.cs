@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using LOGGER = MicroSign.Core.CommonLogger;
+using LOGGER = MicroSign.Core.MicroSignLogger;
 
 namespace MicroSign.Core.ViewModels
 {

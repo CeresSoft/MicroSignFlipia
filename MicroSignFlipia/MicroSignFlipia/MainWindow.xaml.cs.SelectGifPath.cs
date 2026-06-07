@@ -1,4 +1,4 @@
-﻿namespace MicroSign
+﻿namespace MicroSignFlipia
 {
     partial class MainWindow
     {

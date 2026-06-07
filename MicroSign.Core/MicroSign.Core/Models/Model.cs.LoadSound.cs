@@ -114,7 +114,7 @@ namespace MicroSign.Core.Models
             List<byte> pcm8 = new List<byte>();
             try
             {
-                CommonLogger.Debug($"サウンドファイル読込 path='{path}'");
+                LOGGER.Debug($"サウンドファイル読込 path='{path}'");
                 using (NAudio.Wave.MediaFoundationReader? reader = new NAudio.Wave.MediaFoundationReader(path))
                 {
                     //サウンドファイルのフォーマットを取得
@@ -172,7 +172,7 @@ namespace MicroSign.Core.Models
             catch (Exception ex)
             {
                 //例外は握りつぶす
-                CommonLogger.Warn($"サウンドファイルの読込で例外発生 path='{path}'", ex);
+                LOGGER.WarnEx($"サウンドファイルの読込で例外発生 path='{path}'", ex);
                 return LoadSoundResult.Failed($"サウンドファイル読込失敗 ({ex})");
             }
 

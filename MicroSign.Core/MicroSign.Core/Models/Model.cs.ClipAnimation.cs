@@ -78,27 +78,27 @@ namespace MicroSign.Core.Models
             {
                 //画像が無効の場合は処理できないので終了
                 string msg = $"切り抜き対象の画像が無効です";
-                CommonLogger.Warn(msg);
+                LOGGER.Warn(msg);
                 return ClipAnimationResult.Failed(msg);
             }
             else
             {
                 //画像が有効の場合は処理続行
-                CommonLogger.Debug("切り抜き対象の画像が有効");
+                LOGGER.Debug("切り抜き対象の画像が有効");
             }
 
             //出力フォルダを生成
             try
             {
                 //出力フォルダを作成
-                CommonLogger.Debug($"出力先フォルダの生成  ('{outputFolder}')");
+                LOGGER.Debug($"出力先フォルダの生成  ('{outputFolder}')");
                 System.IO.Directory.CreateDirectory(outputFolder);
             }
             catch (Exception ex)
             {
                 //例外は握りつぶす
                 string msg = $"出力フォルダの作成で例外が発生しました (outputFolder='{outputFolder}') ({ex})";
-                CommonLogger.Warn(msg, ex);
+                LOGGER.WarnEx(msg, ex);
                 return ClipAnimationResult.Failed(msg);
             }
 
@@ -190,7 +190,7 @@ namespace MicroSign.Core.Models
                     //上記以外の方向には未対応
                     {
                         string msg = $"未対応の移動方向です(MoveDirection='{moveDirection}')";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return ClipAnimationResult.Failed(msg);
                     }
             }
@@ -200,7 +200,7 @@ namespace MicroSign.Core.Models
             // >> ただし余りが出る場合はコマ数を+1する必要がある
             // >> 画像縦幅は必ず整数なので、1を引くことで必ず[必要なコマ数-1]にしてから、最後に+1する
             int frameCount = ((moveDistance - CommonConsts.Values.One.I) / moveSpeed) + CommonConsts.Values.One.I;
-            CommonLogger.Debug($"フレーム数='{frameCount}'");
+            LOGGER.Debug($"フレーム数='{frameCount}'");
 
             //ファイル番号フォーマットを取得
             string fileNumberFormat = string.Empty;
@@ -225,13 +225,13 @@ namespace MicroSign.Core.Models
                 if (ret.IsSuccess)
                 {
                     //成功の場合は続行
-                    CommonLogger.Debug("レンダーターゲットビットマップの生成に成功");
+                    LOGGER.Debug("レンダーターゲットビットマップの生成に成功");
                 }
                 else
                 {
                     //失敗の場合は終了
                     string msg = $"レンダーターゲットビットマップの生成に失敗しました (Width={matrixLedWidth}, Height={matrixLedHeight})";
-                    CommonLogger.Warn(msg);
+                    LOGGER.Warn(msg);
                     return ClipAnimationResult.Failed(msg);
                 }
 
@@ -259,7 +259,7 @@ namespace MicroSign.Core.Models
                     {
                         //失敗の場合は終了
                         string msg = $"レンダリングターゲットビットマップの描写に失敗しました (X={x}, Y={y}, ImageWidth={imageWidth}, ImageHeight={imageHeight})";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return ClipAnimationResult.Failed(msg);
                     }
                 }
@@ -289,7 +289,7 @@ namespace MicroSign.Core.Models
                 {
                     //例外は握りつぶす
                     string msg = $"PNG保存で例外が発生しました (path='{savePath}') ({ex})";
-                    CommonLogger.Warn(msg, ex);
+                    LOGGER.WarnEx(msg, ex);
                     return ClipAnimationResult.Failed(msg);
                 }
             }

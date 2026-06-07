@@ -1,24 +1,11 @@
 ﻿using MediaFoundation;
 using MicroSign.Core.MediaFoundations;
-using MicroSign.Core.Models.AnimationSaveSettings;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
-using System.Xml.Linq;
-using static MicroSign.Core.CommonConsts;
 using static MicroSign.Core.MediaFoundations.MP4StreamRender;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace MicroSign.Core.ViewModels
 {
@@ -94,13 +81,13 @@ namespace MicroSign.Core.ViewModels
                 {
                     //無効の場合は終了
                     string msg = "読込先パスが無効です";
-                    CommonLogger.Warn(msg);
+                    LOGGER.Warn(msg);
                     return LoadMp4AnimationResult.Failed(msg);
                 }
                 else
                 {
                     //有効の場合は処理続行
-                    CommonLogger.Debug($"読込先パス有効  (path='{path}')");
+                    LOGGER.Debug($"読込先パス有効  (path='{path}')");
                 }
             }
 
@@ -112,7 +99,7 @@ namespace MicroSign.Core.ViewModels
             {
                 //MediaFoundation開始
                 {
-                    CommonLogger.Debug($"MediaFoundationスタート");
+                    LOGGER.Debug($"MediaFoundationスタート");
                     MediaFoundation.MF.Startup();
                 }
                 try
@@ -124,14 +111,14 @@ namespace MicroSign.Core.ViewModels
                 finally
                 {
                     //シャットダウン
-                    CommonLogger.Debug($"MediaFoundationシャットダウン");
+                    LOGGER.Debug($"MediaFoundationシャットダウン");
                     MediaFoundation.MF.Shutdown();
                 }
             }
             catch (Exception ex)
             {
                 string msg = $"MP4ファイルの解析に失敗しました ({ex})";
-                CommonLogger.Warn(msg, ex);
+                LOGGER.WarnEx(msg, ex);
                 return LoadMp4AnimationResult.Failed(msg);
             }
         }
@@ -145,12 +132,12 @@ namespace MicroSign.Core.ViewModels
         private LoadMp4AnimationResult LoadMp4AnimationImplFileLoad(string path, AnimationImageItemCollection animationImages)
         {
             //属性コンテナを作成
-            CommonLogger.Debug($"属性コンテナ生成");
+            LOGGER.Debug($"属性コンテナ生成");
             MFExtern.MFCreateAttributes(out MediaFoundation.IMFAttributes attributes, CommonConsts.Collection.One);
             try
             {
                 //属性コンテナにビデオ処理（色変換・リサイズ）を有効にする
-                CommonLogger.Debug($"属性コンテナにビデオ処理有効を設定");
+                LOGGER.Debug($"属性コンテナにビデオ処理有効を設定");
                 attributes.SetUINT32(MediaFoundation.MFAttributesClsid.MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, CommonConsts.FlagValue.TRUE); // 1 = TRUE
 
                 //MP4読込
@@ -159,25 +146,25 @@ namespace MicroSign.Core.ViewModels
                 {
                     try
                     {
-                        CommonLogger.Debug($"MP4ファイルオープン (path={path})");
+                        LOGGER.Debug($"MP4ファイルオープン (path={path})");
                         MediaFoundation.HResult ret = MediaFoundation.MF.CreateSourceReaderFromURL(path, attributes, out sourceReader);
                         if (ret == MediaFoundation.HResult.S_OK)
                         {
                             //成功した場合処理続行
-                            CommonLogger.Info($"MP4ファイルオープン成功 (path={path})");
+                            LOGGER.Info($"MP4ファイルオープン成功 (path={path})");
                         }
                         else
                         {
                             //失敗した場合は終了
                             string msg = $"MP4ファイルオープン失敗 (path={path}) {ret}";
-                            CommonLogger.Warn(msg);
+                            LOGGER.Warn(msg);
                             return LoadMp4AnimationResult.Failed(msg);
                         }
                     }
                     catch(Exception ex)
                     {
                         string msg = $"MP4ファイルオープンで例外発生 (path={path})";
-                        CommonLogger.Warn(msg, ex);
+                        LOGGER.WarnEx(msg, ex);
                         return LoadMp4AnimationResult.Failed(msg);
                     }
 
@@ -186,13 +173,13 @@ namespace MicroSign.Core.ViewModels
                     {
                         //無効の場合は終了
                         string msg = $"SourceReader無効";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return LoadMp4AnimationResult.Failed(msg);
                     }
                     else
                     {
                         //有効の場合は処理続行
-                        CommonLogger.Debug($"SourceReader有効");
+                        LOGGER.Debug($"SourceReader有効");
                     }
 
                     //解析開始
@@ -205,14 +192,14 @@ namespace MicroSign.Core.ViewModels
                 finally
                 {
                     //終了
-                    CommonLogger.Debug($"MP4ファイルクローズ (path={path})");
+                    LOGGER.Debug($"MP4ファイルクローズ (path={path})");
                     CommonUtils.SafeComRelease(sourceReader);
                 }
             }
             finally
             {
                 //
-                CommonLogger.Debug($"MP4ファイルクローズ (path={path})");
+                LOGGER.Debug($"MP4ファイルクローズ (path={path})");
                 CommonUtils.SafeComRelease(attributes);
             }
 
@@ -231,13 +218,13 @@ namespace MicroSign.Core.ViewModels
             {
                 //無効の場合は終了
                 string msg = $"SourceReader無効";
-                CommonLogger.Warn(msg);
+                LOGGER.Warn(msg);
                 return LoadMp4AnimationResult.Failed(msg);
             }
             else
             {
                 //有効の場合は処理続行
-                CommonLogger.Debug($"SourceReader有効");
+                LOGGER.Debug($"SourceReader有効");
             }
 
             //ビデオの長さを取得
@@ -248,14 +235,14 @@ namespace MicroSign.Core.ViewModels
                 if (isSuccess)
                 {
                     //成功の場合は処理続行
-                    CommonLogger.Debug($"ビデオ長さ取得 - 成功");
+                    LOGGER.Debug($"ビデオ長さ取得 - 成功");
                     duration = TimeSpan.FromTicks(ret.DurationTicks);
                 }
                 else
                 {
                     //失敗した場合は終了
                     string? msg = $"ビデオ長さ取得 - 失敗({ret.ErrorMessage})";
-                    CommonLogger.Warn(msg);
+                    LOGGER.Warn(msg);
                     return LoadMp4AnimationResult.Failed(msg);
                 }
             }
@@ -264,13 +251,13 @@ namespace MicroSign.Core.ViewModels
             int videoWidth = (int)System.Windows.Size.Empty.Width;
             int videoHeight = (int)System.Windows.Size.Empty.Height;
             {
-                CommonLogger.Debug($"ビデオサイズ取得 - 開始");
+                LOGGER.Debug($"ビデオサイズ取得 - 開始");
                 MicroSign.Core.MediaFoundations.MP4StreamRender.GetVideoSizeResult ret = mp4.GetVideoSize();
                 bool isSuccess = ret.IsSuccess;
                 if(isSuccess)
                 {
                     //成功の場合は処理続行
-                    CommonLogger.Debug($"ビデオサイズ取得 - 成功");
+                    LOGGER.Debug($"ビデオサイズ取得 - 成功");
                     videoWidth = ret.Width;
                     videoHeight = ret.Height;
                 }
@@ -278,7 +265,7 @@ namespace MicroSign.Core.ViewModels
                 {
                     //失敗した場合は終了
                     string? msg = $"ビデオサイズ取得 - 失敗({ret.ErrorMessage})";
-                    CommonLogger.Warn(msg);
+                    LOGGER.Warn(msg);
                     return LoadMp4AnimationResult.Failed(msg);
                 }
             }
@@ -289,13 +276,13 @@ namespace MicroSign.Core.ViewModels
                 if (CommonConsts.Values.Zero.I < videoWidth)
                 {
                     //横サイズが有効の場合は処理続行
-                    CommonLogger.Info($"ビデオ横サイズ={videoWidth}");
+                    LOGGER.Info($"ビデオ横サイズ={videoWidth}");
                 }
                 else
                 {
                     //横サイズが無効の場合は終了
                     string msg = $"ビデオの横サイズが0";
-                    CommonLogger.Warn(msg);
+                    LOGGER.Warn(msg);
                     return LoadMp4AnimationResult.Failed(msg);
                 }
 
@@ -303,13 +290,13 @@ namespace MicroSign.Core.ViewModels
                 if (CommonConsts.Values.Zero.I < videoHeight)
                 {
                     //横サイズが有効の場合は処理続行
-                    CommonLogger.Info($"ビデオ縦サイズ={videoHeight}");
+                    LOGGER.Info($"ビデオ縦サイズ={videoHeight}");
                 }
                 else
                 {
                     //横サイズが無効の場合は終了
                     string msg = $"ビデオの縦サイズが0";
-                    CommonLogger.Warn(msg);
+                    LOGGER.Warn(msg);
                     return LoadMp4AnimationResult.Failed(msg);
                 }
             }
@@ -320,12 +307,12 @@ namespace MicroSign.Core.ViewModels
                 bool isSuccess = ret.IsSuccess;
                 if(isSuccess)
                 {
-                    CommonLogger.Info("ビデオの出力をRGB32に設定 - 成功");
+                    LOGGER.Info("ビデオの出力をRGB32に設定 - 成功");
                 }
                 else
                 {
                     string msg = $"ビデオの出力をRGB32に設定 - 失敗 ({ret.ErrorMessage})";
-                    CommonLogger.Warn(msg);
+                    LOGGER.Warn(msg);
                     return LoadMp4AnimationResult.Failed(msg);
                 }
             }
@@ -344,7 +331,7 @@ namespace MicroSign.Core.ViewModels
             if (isFit)
             {
                 //適合した場合は等倍設定(=デフォルト値)のまま処理続行
-                CommonLogger.Info($"パネルサイズに適合 (panel=[{panelWidth},{panelHeight}] == pixel=[{videoWidth}, {videoHeight}])");
+                LOGGER.Info($"パネルサイズに適合 (panel=[{panelWidth},{panelHeight}] == pixel=[{videoWidth}, {videoHeight}])");
             }
             else
             {
@@ -360,20 +347,20 @@ namespace MicroSign.Core.ViewModels
                         //キャンセルの場合は処理終了
                         {
                             string msg = $"ビデオクリップキャンセル";
-                            CommonLogger.Warn(msg);
+                            LOGGER.Warn(msg);
                             return LoadMp4AnimationResult.Failed(msg);
                         }
 
                     case Mp4ClipRequestState.Apply:
                         //適用の場合は処理続行
-                        CommonLogger.Info($"ビデオクリップ (scale={clipScale}, X={clipX}, Y={clipY})");
+                        LOGGER.Info($"ビデオクリップ (scale={clipScale}, X={clipX}, Y={clipY})");
                         break;
 
                     default:
                         //それ以外はすべてエラーにする
                         {
                             string msg = $"ビデオクリップエラー ({status})";
-                            CommonLogger.Warn(msg);
+                            LOGGER.Warn(msg);
                             return LoadMp4AnimationResult.Failed(msg);
                         }
                 }
@@ -384,13 +371,13 @@ namespace MicroSign.Core.ViewModels
             {
                 //無効の場合は終了
                 string msg = "アニメーション画像コレクション無効";
-                CommonLogger.Warn(msg);
+                LOGGER.Warn(msg);
                 return LoadMp4AnimationResult.Failed(msg);
             }
             else
             {
                 //有効の場合は処理続行
-                CommonLogger.Debug("アニメーション画像コレクション有効");
+                LOGGER.Debug("アニメーション画像コレクション有効");
             }
 
             //動画のパスから出力先フォルダーを生成
@@ -407,13 +394,13 @@ namespace MicroSign.Core.ViewModels
                     {
                         //無効の場合は修了
                         string msg = $"ファイル名の取得に失敗しました (path='{path}')";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return LoadMp4AnimationResult.Failed(msg);
                     }
                     else
                     {
                         //取得できた場合は処理続行
-                        CommonLogger.Debug($"ファイル名の取得成功  (path='{path}' -> '{outputFilename}')");
+                        LOGGER.Debug($"ファイル名の取得成功  (path='{path}' -> '{outputFilename}')");
                     }
                 }
 
@@ -425,29 +412,29 @@ namespace MicroSign.Core.ViewModels
                     {
                         //無効の場合は修了
                         string msg = $"ディレクトリの取得に失敗しました (path='{path}')";
-                        CommonLogger.Warn(msg);
+                        LOGGER.Warn(msg);
                         return LoadMp4AnimationResult.Failed(msg);
                     }
                     else
                     {
                         //取得できた場合は処理続行
-                        CommonLogger.Debug($"ディレクトリの取得成功  (path='{path}' -> '{dir}')");
+                        LOGGER.Debug($"ディレクトリの取得成功  (path='{path}' -> '{dir}')");
                     }
                 }
 
                 //出力フォルダ名を生成
                 outputFolder = System.IO.Path.Combine(dir!, outputFilename!);
-                CommonLogger.Debug($"出力先フォルダ ('{dir}' + '{outputFilename}' -> '{outputFolder}')");
+                LOGGER.Debug($"出力先フォルダ ('{dir}' + '{outputFilename}' -> '{outputFolder}')");
 
                 //出力フォルダを作成
-                CommonLogger.Debug($"出力先フォルダの生成  ('{outputFolder}')");
+                LOGGER.Debug($"出力先フォルダの生成  ('{outputFolder}')");
                 System.IO.Directory.CreateDirectory(outputFolder);
             }
             catch (Exception ex)
             {
                 //例外は握りつぶす
                 string msg = $"出力フォルダの作成で例外が発生しました (path='{path}' / outputFolder='{outputFolder}') ({ex})";
-                CommonLogger.Warn(msg, ex);
+                LOGGER.WarnEx(msg, ex);
                 return LoadMp4AnimationResult.Failed(msg);
             }
 
@@ -488,19 +475,19 @@ namespace MicroSign.Core.ViewModels
                     {
                         case MP4StreamRender.GetVideoImageState.Success:
                             //成功の場合処理続行
-                            CommonLogger.Debug($"ビデオ映像取得成功");
+                            LOGGER.Debug($"ビデオ映像取得成功");
                             break;
 
                         case MP4StreamRender.GetVideoImageState.EndOfStream:
                             //終了の場合はループ終了
-                            CommonLogger.Debug($"ビデオ映像取得終了");
+                            LOGGER.Debug($"ビデオ映像取得終了");
                             isLoop = false;
                             break;
 
                         default:
                             //それ以外は失敗で終了
                             string msg = $"ビデオ画像の抽出に失敗 ({ret.ErrorMessage})";
-                            CommonLogger.Warn(msg);
+                            LOGGER.Warn(msg);
                             return LoadMp4AnimationResult.Failed(msg);
                     }
 
@@ -581,13 +568,13 @@ namespace MicroSign.Core.ViewModels
                             {
                                 //取得出来なかった場合は終了
                                 string msg = $"画像ファイルの読込に失敗しました (path='{savePath}')";
-                                CommonLogger.Warn(msg);
+                                LOGGER.Warn(msg);
                                 return LoadMp4AnimationResult.Failed(msg);
                             }
                             else
                             {
                                 //有効の場合は処理続行
-                                CommonLogger.Debug($"画像ファイル読込成功  (path='{savePath}')");
+                                LOGGER.Debug($"画像ファイル読込成功  (path='{savePath}')");
                             }
 
                             // 5. ファイル番号を1進めておく
@@ -642,7 +629,7 @@ namespace MicroSign.Core.ViewModels
             {
                 //例外は握りつぶす
                 string msg = $"ビデオ画像の抽出で例外が発生しました (path='{path}' / outputFolder='{outputFolder}') ({ex})";
-                CommonLogger.Warn(msg, ex);
+                LOGGER.WarnEx(msg, ex);
                 return LoadMp4AnimationResult.Failed(msg);
             }
 

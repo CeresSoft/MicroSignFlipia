@@ -8,6 +8,18 @@ namespace MicroSign.Core.ViewModels
     /// </summary>
     public partial class DelegateCommand : ICommand
     {
+        //2026.06.07:CS)杉原:LOGGERを修正 >>>>> ここから
+        ///// <summary>
+        ///// LOG4NETのロガー
+        ///// </summary>
+        //private static readonly log4net.ILog LOGGER = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //----------
+        /// <summary>
+        /// LOG4NETのロガー
+        /// </summary>
+        private static readonly MicroSignLogger LOGGER = MicroSignLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //2026.06.07:CS)杉原:LOGGERを修正 <<<<< ここまで
+
         /// <summary>
         /// CanExecute
         /// </summary>
@@ -33,7 +45,7 @@ namespace MicroSign.Core.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    CommonLogger.Warn("デリゲートコマンドCanExecuteで例外発生", ex);
+                    LOGGER.WarnEx("デリゲートコマンドCanExecuteで例外発生", ex);
                     //実行可能判定アクションが失敗した場合は必ずTRUE(=実行可能)を返す
                     return true;
                 }
@@ -60,7 +72,7 @@ namespace MicroSign.Core.ViewModels
             }
             catch (Exception ex)
             {
-                CommonLogger.Warn("デリゲートコマンドExecuteで例外発生", ex);
+                LOGGER.WarnEx("デリゲートコマンドExecuteで例外発生", ex);
             }
         }
 

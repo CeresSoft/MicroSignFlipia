@@ -11,7 +11,7 @@
 
       <!-- 作成するログファイル -->
       <!-- ログ・ファイル名の先頭部分 -->
-      <param name="File" value="${USERPROFILE}\MicroSign\Log\log.txt" />
+      <param name="File" value="${USERPROFILE}\MicroSignFlipia\Log\log.txt" />
 
       <!-- 追加 -->
       <param name="AppendToFile" value="true" />
@@ -35,7 +35,7 @@
 
 		  <!-- 作成するログファイル -->
 		  <!-- ログ・ファイル名の先頭部分 -->
-		  <param name="File" value="${USERPROFILE}\MicroSign\Log\重要log.txt" />
+		  <param name="File" value="${USERPROFILE}\MicroSignFlipia\Log\重要log.txt" />
 
 		  <!-- 追加 -->
 		  <param name="AppendToFile" value="true" />

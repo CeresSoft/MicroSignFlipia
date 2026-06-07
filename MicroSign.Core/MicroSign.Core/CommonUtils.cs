@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace MicroSign.Core
@@ -15,6 +14,18 @@ namespace MicroSign.Core
     /// </summary>
     public static class CommonUtils
     {
+        //2026.06.07:CS)杉原:LOGGERを修正 >>>>> ここから
+        ///// <summary>
+        ///// LOG4NETのロガー
+        ///// </summary>
+        //private static readonly log4net.ILog LOGGER = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //----------
+        /// <summary>
+        /// LOG4NETのロガー
+        /// </summary>
+        private static readonly MicroSignLogger LOGGER = MicroSignLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType!);
+        //2026.06.07:CS)杉原:LOGGERを修正 <<<<< ここまで
+
         /// <summary>
         /// 文字列長さ取得
         /// </summary>
@@ -1649,7 +1660,7 @@ namespace MicroSign.Core
             catch (Exception ex)
             {
                 //例外は握りつぶす
-                CommonLogger.Warn("COM解放処理で例外発生", ex);
+                LOGGER.WarnEx("COM解放処理で例外発生", ex);
             }
         }
 

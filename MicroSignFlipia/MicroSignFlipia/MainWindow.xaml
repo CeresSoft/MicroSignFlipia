@@ -3,13 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MicroSign"
+        xmlns:local="clr-namespace:MicroSignFlipia"
         xmlns:core="clr-namespace:MicroSign.Core;assembly=MicroSign.Core"
         xmlns:vms="clr-namespace:MicroSign.Core.ViewModels;assembly=MicroSign.Core"
         xmlns:navi="clr-namespace:MicroSign.Core.Navigations;assembly=MicroSign.Core"
-        x:Class="MicroSign.MainWindow"
+        x:Class="MicroSignFlipia.MainWindow"
         mc:Ignorable="d"
-        Title="MicroSign" Height="480" Width="800" Icon="/MicroSign;component/MicroSign.ico">
+        Title="MicroSign Flipia" Height="480" Width="800" Icon="/MicroSignFlipia;component/MicroSign.ico">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

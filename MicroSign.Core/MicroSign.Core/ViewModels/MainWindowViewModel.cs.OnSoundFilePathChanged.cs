@@ -57,7 +57,7 @@ namespace MicroSign.Core.ViewModels
             catch (Exception ex)
             {
                 //例外は握りつぶす
-                CommonLogger.Warn("サウンドファイルパス変更処理で例外発生", ex);
+                LOGGER.WarnEx("サウンドファイルパス変更処理で例外発生", ex);
                 // >> ステータスを設定する
                 this.SoundFileStatus = $"例外発生 ({ex})";
             }

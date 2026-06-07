@@ -8,7 +8,7 @@ using System.Linq;
 using System.Windows.Media.Imaging;
 using static MicroSign.Core.Views.Pages.AnimationClipPage;
 
-namespace MicroSign
+namespace MicroSignFlipia
 {
     partial class MainWindow
     {
@@ -35,13 +35,15 @@ namespace MicroSign
             if (imagePaths == null)
             {
                 //無効の場合は何もしない
-                this.ShowWarning(CommonLogger.Warn("追加するアニメーション画像一覧が無効です"));
+                string msg = "追加するアニメーション画像一覧が無効です";
+                LOGGER.Warn(msg);
+                this.ShowWarning(msg);
                 return;
             }
             else
             {
                 //有効の場合は続行
-                CommonLogger.Debug("追加するアニメーション画像一覧が有効");
+                LOGGER.Debug("追加するアニメーション画像一覧が有効");
             }
 
             //配列に変換
@@ -62,7 +64,7 @@ namespace MicroSign
             if (imagePaths == null)
             {
                 //無効の場合は終了
-                CommonLogger.Warn("追加するアニメーション画像一覧が無効です");
+                LOGGER.Warn("追加するアニメーション画像一覧が無効です");
                 return;
             }
             else
@@ -79,7 +81,7 @@ namespace MicroSign
             else
             {
                 //0件の場合は終了
-                CommonLogger.Warn("追加するアニメーション画像一覧が空です");
+                LOGGER.Warn("追加するアニメーション画像一覧が空です");
                 return;
             }
 
@@ -163,13 +165,15 @@ namespace MicroSign
             if (image == null)
             {
                 //取得出来なかった場合は終了
-                this.ShowError(CommonLogger.Error($"画像ファイルの読込に失敗しました\npath='{imagePath}'"));
+                string msg = $"画像ファイルの読込に失敗しました\npath='{imagePath}'";
+                LOGGER.Error(msg);
+                this.ShowError(msg);
                 return;
             }
             else
             {
                 //有効の場合は処理続行
-                CommonLogger.Info($"画像ファイル読込\npath='{imagePath}'");
+                LOGGER.Info($"画像ファイル読込\npath='{imagePath}'");
             }
 
             //2024.04.30:CS)杉原:リリース向けの機能追加 >>>>> ここから
@@ -279,7 +283,7 @@ namespace MicroSign
             if (result == null)
             {
                 //戻り値がnullの場合、成功でも失敗でもないので何もしない
-                CommonLogger.Debug("アニメーション切り抜きページの戻り値なし");
+                LOGGER.Debug("アニメーション切り抜きページの戻り値なし");
                 return;
             }
             else
@@ -306,17 +310,21 @@ namespace MicroSign
             {
                 case NavigationResultKind.Success:
                     //成功の場合は処理続行
-                    CommonLogger.Debug("アニメーション切り抜き追加成功");
+                    LOGGER.Debug("アニメーション切り抜き追加成功");
                     break;
 
                 case NavigationResultKind.Cancel:
                     //キャンセルの場合は何もせずに終了
-                    CommonLogger.Info("アニメーション切り抜きキャンセル");
+                    LOGGER.Info("アニメーション切り抜きキャンセル");
                     return;
 
                 default:
                     //それ以外は失敗
-                    this.ShowWarning(CommonLogger.Warn($"アニメーション切り抜きに失敗しました (理由={resultKind}')"));
+                    {
+                        string msg = $"アニメーション切り抜きに失敗しました (理由={resultKind}')";
+                        LOGGER.Warn(msg);
+                        this.ShowWarning(msg);
+                    }
                     return;
             }
 
