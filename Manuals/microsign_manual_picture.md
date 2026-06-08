@@ -4,9 +4,9 @@
 
 スマホなどで撮影した写真から単純なスクロールアニメーションを作成する方法です。
 
-MicroSignの操作方法は[基本操作](./microsign_manual_basic.md)を参照してください
+MicroSign Flipiaの操作方法は[基本操作](./microsign_manual_basic.md)を参照してください
 
-ここではMicroSignを起動し、表示パネルのドット数を設定した状態から進めます。
+ここではMicroSign Flipiaを起動し、表示パネルのドット数を設定した状態から進めます。
 
 
 ### 写真の選択
