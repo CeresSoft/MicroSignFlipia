@@ -40,7 +40,7 @@ MicroSign Flipiaでは静止画を連続して表示する「パラパラ漫画�
 
 本格的なアニメーションを表示したい場合は
 
-- Adobi After Effect,Clip Studioなどを使ってGIFアニメーションファイルを作成する
+- Adobe After Effect、CLIP STUDIO PAINTなどを使ってGIFアニメーションファイルを作成する
 - ゆっくりMovieMaker4(YMM4)などを使っての連番の静止画を作成する
 
 など外部ツールを使用してください
@@ -55,8 +55,8 @@ MicroSign Flipiaでは静止画を連続して表示する「パラパラ漫画�
 これは表示パネルに「最大256色までしか使用できない」制限があるためです。
 写真などをそのまま使うと最大256色を超えてしまうことが多いのですが、
 この場合MicroSign Flipiaが減色処理を行い256色までとなるように調整します。
-ただ、このMicroSign Flipiaの減色処理はAdobi After Effectなどに比べると簡素なものとなっているため
-Adobi After EffectなどでGIFファイルを作成した方がきれいな映像となります。
+ただ、このMicroSign Flipiaの減色処理はAdobe After Effectなどに比べると簡素なものとなっているため
+Adobe After EffectなどでGIFファイルを作成した方がきれいな映像となります。
 
 よってできるだけGIFファイルでの運用をお勧めします
 

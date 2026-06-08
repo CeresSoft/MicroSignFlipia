@@ -85,9 +85,9 @@ CLIP STUDIO PAINTでは、一連のアニメーションを『タイムライン
 ![GIF出力](./images/microsign_manual_clipstudio_009.png)
 
 
-### MicroSignへの取り込み
+### MicroSign Flipiaへの取り込み
 
-MicroSignを起動し、ドット数を表示パネルのドット数にします
+MicroSign Flipiaを起動し、ドット数を表示パネルのドット数にします
 
 ![MicroSign起動](./images/microsign_manual_clipstudio_010.png)
 

@@ -10,7 +10,7 @@ YMM4 でアニメーションを作成する手順は説明しません。
 あくまで YMM4 で表示パネル向けのアニメーションを作成するときの
 設定などについて説明します
 
-MicroSignの操作方法は[基本操作](./microsign_manual_basic.md)を参照してください
+MicroSign Flipiaの操作方法は[基本操作](./microsign_manual_basic.md)を参照してください
 
 
 ### 動画の設定
@@ -90,11 +90,11 @@ YMM4で動画の出力を行う画面を開きます
 
 ![動画出力](./images/microsign_ymm4_006.png)
 
-### MicroSignへの取り込み
+### MicroSign Flipiaへの取り込み
 
-MicroSignを起動し、ドット数を表示パネルのドット数にします
+MicroSign Flipiaを起動し、ドット数を表示パネルのドット数にします
 
-![MicroSign起動](./images/microsign_ymm4_007.png)
+![MicroSign Flipia起動](./images/microsign_ymm4_007.png)
 
 標準表示期間をYMM4で設定したFPSの表示期間に設定します
 今回は15 fps で作成したので、コンボボックスから「15fps」を選択します
@@ -104,7 +104,7 @@ MicroSignを起動し、ドット数を表示パネルのドット数にしま�
 YMM4で出力した連番PNGをMicroSignのタイムラインにドラッグ＆ドロップして
 連番PNGをフレームとして登録します
 
-![MicroSign表示期間](./images/microsign_ymm4_009.png)
+![フレーム登録](./images/microsign_ymm4_009.png)
 
 以上でYMM4で作成したアニメーションをフレームとして登録できます
 

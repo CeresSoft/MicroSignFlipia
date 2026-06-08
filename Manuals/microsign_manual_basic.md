@@ -21,7 +21,7 @@
 
 ### 画面構成
 
-MicroSign を起動すると以下の画面が表示されます
+MicroSign Flipia を起動すると以下の画面が表示されます
 
 ![](./images/microsign_basic_001.png)
 
