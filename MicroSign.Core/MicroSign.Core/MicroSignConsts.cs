@@ -346,5 +346,68 @@ namespace MicroSign.Core
             /// </summary>
             public static readonly int BitmapStride = BitmapFormat.BitsPerPixel / CommonConsts.BitCount.BYTE;
         }
+
+        /// <summary>
+        /// Exifメタ情報
+        /// </summary>
+        /// <remarks>画像のExif情報</remarks>
+        public static class Exif
+        {
+            /// <summary>
+            /// クエリー名
+            /// </summary>
+            public static class QueryNames
+            {
+                /// <summary>
+                /// 回転
+                /// </summary>
+                public const string Orientation = "System.Photo.Orientation";
+            }
+
+            /// <summary>
+            /// 回転
+            /// </summary>
+            public static class Orientation
+            {
+
+                /// <summary>
+                /// 時計回りに90度(右が上)
+                /// </summary>
+                public const ushort RIGHT = 6;
+
+                /// <summary>
+                /// 時計回りに180度(下が上)
+                /// </summary>
+                public const ushort DOWN = 3;
+
+                /// <summary>
+                /// 時計回りに270度(左が上)
+                /// </summary>
+                public const ushort LEFT = 8;
+            }
+
+            /// <summary>
+            /// 回転角
+            /// </summary>
+            public static class Angle
+            {
+                /// <summary>
+                /// 時計回りに90度(右が上)
+                /// </summary>
+                public const ushort RIGHT = 90;
+
+                /// <summary>
+                /// 時計回りに180度(下が上)
+                /// </summary>
+                public const ushort DOWN = 180;
+
+                /// <summary>
+                /// 時計回りに270度(左が上)
+                /// </summary>
+                public const ushort LEFT = 270;
+            }
+
+
+        }
     }
 }

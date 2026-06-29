@@ -97,7 +97,7 @@ namespace MicroSignFlipia
                 }
 
                 //画像を読込
-                BitmapImage? image = this.ViewModel.GetImage(imagePath);
+                BitmapSource? image = this.ViewModel.GetImage(imagePath);
                 if (image == null)
                 {
                     //取得出来なかった場合は終了
