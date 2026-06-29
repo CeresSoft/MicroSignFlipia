@@ -161,7 +161,7 @@ namespace MicroSignFlipia
         private void AddAnimationImagesImpl(string imagePath, double defaultDisplayPeriod)
         {
             //画像を読込
-            BitmapImage? image = this.ViewModel.GetImage(imagePath);
+            BitmapSource? image = this.ViewModel.GetImage(imagePath);
             if (image == null)
             {
                 //取得出来なかった場合は終了
@@ -274,7 +274,7 @@ namespace MicroSignFlipia
         /// <param name="imagePath"></param>
         /// <param name="panelWidth"></param>
         /// <param name="panelHeight"></param>
-        private void ClipAnimationImage(BitmapImage image, string imagePath, int panelWidth, int panelHeight)
+        private void ClipAnimationImage(BitmapSource image, string imagePath, int panelWidth, int panelHeight)
         {
             //切り抜きページを表示
             MicroSign.Core.Views.Pages.AnimationClipPage page = new MicroSign.Core.Views.Pages.AnimationClipPage(panelWidth, panelHeight, image, imagePath);

@@ -155,10 +155,11 @@ namespace MicroSign.Core.ViewModels.Pages
         {
             //出力フォルダーを生成
             string? outputFolder = null;
+            string? fname = null;
             try
             {
                 //拡張子をのぞいたファイル名を取得
-                string? fname = System.IO.Path.GetFileNameWithoutExtension(path);
+                fname = System.IO.Path.GetFileNameWithoutExtension(path);
                 {
                     bool isNull = string.IsNullOrEmpty(fname);
                     if (isNull)
@@ -206,7 +207,7 @@ namespace MicroSign.Core.ViewModels.Pages
             }
 
             //アニメーション切り抜き
-            Models.Model.ClipAnimationResult ret = this.Model.ClipAnimation(outputFolder, image, moveDirection, moveSpeed, matrixLedWidth, matrixLedHeight);
+            Models.Model.ClipAnimationResult ret = this.Model.ClipAnimation(outputFolder, fname!, image, moveDirection, moveSpeed, matrixLedWidth, matrixLedHeight);
             if (ret.IsSuccess)
             {
                 //成功の場合は続行

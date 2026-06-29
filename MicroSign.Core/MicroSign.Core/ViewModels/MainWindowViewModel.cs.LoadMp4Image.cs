@@ -380,6 +380,77 @@ namespace MicroSign.Core.ViewModels
                 LOGGER.Debug("アニメーション画像コレクション有効");
             }
 
+            //フレーム数を取得
+            long frameCount = MicroSign.Core.CommonConsts.Collection.Empty;
+            {
+                //2026.06.29:CS)杉原:フレームレートは動画を少し再生しないと取得できない >>>>> ここから
+                ////フレームレートを取得
+                //MicroSign.Core.MediaFoundations.MP4StreamRender.GetFrameRateResult ret = mp4.GetFrameRate();
+                //bool isSuccess = ret.IsSuccess;
+                //if (isSuccess)
+                //{
+                //    //成功の場合は処理続行
+                //    LOGGER.Debug($"フレームレート取得 - 成功");
+                //}
+                //else
+                //{
+                //    //失敗した場合は終了
+                //    string? msg = $"フレームレート取得 - 失敗({ret.ErrorMessage})";
+                //    LOGGER.Warn(msg);
+                //    return LoadMp4AnimationResult.Failed(msg);
+                //}
+                //
+                ////1フレームの表示秒数を計算
+                ////計算を最適化 >>>>> ここから
+                //////FPSを計算
+                ////double numerator = ret.Numerator;
+                ////double denominator = ret.Denominator;
+                ////double fps = numerator / denominator;
+                ////
+                //////1フレームの表示秒数を計算
+                ////double frameSecond = CommonConsts.Values.One.D / fps;
+                ////----------
+                //// >> １フレーム表示秒数は以下に最適化できる
+                //// >> 1 / fps = 1 / (numerator/denominator) = denominator/numerator
+                //double numerator = ret.Numerator;
+                //double denominator = ret.Denominator;
+                //double frameSecond = denominator / numerator;
+                ////計算を最適化 <<<<< ここまで
+                //
+                ////動画の長さを秒で取得
+                //double durationSecond = duration.TotalSeconds;
+                //
+                ////動画の長さを１フレームの表示時間で割ってフレーム数を計算する
+                //double frames = durationSecond / frameSecond;
+                //frameCount = (int)Math.Ceiling(frames); //切り上げする
+                //----------
+                // >> フレームレートは動画を少し再生しないと取得できないようだ
+                // >> そもそもH264の場合はの場合可変フレームレートの場合があるので
+                // >> 実際にカウントしないとフレーム数は分からないとのことなので
+                // >> 実際にカウントする
+                MicroSign.Core.MediaFoundations.MP4StreamRender.GetFrameCountResult ret = mp4.GetFrameCount();
+                bool isSuccess = ret.IsSuccess;
+                if (isSuccess)
+                {
+                    //成功の場合は処理続行
+                    LOGGER.Debug($"フレーム数取得 - 成功");
+                }
+                else
+                {
+                    //失敗した場合は終了
+                    string? msg = $"フレーム数取得 - 失敗({ret.ErrorMessage})";
+                    LOGGER.Warn(msg);
+                    return LoadMp4AnimationResult.Failed(msg);
+                }
+
+                //フレーム数取得
+                frameCount = ret.FrameCount;
+                //2026.06.29:CS)杉原:フレームレートは動画を少し再生しないと取得できない <<<<< ここまで
+            }
+
+            //ファイル番号フォーマットを取得
+            string fileNumberFormat = this.Model.GetNumberFormat(frameCount);
+
             //動画のパスから出力先フォルダーを生成
             string? outputFolder = null;
             string? outputFilename = null;
@@ -553,7 +624,8 @@ namespace MicroSign.Core.ViewModels
                             encoder.Frames.Add(BitmapFrame.Create(croppedBitmap));
 
                             // 3. ファイルストリームを開いて、画像データを書き出す
-                            string saveName = string.Format(CommonConsts.File.PngFileFormat, outputFilename, frameNo);
+                            string fileNumberText = frameNo.ToString(fileNumberFormat);
+                            string saveName = string.Format(CommonConsts.File.PngFileFormat, outputFilename, fileNumberText);
                             string savePath = System.IO.Path.Combine(outputFolder, saveName);
 
                             // 4. 保存
@@ -563,7 +635,7 @@ namespace MicroSign.Core.ViewModels
                             }
 
                             //保存した画像を読込
-                            BitmapImage? image = this.GetImage(savePath);
+                            BitmapSource? image = this.GetImage(savePath);
                             if (image == null)
                             {
                                 //取得出来なかった場合は終了

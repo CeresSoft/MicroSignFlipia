@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <Copyright>Copyright (C) 2023-2026 CeresSoft</Copyright>
-    <FileVersion>1.5.2.2</FileVersion>
+    <FileVersion>1.5.2.3</FileVersion>
     <Authors>CeresSoft</Authors>
   </PropertyGroup>
 </Project>

@@ -195,17 +195,20 @@ namespace MicroSign.Core.ViewModels
                     }
 
                     //ファイル番号フォーマットを取得
-                    string fileNumberFormat = string.Empty;
-                    {
-                        int log = (int)Math.Log10(n);
-                        int m = log + CommonConsts.Collection.Step;
-                        StringBuilder sb = new StringBuilder();
-                        for (int i = CommonConsts.Index.First; i < m; i += CommonConsts.Index.Step)
-                        {
-                            sb.Append(CommonConsts.File.ZeroPrace);
-                        }
-                        fileNumberFormat = sb.ToString();
-                    }
+                    //2026.06.29:CS)杉原:GetNumberFormat()追加 >>>>> ここから
+                    //string fileNumberFormat = string.Empty;
+                    //{
+                    //    int log = (int)Math.Log10(n);
+                    //    int m = log + CommonConsts.Collection.Step;
+                    //    StringBuilder sb = new StringBuilder();
+                    //    for (int i = CommonConsts.Index.First; i < m; i += CommonConsts.Index.Step)
+                    //    {
+                    //        sb.Append(CommonConsts.File.ZeroPrace);
+                    //    }
+                    //    fileNumberFormat = sb.ToString();
+                    //}
+                    //----------
+                    //2026.06.29:CS)杉原:GetNumberFormat()追加 <<<<< ここまで
 
                     //1つめのFrameDimensions GUID取得
                     Guid id = gif.FrameDimensionsList[CommonConsts.Index.First];
@@ -227,6 +230,10 @@ namespace MicroSign.Core.ViewModels
                         return LoadGifAnimationResult.Failed(msg);
                     }
 
+                    //2026.06.29:CS)杉原:GetNumberFormat()追加 >>>>> ここから
+                    //----------
+                    string fileNumberFormat = this.Model.GetNumberFormat(frameCount);
+                    //2026.06.29:CS)杉原:GetNumberFormat()追加 <<<<< ここまで
 
                     //パネルサイズを判定
                     {
@@ -281,7 +288,12 @@ namespace MicroSign.Core.ViewModels
                         //string fileNumberText = i.ToString(fileNumberFormat);
                         //string saveName = string.Format(CommonConsts.File.PngFileFormat, fileNumberText);
                         //----------
-                        string saveName = string.Format(CommonConsts.File.PngFileFormat, outputFilename, i);
+                        //2026.06.29:CS)杉原:GetNumberFormat()追加 >>>>> ここから
+                        //string saveName = string.Format(CommonConsts.File.PngFileFormat, outputFilename, i);
+                        //----------
+                        string fileNumberText = i.ToString(fileNumberFormat);
+                        string saveName = string.Format(CommonConsts.File.PngFileFormat, outputFilename, fileNumberText);
+                        //2026.06.29:CS)杉原:GetNumberFormat()追加 <<<<< ここまで
                         //ファイル名をMP4と同じとなるようにする <<<<< ここまで
                         string savePath = System.IO.Path.Combine(outputFolder, saveName);
                         gif.Save(savePath, System.Drawing.Imaging.ImageFormat.Png);
@@ -303,7 +315,7 @@ namespace MicroSign.Core.ViewModels
                         }
 
                         //画像を読込
-                        BitmapImage? image = this.GetImage(savePath);
+                        BitmapSource? image = this.GetImage(savePath);
                         if (image == null)
                         {
                             //取得出来なかった場合は終了

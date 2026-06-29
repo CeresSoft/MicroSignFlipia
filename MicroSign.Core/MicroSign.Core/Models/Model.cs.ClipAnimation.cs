@@ -65,13 +65,14 @@ namespace MicroSign.Core.Models
         /// アニメーション切り抜き
         /// </summary>
         /// <param name="outputFolder"></param>
+        /// <param name="filename"></param>
         /// <param name="image"></param>
         /// <param name="moveDirection"></param>
         /// <param name="moveSpeed"></param>
         /// <param name="matrixLedWidth"></param>
         /// <param name="matrixLedHeight"></param>
         /// <returns></returns>
-        public ClipAnimationResult ClipAnimation(string outputFolder, BitmapSource? image, AnimationMoveDirection moveDirection, int moveSpeed, int matrixLedWidth, int matrixLedHeight)
+        public ClipAnimationResult ClipAnimation(string outputFolder, string filename, BitmapSource? image, AnimationMoveDirection moveDirection, int moveSpeed, int matrixLedWidth, int matrixLedHeight)
         {
             //画像有効判定
             if (image == null)
@@ -203,17 +204,21 @@ namespace MicroSign.Core.Models
             LOGGER.Debug($"フレーム数='{frameCount}'");
 
             //ファイル番号フォーマットを取得
-            string fileNumberFormat = string.Empty;
-            {
-                int log = (int)Math.Log10(frameCount);
-                int m = log + CommonConsts.Collection.Step;
-                StringBuilder sb = new StringBuilder();
-                for (int i = CommonConsts.Index.First; i < m; i += CommonConsts.Index.Step)
-                {
-                    sb.Append(CommonConsts.File.ZeroPrace);
-                }
-                fileNumberFormat = sb.ToString();
-            }
+            //2026.06.29:CS)杉原:GetNumberFormat()追加 >>>>> ここから
+            //string fileNumberFormat = string.Empty;
+            //{
+            //    int log = (int)Math.Log10(frameCount);
+            //    int m = log + CommonConsts.Collection.Step;
+            //    StringBuilder sb = new StringBuilder();
+            //    for (int i = CommonConsts.Index.First; i < m; i += CommonConsts.Index.Step)
+            //    {
+            //        sb.Append(CommonConsts.File.ZeroPrace);
+            //    }
+            //    fileNumberFormat = sb.ToString();
+            //}
+            //----------
+            string fileNumberFormat = this.GetNumberFormat(frameCount);
+            //2026.06.29:CS)杉原:GetNumberFormat()追加 <<<<< ここまで
 
             //出力画像パスを保存するリスト
             List<string> outputPaths = new List<string>();
@@ -270,7 +275,7 @@ namespace MicroSign.Core.Models
                 {
                     //ファイル名を決定
                     string fileNumberText = i.ToString(fileNumberFormat);
-                    string saveName = string.Format(CommonConsts.File.PngFileFormat, fileNumberText);
+                    string saveName = string.Format(CommonConsts.File.PngFileFormat, filename, fileNumberText);
                     savePath = System.IO.Path.Combine(outputFolder, saveName);
 
                     //PNGで保存

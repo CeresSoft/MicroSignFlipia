@@ -9,7 +9,7 @@ namespace MicroSign.Core.ViewModels
         /// </summary>
         /// <param name="imagePath">画像パス</param>
         /// <returns></returns>
-        public BitmapImage? GetImage(string imagePath)
+        public BitmapSource? GetImage(string imagePath)
         {
             //モデルにリレー
             return this.Model.GetImage(imagePath);
