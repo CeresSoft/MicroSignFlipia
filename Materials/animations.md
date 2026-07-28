@@ -62,7 +62,8 @@ ZIPファイルに同梱されている `license.txt` をお読みください�
 |![桜](./Seasons/seasons_64x64_cherry-tree.gif)|風に乗って桜の花びらが舞う、春をイメージしたアニメーションです。|[![桜 64x64](https://img.shields.io/badge/ZIP-Download-f27135)](./Seasons/MicroSignImage-seasons_64x64_cherry-tree.zip)|2026/5/15|
 |![梅雨](./Seasons/seasons_64x64_rain.gif)|雨粒を受けてアジサイが揺れる、梅雨をイメージしたアニメーションです。|[![梅雨 64×64](https://img.shields.io/badge/ZIP-Download-f27135)](./Seasons/MicroSignImage-seasons_64x64_rain.zip)|2026/5/15|
 |![夏(写真)](./Seasons/seasons_64x64_summer.gif)|青空と植物が爽やかな空気感を演出する、夏をイメージしたアニメーションです。|[![夏(写真) 64×64](https://img.shields.io/badge/ZIP-Download-f27135)](./Seasons/MicroSignImage-seasons_64x64_summer.zip)|2026/5/26|
-|![浜辺](./Seasons/seasons_64x64_beach.gif)|きらめく海と入道雲が彩る、真夏をイメージしたアニメーションです。|[![夏(写真) 64×64](https://img.shields.io/badge/ZIP-Download-f27135)](./Seasons/MicroSignImage-seasons_64x64_beach.zip)|2026/7/27|
+|![浜辺](./Seasons/seasons_64x64_beach.gif)|きらめく海と入道雲が彩る、真夏をイメージしたアニメーションです。|[![浜辺 64×64](https://img.shields.io/badge/ZIP-Download-f27135)](./Seasons/MicroSignImage-seasons_64x64_beach.zip)|2026/7/27|
+|![さざ波](./Seasons/seasons_64x64_ripple.gif)|海辺の穏やかな時間を切り取った、夏をイメージしたアニメーションです。|[![さざ波 64×64](https://img.shields.io/badge/ZIP-Download-f27135)](./Seasons/MicroSignImage-seasons_64x64_ripple.zip)|2026/7/28|
 |![ハロウィン](./Seasons/seasons_64x64_halloween.gif)|かぼちゃとおばけが月夜に浮かぶ、ハロウィンをイメージしたアニメーションです。|[![ハロウィン 64×64](https://img.shields.io/badge/ZIP-Download-f27135)](./Seasons/MicroSignImage-seasons_64x64_halloween.zip)|2026/5/15|
 |![雪景色](./Seasons/seasons_64x64_snow.gif)|雪景色に椿が咲き雪ウサギが跳ねる、冬をイメージしたアニメーションです。|[![雪景色 64×64](https://img.shields.io/badge/ZIP-Download-f27135)](./Seasons/MicroSignImage-seasons_64x64_snow.zip)|2026/5/15|
 
