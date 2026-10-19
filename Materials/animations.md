@@ -53,7 +53,7 @@ ZIPファイルに同梱されている `license.txt` をお読みください�
 
 |プレビュー|内容|ダウンロード|更新日|
 |----------|----|------------|------|
-|![YMM4サンプルアニメーション](./YMM4/ymm4_promotion_64x64.gif)|YMM4を使用した音声付サンプルアニメーションです。|[![YMM4サンプルアニメーション 128×32](https://img.shields.io/badge/ZIP-Download-f27135)](./YMM4/MicroSignImage-ymm4_promotion_64x64.zip)|2026/7/9|
+|![YMM4サンプルアニメーション](./YMM4/ymm4_promotion_64x64.gif)|YMM4を使用した音声付サンプルアニメーションです。|[![YMM4サンプルアニメーション 128×32](https://img.shields.io/badge/ZIP-Download-f27135)](./YMM4/MicroSignImage-ymm4_promotion_64x64.zip)|2026/10/19|
 
 ### 季節もの
 
